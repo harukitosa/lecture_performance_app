@@ -26,7 +26,8 @@ _onCreate(Database db, int version) async {
 _createTransaction(Database db) async {
   await db.transaction((txn) async {
     // CREATE USER
-    await db.execute('''
+    await db.execute(
+      '''
       CREATE TABLE user(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
@@ -35,7 +36,8 @@ _createTransaction(Database db) async {
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
       )
-      ''');
+      '''
+    );
 
     // CREATE STUDENT
     await db.execute(
@@ -66,7 +68,8 @@ _createTransaction(Database db) async {
     );
 
     // CREATE HOMEROOM
-    await db.execute('''
+    await db.execute(
+      '''
       CREATE TABLE homeroom(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER
@@ -76,7 +79,8 @@ _createTransaction(Database db) async {
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE NO ACTION ON UPDATE NO ACTION
       )
-      ''');
+      '''
+    );
 
     // CREATE EVALUATION
     await db.execute(

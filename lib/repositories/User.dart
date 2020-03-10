@@ -17,6 +17,12 @@ class UserRepository {
     );
   }
 
+  Future<User> getUser(int id) async {
+    final List<Map<String, dynamic>> res = await db.query("user", where: "id = ?", whereArgs: [id], limit: 1);
+    List<User> list = res.isNotEmpty ? res.map((c) => User.fromMap(c)).toList() : [];
+    return list[0];
+  } 
+
   Future<List<User>> getAllUsers() async {
     final List<Map<String, dynamic>> res = await db.query('user');
     List<User> list = res.isNotEmpty ? res.map((c) => User.fromMap(c)).toList() : [];
