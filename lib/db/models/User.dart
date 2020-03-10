@@ -21,8 +21,8 @@ class User {
       name: json["name"],
       password: json["password"],
       email: json["email"],
-      createTime: json["createTime"],
-      updateTime: json["updateTime"],
+      createTime: json["created_at"],
+      updateTime: json["updated_at"],
   );
 
   Map<String, dynamic> toMapNew() {
@@ -30,8 +30,8 @@ class User {
       'name': name,
       'password': password,
       'email': email,
-      'createTime': createTime,
-      'updateTime': updateTime,
+      'created_at': createTime,
+      'updated_at': updateTime,
     };
   }
 }

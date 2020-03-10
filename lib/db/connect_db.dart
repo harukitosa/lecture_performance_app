@@ -16,39 +16,37 @@ Future<Database> initDB() async {
 }
 
 _onConfigure(Database db) async {
-  // Add support for cascade delete
   await db.execute("PRAGMA foreign_keys = ON");
 }
 
 _onCreate(Database db, int version) async {
-  _createTransaction(db);
+  await _createTransaction(db);
 }
 
 _createTransaction(Database db) async {
   await db.transaction((txn) async {
     // CREATE USER
-    await db.execute(
-      '''
+    await db.execute('''
       CREATE TABLE user(
-        id INTEGER PRIMARY KEY AUTO INCREMENT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
         password TEXT,
         email TEXT,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
       )
-      '''
-    );
+      ''');
 
     // CREATE STUDENT
     await db.execute(
       '''
       CREATE TABLE student(
-        id INTEGER PRIMARY KEY AUTO INCREMENT,
-        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        homeroom_id INTEGER,
         name TEXT,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION
       )
       '''
     );
@@ -57,40 +55,43 @@ _createTransaction(Database db) async {
     await db.execute(
       '''
       CREATE TABLE semester(
-        id INTEGER PRIMARY KEY AUTO INCREMENT,
-        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
+        homeroom_id INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION
       )
       '''
     );
 
     // CREATE HOMEROOM
-    await db.execute(
-      '''
+    await db.execute('''
       CREATE TABLE homeroom(
-        id INTEGER PRIMARY KEY AUTO INCREMENT,
-        FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER
         grade INTEGER,
         lectureClass INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE NO ACTION ON UPDATE NO ACTION
       )
-      '''
-    );
+      ''');
 
     // CREATE EVALUATION
     await db.execute(
       '''
       CREATE TABLE evaluation(
-        id INTEGER PRIMARY KEY AUTO INCREMENT,
-        FOREIGN KEY (student_id) REFERENCES student (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        FOREIGN KEY (type_id) REFERENCES evaluation_type (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        FOREIGN KEY (semester_id) REFERENCES semester (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_id INTEGER,
+        type_id INTEGER,
+        semester_id INTEGER,
         point INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        FOREIGN KEY (student_id) REFERENCES student (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+        FOREIGN KEY (type_id) REFERENCES evaluation_type (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+        FOREIGN KEY (semester_id) REFERENCES semester (id) ON DELETE NO ACTION ON UPDATE NO ACTION
       )
       '''
     );
@@ -99,10 +100,10 @@ _createTransaction(Database db) async {
     await db.execute(
       '''
       CREATE TABLE evaluation_type(
-        id INTEGER PRIMARY KEY AUTO INCREMENT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
       )
       '''
     );
