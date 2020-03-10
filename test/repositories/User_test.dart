@@ -55,4 +55,14 @@ void main() async {
       List<User> lastUsers = await userRepository.getAllUsers();
       expect(lastUsers.length, 0);
   });
+
+  test("REPOSITORY:GET USER", () async {
+      var user = new User(name: "test", password: "testtest", email: "sample@mail.com");
+      userRepository.insertUser(user);
+      var users = await userRepository.getAllUsers();
+      var getUser = await userRepository.getUser(users[0].id);
+      expect(getUser.name, "test");
+      expect(getUser.password, "testtest");
+      expect(getUser.email, "sample@mail.com");
+  });
 }
