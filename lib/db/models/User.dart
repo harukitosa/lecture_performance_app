@@ -6,7 +6,6 @@ class User {
   final String email;
   final String createTime;
   String updateTime;
-  String deleteTime;
 
   User({
     this.id,
@@ -15,7 +14,6 @@ class User {
     this.email,
     this.createTime,
     this.updateTime,
-    this.deleteTime,
   });
 
   factory User.fromMap(Map<String, dynamic> json) => new User(
@@ -25,7 +23,6 @@ class User {
       email: json["email"],
       createTime: json["createTime"],
       updateTime: json["updateTime"],
-      deleteTime: json["deleteTime"],
   );
 
   Map<String, dynamic> toMapNew() {
@@ -35,7 +32,6 @@ class User {
       'email': email,
       'createTime': createTime,
       'updateTime': updateTime,
-      'delteTime': deleteTime,
     };
   }
 }

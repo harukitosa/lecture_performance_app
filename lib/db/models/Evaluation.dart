@@ -7,7 +7,6 @@ class Evaluation {
   final int point;
   final String createTime;
   String updateTime;
-  String deleteTime;
 
   Evaluation({
     this.id,
@@ -17,7 +16,6 @@ class Evaluation {
     this.point,
     this.createTime,
     this.updateTime,
-    this.deleteTime,
   });
 
   factory Evaluation.fromMap(Map<String, dynamic> json) => new Evaluation(
@@ -28,7 +26,6 @@ class Evaluation {
       point: json["point"],
       createTime: json["createTime"],
       updateTime: json["updateTime"],
-      deleteTime: json["deleteTime"],
   );
 
   Map<String, dynamic> toMapNew() {
@@ -39,7 +36,6 @@ class Evaluation {
       'point': point,
       'createTime': createTime,
       'updateTime': updateTime,
-      'delteTime': deleteTime,
     };
   }
 }
