@@ -18,16 +18,16 @@ class Student {
       id: json["id"],
       homeRoomID: json["homeRoomID"],
       name: json["name"],
-      createTime: json["createTime"],
-      updateTime: json["updateTime"],
+      createTime: json["created_at"],
+      updateTime: json["updated_at"],
   );
 
   Map<String, dynamic> toMapNew() {
     return {
       'name': name,
       'homeRoomID': homeRoomID,
-      'createTime': createTime,
-      'updateTime': updateTime,
+      'created_at': createTime,
+      'updated_at': updateTime,
     };
   }
 
