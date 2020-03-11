@@ -16,7 +16,7 @@ class Student {
 
   factory Student.fromMap(Map<String, dynamic> json) => new Student(
       id: json["id"],
-      homeRoomID: json["homeRoomID"],
+      homeRoomID: json["homeroom_id"],
       name: json["name"],
       createTime: json["created_at"],
       updateTime: json["updated_at"],
@@ -24,8 +24,9 @@ class Student {
 
   Map<String, dynamic> toMapNew() {
     return {
+      'id': id,
       'name': name,
-      'homeRoomID': homeRoomID,
+      'homeroom_id': homeRoomID,
       'created_at': createTime,
       'updated_at': updateTime,
     };

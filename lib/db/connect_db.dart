@@ -39,20 +39,6 @@ _createTransaction(Database db) async {
       '''
     );
 
-    // CREATE STUDENT
-    await db.execute(
-      '''
-      CREATE TABLE student(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        homeroom_id INTEGER,
-        name TEXT,
-        created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION
-      )
-      '''
-    );
-
     // CREATE SEMESTER 
     await db.execute(
       '''
@@ -78,6 +64,20 @@ _createTransaction(Database db) async {
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+      )
+      '''
+    );
+
+    // CREATE STUDENT
+    await db.execute(
+      '''
+      CREATE TABLE student(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        homeroom_id INTEGER,
+        name TEXT,
+        created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION
       )
       '''
     );
