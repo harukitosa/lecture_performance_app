@@ -15,8 +15,8 @@ class EvaluationType {
   factory EvaluationType.fromMap(Map<String, dynamic> json) => new EvaluationType(
       id: json["id"],
       title: json["title"],
-      createTime: json["create_at"],
-      updateTime: json["update_at"],
+      createTime: json["created_at"],
+      updateTime: json["updated_at"],
   );
 
   Map<String, dynamic> toMapNew() {
