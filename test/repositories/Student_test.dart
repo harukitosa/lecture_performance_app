@@ -67,7 +67,6 @@ void testStudentRepository() async {
       var updateStudent = new Student(id: beforeStudent.id, homeRoomID: beforeStudent.homeRoomID, name: "アップデータと太郎", createTime: beforeStudent.createTime, updateTime: beforeStudent.updateTime);
       studentRepository.updateStudent(updateStudent);
       var resultStudent = await studentRepository.getOneStudent(beforeStudent.id);
-      
       expect(resultStudent.name, "アップデータと太郎");
   });
 }
