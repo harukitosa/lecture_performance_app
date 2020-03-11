@@ -17,19 +17,13 @@ class HomeRoomRepository {
     );
   }
 
-  Future<List<HomeRoom>> getHomeRoom(int id) async {
+  Future<List<HomeRoom>> getHomeRooms(int id) async {
     final List<Map<String, dynamic>> res = await db.query("homeroom", where: "id = ?", whereArgs: [id], limit: 1);
     List<HomeRoom> list = res.isNotEmpty ? res.map((c) => HomeRoom.fromMap(c)).toList() : [];
     return list;
   } 
 
-  Future<List<HomeRoom>> getAllHomeRooms() async {
-    final List<Map<String, dynamic>> res = await db.query('homeroom');
-    List<HomeRoom> list = res.isNotEmpty ? res.map((c) => HomeRoom.fromMap(c)).toList() : [];
-    return list;
-  }
-
-  Future<void> deleteHomeRooms(int id) async {
+  Future<void> deleteHomeRoom(int id) async {
     await db.delete(
       'homeroom',
       where: "id = ?",
@@ -37,7 +31,7 @@ class HomeRoomRepository {
     );
   }
 
-  Future<void> updateHomeRooms(HomeRoom homeRoom) async {
+  Future<void> updateHomeRoom(HomeRoom homeRoom) async {
     await db.update(
       'homeroom',
       homeRoom.toMapNew(),
