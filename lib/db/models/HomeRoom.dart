@@ -18,20 +18,20 @@ class HomeRoom {
 
   factory HomeRoom.fromMap(Map<String, dynamic> json) => new HomeRoom(
       id: json["id"],
-      userID: json["userID"],
+      userID: json["user_id"],
       grade: json["grade"],
       lectureClass: json["lectureClass"],
-      createTime: json["createTime"],
-      updateTime: json["updateTime"],
+      createTime: json["created_at"],
+      updateTime: json["updated_at"],
   );
 
   Map<String, dynamic> toMapNew() {
     return {
-      'userID': userID,
+      'user_id': userID,
       'grade': grade,
       'lectureClass': lectureClass,
-      'createTime': createTime,
-      'updateTime': updateTime,
+      'created_at': createTime,
+      'updated_at': updateTime,
     };
   }
 }

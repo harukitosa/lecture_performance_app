@@ -4,7 +4,9 @@ import 'package:lecture_performance_app/db/models/User.dart';
 import 'package:lecture_performance_app/repositories/User.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-void main() async {
+
+
+void testUserRepository() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
   Database db = await initDB();
@@ -65,4 +67,6 @@ void main() async {
       expect(getUser.password, "testtest");
       expect(getUser.email, "sample@mail.com");
   });
+  return;
 }
+
