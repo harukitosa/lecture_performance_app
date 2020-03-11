@@ -16,7 +16,7 @@ class Semester {
 
   factory Semester.fromMap(Map<String, dynamic> json) => new Semester(
       id: json["id"],
-      homeRoomID: json["homeRoomID"],
+      homeRoomID: json["homeRoom_id"],
       createTime: json["created_at"],
       updateTime: json["updated_at"],
   );
@@ -24,7 +24,7 @@ class Semester {
   Map<String, dynamic> toMapNew() {
     return {
       'title': title,
-      'homeRoomID': homeRoomID,
+      'homeRoom_id': homeRoomID,
       'created_at': createTime,
       'updated_at': updateTime,
     };
