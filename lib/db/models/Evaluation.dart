@@ -24,8 +24,8 @@ class Evaluation {
       typeID: json["type_id"],
       semesterID: json["semester_id"],
       point: json["point"],
-      createTime: json["create_at"],
-      updateTime: json["update_at"],
+      createTime: json["created_at"],
+      updateTime: json["updated_at"],
   );
 
   Map<String, dynamic> toMapNew() {

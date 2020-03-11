@@ -9,12 +9,13 @@ class UserRepository {
     this.db
   });
 
-  Future<void> insertUser(User user) async {
-    await db.insert(
+  Future<int> insertUser(User user) async {
+    var id = await db.insert(
         'user',
         user.toMapNew(),
         conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    return id;
   }
 
   Future<User> getUser(int id) async {

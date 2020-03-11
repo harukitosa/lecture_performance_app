@@ -9,12 +9,13 @@ class HomeRoomRepository {
     this.db
   });
 
-  Future<void> insertHomeRoom(HomeRoom homeRoom) async {
-    await db.insert(
+  Future<int> insertHomeRoom(HomeRoom homeRoom) async {
+    var id = await db.insert(
         'homeroom',
         homeRoom.toMapNew(),
         conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    return id;
   }
 
   Future<List<HomeRoom>> getHomeRooms(int id) async {

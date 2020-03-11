@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lecture_performance_app/db/connect_db.dart';
-import 'package:lecture_performance_app/db/models/Evaluation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:lecture_performance_app/repositories/EvaluationType.dart';
