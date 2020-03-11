@@ -25,7 +25,7 @@ void testStudentRepository() async {
       homeRoomRepository.insertHomeRoom(homeRoom);
       var homeRooms = await homeRoomRepository.getHomeRooms(users[0].id);
       var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎");
-      studentRepository.insertStudent(student);
+      await studentRepository.insertStudent(student);
       var students = await studentRepository.getThisRoomStudent(homeRooms[0].id);
 
       expect(students[0].homeRoomID, homeRooms[0].id);
