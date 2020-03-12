@@ -112,5 +112,32 @@ _createTransaction(Database db) async {
       )
       '''
     );
+
+    //CREATE SEAT
+    await db.execute(
+      '''
+      CREATE TABLE seat(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        used TEXT,
+        created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
+      )
+      '''
+    );
+
+    await _insertSeatTransaction(db);
+
+  });
+}
+
+_insertSeatTransaction(Database db) async {
+  await db.transaction((txn) async {
+    for(var i = 0;i < 64;i++) {
+      await txn.rawInsert(
+        '''
+          INSERT INTO seat(used) VALUES("true")
+        '''
+      );
+    }
   });
 }
