@@ -5,12 +5,14 @@ import 'repositories/Semester_test.dart';
 import 'repositories/EvaluationType_test.dart';
 import 'repositories/Evaluation_test.dart';
 import 'repositories/Seat_test.dart';
+
 void main() {
-  testUserRepository();
-  testHomeRoomRepository();
-  testStudentRepository();
-  testSemesterRepository();
-  testEvaluationTypeRepository();
-  testEvaluationRepository();
-  testSeatRepository();
+  //REPOSITORY TEST
+    testUserRepository();
+    testHomeRoomRepository();
+    testStudentRepository();
+    testSemesterRepository();
+    testEvaluationTypeRepository();
+    testEvaluationRepository();
+    testSeatRepository();
 }

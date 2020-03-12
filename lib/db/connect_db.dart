@@ -58,12 +58,10 @@ _createTransaction(Database db) async {
       '''
       CREATE TABLE homeroom(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
         grade INTEGER,
         lectureClass INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
       )
       '''
     );

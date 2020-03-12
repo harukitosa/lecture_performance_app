@@ -1,7 +1,6 @@
 class HomeRoom {
   
   final int id;
-  final int userID;
   final int grade;
   final int lectureClass;
   final String createTime;
@@ -9,7 +8,6 @@ class HomeRoom {
 
   HomeRoom({
     this.id,
-    this.userID,
     this.grade,
     this.lectureClass,
     this.createTime,
@@ -18,7 +16,6 @@ class HomeRoom {
 
   factory HomeRoom.fromMap(Map<String, dynamic> json) => new HomeRoom(
       id: json["id"],
-      userID: json["user_id"],
       grade: json["grade"],
       lectureClass: json["lectureClass"],
       createTime: json["created_at"],
@@ -27,7 +24,6 @@ class HomeRoom {
 
   Map<String, dynamic> toMapNew() {
     return {
-      'user_id': userID,
       'grade': grade,
       'lectureClass': lectureClass,
       'created_at': createTime,

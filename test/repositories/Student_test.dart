@@ -3,9 +3,7 @@ import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:lecture_performance_app/repositories/HomeRoom.dart';
-import 'package:lecture_performance_app/db/models/User.dart';
 import 'package:lecture_performance_app/repositories/Student.dart';
-import 'package:lecture_performance_app/repositories/User.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -14,16 +12,12 @@ void testStudentRepository() async {
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
   Database db = await initDB();
   var homeRoomRepository = new HomeRoomRepository(db: db);
-  var userRepository = new UserRepository(db: db);
   var studentRepository = new StudentRepository(db: db);
 
   test('REPOSITORY:INSERT STUDENT', () async {
-      var user = new User(name: "test", password: "testtest", email: "sample@mail.com");
-      await userRepository.insertUser(user);
-      var users = await userRepository.getAllUsers();
-      var homeRoom = new HomeRoom(userID: users[0].id, grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
       homeRoomRepository.insertHomeRoom(homeRoom);
-      var homeRooms = await homeRoomRepository.getHomeRooms(users[0].id);
+      var homeRooms = await homeRoomRepository.getHomeRooms();
       var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 17);
       await studentRepository.insertStudent(student);
       var students = await studentRepository.getThisRoomStudent(homeRooms[0].id);
@@ -34,12 +28,9 @@ void testStudentRepository() async {
   });
 
   test('REPOSITORY:DELETE STUDENT', () async {
-      var user = new User(name: "test", password: "testtest", email: "sample@mail.com");
-      await userRepository.insertUser(user);
-      var users = await userRepository.getAllUsers();
-      var homeRoom = new HomeRoom(userID: users[0].id, grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
       homeRoomRepository.insertHomeRoom(homeRoom);
-      var homeRooms = await homeRoomRepository.getHomeRooms(users[0].id);
+      var homeRooms = await homeRoomRepository.getHomeRooms();
       var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 2);
       var student1 = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎1", positionNum: 3);
       var student2 = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎2", positionNum: 4);
@@ -56,12 +47,9 @@ void testStudentRepository() async {
   });
 
   test('REPOSITORY:UPDATE STUDENT', () async {
-      var user = new User(name: "test", password: "testtest", email: "sample@mail.com");
-      await userRepository.insertUser(user);
-      var users = await userRepository.getAllUsers();
-      var homeRoom = new HomeRoom(userID: users[0].id, grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
       homeRoomRepository.insertHomeRoom(homeRoom);
-      var homeRooms = await homeRoomRepository.getHomeRooms(users[0].id);
+      var homeRooms = await homeRoomRepository.getHomeRooms();
       var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 1);
       var id = await studentRepository.insertStudent(student);
       var beforeStudent = await studentRepository.getOneStudent(id);
