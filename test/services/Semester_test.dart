@@ -16,7 +16,7 @@ void testsemesterService() async {
   var homeRoomService = new HomeRoomService(homeRoomRepository: homeRoomRepository);
   test('SERVICE:SEMESTER',() async {
     var homeRoomID = await homeRoomService.createHomeRoom(2, 2);
-    semesterService.createsemester('春学期', homeRoomID);
+    await semesterService.createsemester('春学期', homeRoomID);
     var semesterList = await semesterService.getAllsemester();
     expect(semesterList[0].title, '春学期');
     expect(semesterList[0].homeRoomID, homeRoomID);

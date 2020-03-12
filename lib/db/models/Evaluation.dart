@@ -30,6 +30,7 @@ class Evaluation {
 
   Map<String, dynamic> toMapNew() {
     return {
+      'id': id,
       'student_id': studentID,
       'type_id': typeID,
       'semester_id': semesterID,
