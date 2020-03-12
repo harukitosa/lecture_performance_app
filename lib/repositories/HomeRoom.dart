@@ -18,8 +18,8 @@ class HomeRoomRepository {
     return id;
   }
 
-  Future<List<HomeRoom>> getHomeRooms(int id) async {
-    final List<Map<String, dynamic>> res = await db.query("homeroom", where: "id = ?", whereArgs: [id], limit: 1);
+  Future<List<HomeRoom>> getHomeRooms() async {
+    final List<Map<String, dynamic>> res = await db.query("homeroom");
     List<HomeRoom> list = res.isNotEmpty ? res.map((c) => HomeRoom.fromMap(c)).toList() : [];
     return list;
   } 
