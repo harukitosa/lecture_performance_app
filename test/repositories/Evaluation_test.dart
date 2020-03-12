@@ -14,6 +14,7 @@ import 'package:lecture_performance_app/db/models/Semester.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:io';
 
 void testEvaluationRepository() async {
     TestWidgetsFlutterBinding.ensureInitialized();
@@ -88,9 +89,17 @@ void testEvaluationRepository() async {
       expect(res.typeID, evaluationTypeID);
       expect(res.studentID, studentID);
       expect(res.point, 2);
+      print("createTime");
+      print(res.createTime);
+      print("updateTime");
+      print(res.updateTime);
       var update = new eval.Evaluation(id: res.id, studentID: studentID, semesterID: semesterID, typeID: evaluationTypeID, point: 100, createTime: res.createTime, updateTime: res.updateTime);
-      var resID = await evaluationRepository.insertEvaluation(update);
-      var secRes = await evaluationRepository.getEvaluation(resID);
+      await evaluationRepository.updateEvaluation(update);
+      var secRes = await evaluationRepository.getEvaluation(res.id);
+      print("createTime");
+      print(secRes.createTime);
+      print("updateTime");
+      print(secRes.updateTime);
       expect(secRes.point, 100);
       expect(secRes.studentID, studentID);
       expect(secRes.typeID, evaluationTypeID);

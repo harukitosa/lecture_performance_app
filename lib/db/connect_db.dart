@@ -75,6 +75,7 @@ _createTransaction(Database db) async {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         homeroom_id INTEGER,
         name TEXT,
+        position_num INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION

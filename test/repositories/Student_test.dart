@@ -24,12 +24,13 @@ void testStudentRepository() async {
       var homeRoom = new HomeRoom(userID: users[0].id, grade: 1, lectureClass: 2);
       homeRoomRepository.insertHomeRoom(homeRoom);
       var homeRooms = await homeRoomRepository.getHomeRooms(users[0].id);
-      var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎");
+      var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 17);
       await studentRepository.insertStudent(student);
       var students = await studentRepository.getThisRoomStudent(homeRooms[0].id);
 
       expect(students[0].homeRoomID, homeRooms[0].id);
       expect(students[0].name, "サンプル太郎");
+      expect(students[0].positionNum, 17);
   });
 
   test('REPOSITORY:DELETE STUDENT', () async {
@@ -39,9 +40,9 @@ void testStudentRepository() async {
       var homeRoom = new HomeRoom(userID: users[0].id, grade: 1, lectureClass: 2);
       homeRoomRepository.insertHomeRoom(homeRoom);
       var homeRooms = await homeRoomRepository.getHomeRooms(users[0].id);
-      var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎");
-      var student1 = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎1");
-      var student2 = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎2");
+      var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 2);
+      var student1 = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎1", positionNum: 3);
+      var student2 = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎2", positionNum: 4);
       studentRepository.insertStudent(student);
       studentRepository.insertStudent(student1);
       studentRepository.insertStudent(student2);
@@ -61,12 +62,13 @@ void testStudentRepository() async {
       var homeRoom = new HomeRoom(userID: users[0].id, grade: 1, lectureClass: 2);
       homeRoomRepository.insertHomeRoom(homeRoom);
       var homeRooms = await homeRoomRepository.getHomeRooms(users[0].id);
-      var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎");
+      var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 1);
       var id = await studentRepository.insertStudent(student);
       var beforeStudent = await studentRepository.getOneStudent(id);
-      var updateStudent = new Student(id: beforeStudent.id, homeRoomID: beforeStudent.homeRoomID, name: "アップデータと太郎", createTime: beforeStudent.createTime, updateTime: beforeStudent.updateTime);
+      var updateStudent = new Student(id: beforeStudent.id, homeRoomID: beforeStudent.homeRoomID, name: "アップデータと太郎",positionNum: 3, createTime: beforeStudent.createTime, updateTime: beforeStudent.updateTime);
       studentRepository.updateStudent(updateStudent);
       var resultStudent = await studentRepository.getOneStudent(beforeStudent.id);
       expect(resultStudent.name, "アップデータと太郎");
+      expect(resultStudent.positionNum, 3);
   });
 }
