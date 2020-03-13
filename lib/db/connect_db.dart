@@ -137,5 +137,10 @@ _insertSeatTransaction(Database db) async {
         '''
       );
     }
+    await txn.rawInsert(
+      '''
+        INSERT INTO homeroom(grade, lectureClass) VALUES(1, 1)
+      '''
+    );
   });
 }

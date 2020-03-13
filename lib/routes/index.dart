@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Home(),
-        '/class': (context) => ClassRoom(),
+        ClassRoom.routeName: (_) => ClassRoom(),
       },
     );
   }
