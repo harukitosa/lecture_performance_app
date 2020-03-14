@@ -4,13 +4,11 @@ import 'package:lecture_performance_app/services/EvaluationType.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 
 void testEvaluationTypeService() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-  Database db = await initDB();
-  var evaluationTypeRepository = new EvaluationTypeRepository(db: db);
+  var evaluationTypeRepository = new EvaluationTypeRepository();
   var evaluationTypeService = new EvaluationTypeService(evaluationTypeRepository: evaluationTypeRepository);
   test('SERVICE:EvaluationType',() async {
     await evaluationTypeService.createEvaluationType('発音');

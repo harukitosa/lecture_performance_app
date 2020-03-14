@@ -3,19 +3,17 @@ import 'package:lecture_performance_app/services/semester.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/repositories/HomeRoom.dart';
 import 'package:lecture_performance_app/services/HomeRoom.dart';
 void testsemesterService() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-  Database db = await initDB();
-  var semesterRepository = new SemesterRepository(db: db);
+  var semesterRepository = new SemesterRepository();
   var semesterService = new SemesterService(semesterRepository: semesterRepository);
-  var homeRoomRepository = new HomeRoomRepository(db: db);
+  var homeRoomRepository = new HomeRoomRepository();
   var homeRoomService = new HomeRoomService(homeRoomRepository: homeRoomRepository);
   test('SERVICE:SEMESTER',() async {
-    var homeRoomID = await homeRoomService.createHomeRoom(2, 2);
+    var homeRoomID = await homeRoomService.createHomeRoom("2", "2");
     await semesterService.createsemester('春学期', homeRoomID);
     var semesterList = await semesterService.getAllsemester();
     expect(semesterList[0].title, '春学期');

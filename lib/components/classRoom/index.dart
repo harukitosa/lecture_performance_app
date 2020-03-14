@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 
+//routerで渡される値
 class ClassRoomArgument {
   final HomeRoom homeRoom;
   ClassRoomArgument(this.homeRoom);
@@ -17,7 +18,7 @@ class ClassRoom extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(args.homeRoom.grade.toString()+"年"+args.homeRoom.lectureClass.toString()+"組"),
+        title: Text(args.homeRoom.grade+"年"+args.homeRoom.lectureClass+"組"),
       ),
       body: Center(
         child: Text(

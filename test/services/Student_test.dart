@@ -3,19 +3,17 @@ import 'package:lecture_performance_app/services/Student.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/repositories/HomeRoom.dart';
 import 'package:lecture_performance_app/services/HomeRoom.dart';
 void teststudentService() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-  Database db = await initDB();
-  var studentRepository = new StudentRepository(db: db);
+  var studentRepository = new StudentRepository();
   var studentService = new StudentService(studentRepository: studentRepository);
-  var homeRoomRepository = new HomeRoomRepository(db: db);
+  var homeRoomRepository = new HomeRoomRepository();
   var homeRoomService = new HomeRoomService(homeRoomRepository: homeRoomRepository);
   test('SERVICE:STUDENT',() async {
-    var homeRoomID = await homeRoomService.createHomeRoom(2, 2);
+    var homeRoomID = await homeRoomService.createHomeRoom("2", "2");
     await studentService.createstudent(homeRoomID, "sample");
     var studentList = await studentService.getRoomStudents(homeRoomID);
     expect(studentList[0].name, 'sample');

@@ -5,7 +5,7 @@ import 'package:lecture_performance_app/config/DataConfig.dart';
 
 Future<Database> initDB() async {
   final database = openDatabase(
-    join(await getDatabasesPath(), 'database.db'),
+    join(await getDatabasesPath(), 'app_database.db'),
     version: 1,
     onConfigure: _onConfigure,
     onCreate: _onCreate,
@@ -59,8 +59,8 @@ _createTransaction(Database db) async {
       '''
       CREATE TABLE homeroom(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        grade INTEGER,
-        lectureClass INTEGER,
+        grade TEXT,
+        lectureClass TEXT,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
       )
@@ -136,7 +136,7 @@ _insertSeatTransaction(Database db) async {
   await db.transaction((txn) async {
     var id = await txn.rawInsert(
       '''
-        INSERT INTO homeroom(grade, lectureClass) VALUES(1, 1)
+        INSERT INTO homeroom(grade, lectureClass) VALUES("1", "1")
       '''
     );
     for(var i = 0;i < config.seatNum;i++) {

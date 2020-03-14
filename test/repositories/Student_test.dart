@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:lecture_performance_app/repositories/HomeRoom.dart';
@@ -10,12 +9,11 @@ import 'package:path/path.dart';
 void testStudentRepository() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-  Database db = await initDB();
-  var homeRoomRepository = new HomeRoomRepository(db: db);
-  var studentRepository = new StudentRepository(db: db);
+  var homeRoomRepository = new HomeRoomRepository();
+  var studentRepository = new StudentRepository();
 
   test('REPOSITORY:INSERT STUDENT', () async {
-      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
       homeRoomRepository.insertHomeRoom(homeRoom);
       var homeRooms = await homeRoomRepository.getHomeRooms();
       var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 17);
@@ -28,7 +26,7 @@ void testStudentRepository() async {
   });
 
   test('REPOSITORY:DELETE STUDENT', () async {
-      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
       homeRoomRepository.insertHomeRoom(homeRoom);
       var homeRooms = await homeRoomRepository.getHomeRooms();
       var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 2);
@@ -47,7 +45,7 @@ void testStudentRepository() async {
   });
 
   test('REPOSITORY:UPDATE STUDENT', () async {
-      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
       homeRoomRepository.insertHomeRoom(homeRoom);
       var homeRooms = await homeRoomRepository.getHomeRooms();
       var student = new Student(homeRoomID: homeRooms[0].id, name: "サンプル太郎", positionNum: 1);
