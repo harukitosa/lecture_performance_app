@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/components/home/regist/registSeat.dart';
-
-Future<int> _registHomeRoom(String grade, String lectureClass) async {
-  var _homeRoomAPI = initHomeRoomAPI();
-  var id = await _homeRoomAPI.createHomeRoom(grade, lectureClass);
-  return id;
-}
 
 class HomeRegist extends StatelessWidget {
   @override
@@ -36,6 +29,7 @@ class _ChangeFormState extends State<ChangeForm> {
   String _grade = '';
   String _lectureClass = '';
   int id;
+
   void _handleGrade(String e) {
     setState(() {
       _grade = e;
@@ -47,7 +41,7 @@ class _ChangeFormState extends State<ChangeForm> {
       _lectureClass = e;
     });
   }
-  
+
   Widget build(BuildContext context) {
     return Center(
       child: Container(
@@ -133,19 +127,10 @@ class _ChangeFormState extends State<ChangeForm> {
                   color: Colors.orange,
                   textColor: Colors.white,
                   onPressed: () async {
-                    await _registHomeRoom(_grade, _lectureClass).then(
-                      (res) => (setState(
-                        () {
-                          id = res;
-                        },
-                      )),
-                    );
                     Navigator.pushNamed(
                       context,
                       HomeRegistSeat.routeName,
-                      arguments: HomeRegistSeatArgument(
-                        id,
-                      ),
+                      arguments: HomeRegistSeatArgument(_grade, _lectureClass),
                     );
                   },
                 ),

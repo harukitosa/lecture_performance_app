@@ -9,6 +9,7 @@ class Home extends StatelessWidget {
     void _incrementCounter() {
       Navigator.pushNamed(context, '/home/regist');
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),

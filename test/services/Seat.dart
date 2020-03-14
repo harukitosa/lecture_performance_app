@@ -17,7 +17,7 @@ void testSeatService() async {
   test('SERVICE:SEAT', () async {
     var homeRoomID = await homeRoomService.createHomeRoom("3", "4");
     print("homeRoomID"+homeRoomID.toString());
-    await seatService.insertSeatData(homeRoomID);
+    // await seatService.insertSeatData(homeRoomID);
     var result = await seatService.getThisRoomAllSeatData(homeRoomID);
     print(result);
     expect(result.length, 64);

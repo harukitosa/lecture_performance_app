@@ -5,7 +5,7 @@ import 'package:lecture_performance_app/config/DataConfig.dart';
 
 Future<Database> initDB() async {
   final database = openDatabase(
-    join(await getDatabasesPath(), 'app_database.db'),
+    join(await getDatabasesPath(), 'database.db'),
     version: 1,
     onConfigure: _onConfigure,
     onCreate: _onCreate,
@@ -27,8 +27,7 @@ _onCreate(Database db, int version) async {
 _createTransaction(Database db) async {
   await db.transaction((txn) async {
     // CREATE USER
-    await db.execute(
-      '''
+    await db.execute('''
       CREATE TABLE user(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
@@ -37,12 +36,10 @@ _createTransaction(Database db) async {
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
       )
-      '''
-    );
+      ''');
 
-    // CREATE SEMESTER 
-    await db.execute(
-      '''
+    // CREATE SEMESTER
+    await db.execute('''
       CREATE TABLE semester(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
@@ -51,12 +48,10 @@ _createTransaction(Database db) async {
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE NO ACTION
       )
-      '''
-    );
+      ''');
 
     // CREATE HOMEROOM
-    await db.execute(
-      '''
+    await db.execute('''
       CREATE TABLE homeroom(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         grade TEXT,
@@ -64,12 +59,10 @@ _createTransaction(Database db) async {
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
       )
-      '''
-    );
+      ''');
 
     // CREATE STUDENT
-    await db.execute(
-      '''
+    await db.execute('''
       CREATE TABLE student(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         homeroom_id INTEGER,
@@ -79,12 +72,10 @@ _createTransaction(Database db) async {
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE CASCADE
       )
-      '''
-    );
+      ''');
 
     // CREATE EVALUATION
-    await db.execute(
-      '''
+    await db.execute('''
       CREATE TABLE evaluation(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         student_id INTEGER,
@@ -97,24 +88,20 @@ _createTransaction(Database db) async {
         FOREIGN KEY (type_id) REFERENCES evaluation_type (id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (semester_id) REFERENCES semester (id) ON DELETE CASCADE ON UPDATE CASCADE
       )
-      '''
-    );
+      ''');
 
     //CREATE EVALUATION_TYPE
-    await db.execute(
-      '''
+    await db.execute('''
       CREATE TABLE evaluation_type(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
       )
-      '''
-    );
+      ''');
 
     //CREATE SEAT
-    await db.execute(
-      '''
+    await db.execute('''
       CREATE TABLE seat(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         homeroom_id INTEGER,
@@ -123,29 +110,22 @@ _createTransaction(Database db) async {
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE CASCADE
       )
-      '''
-    );
+      ''');
 
     await _insertSeatTransaction(db);
-
   });
 }
 
 _insertSeatTransaction(Database db) async {
   var config = new AppDataConfig();
   await db.transaction((txn) async {
-    var id = await txn.rawInsert(
-      '''
+    var id = await txn.rawInsert('''
         INSERT INTO homeroom(grade, lectureClass) VALUES("1", "1")
-      '''
-    );
-    for(var i = 0;i < config.seatNum;i++) {
-      var data = await txn.rawInsert(
-        '''
+      ''');
+    for (var i = 0; i < config.seatNum; i++) {
+      await txn.rawInsert('''
           INSERT INTO seat(homeroom_id, used) VALUES($id, true)
-        '''
-      );
-      print(i.toString()+":"+data.toString());
+        ''');
     }
   });
 }
