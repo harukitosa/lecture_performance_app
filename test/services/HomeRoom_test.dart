@@ -15,14 +15,16 @@ void testHomeRoomService() async {
   test('SERVICE:HOMEROOM',() async {
     homeRoomService.createHomeRoom(2, 2);
     var homeRoomList = await homeRoomService.getAllHomeRoom();
-    expect(homeRoomList[0].grade, 2);
-    expect(homeRoomList[0].lectureClass, 2);
+    //初期データが存在するため。
+    expect(homeRoomList[1].grade, 2);
+    expect(homeRoomList[1].lectureClass, 2);
     homeRoomService.editHomeRoom(homeRoomList[0].id, 3, 14, homeRoomList[0].createTime);
     var updateList = await homeRoomService.getAllHomeRoom();
     expect(updateList[0].grade, 3);
     expect(updateList[0].lectureClass, 14);
     await homeRoomService.deleteHomeRoom(homeRoomList[0].id);
     var deleteList = await homeRoomService.getAllHomeRoom();
-    expect(deleteList.length, 0);
+    //初期データが存在するため
+    expect(deleteList.length, 1);
   });
 }

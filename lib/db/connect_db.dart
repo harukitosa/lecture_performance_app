@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:lecture_performance_app/config/DataConfig.dart';
 
 Future<Database> initDB() async {
   final database = openDatabase(
@@ -48,7 +49,7 @@ _createTransaction(Database db) async {
         homeroom_id INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE NO ACTION
       )
       '''
     );
@@ -76,7 +77,7 @@ _createTransaction(Database db) async {
         position_num INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE CASCADE
       )
       '''
     );
@@ -92,9 +93,9 @@ _createTransaction(Database db) async {
         point INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        FOREIGN KEY (student_id) REFERENCES student (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        FOREIGN KEY (type_id) REFERENCES evaluation_type (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        FOREIGN KEY (semester_id) REFERENCES semester (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+        FOREIGN KEY (student_id) REFERENCES student (id) ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (type_id) REFERENCES evaluation_type (id) ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (semester_id) REFERENCES semester (id) ON DELETE CASCADE ON UPDATE CASCADE
       )
       '''
     );
@@ -116,9 +117,11 @@ _createTransaction(Database db) async {
       '''
       CREATE TABLE seat(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        homeroom_id INTEGER,
         used TEXT,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
+        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE CASCADE
       )
       '''
     );
@@ -129,18 +132,20 @@ _createTransaction(Database db) async {
 }
 
 _insertSeatTransaction(Database db) async {
+  var config = new AppDataConfig();
   await db.transaction((txn) async {
-    for(var i = 0;i < 64;i++) {
-      await txn.rawInsert(
-        '''
-          INSERT INTO seat(used) VALUES("true")
-        '''
-      );
-    }
-    await txn.rawInsert(
+    var id = await txn.rawInsert(
       '''
         INSERT INTO homeroom(grade, lectureClass) VALUES(1, 1)
       '''
     );
+    for(var i = 0;i < config.seatNum;i++) {
+      var data = await txn.rawInsert(
+        '''
+          INSERT INTO seat(homeroom_id, used) VALUES($id, true)
+        '''
+      );
+      print(i.toString()+":"+data.toString());
+    }
   });
 }

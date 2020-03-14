@@ -14,9 +14,10 @@ void testHomeRoomRepository() async {
       var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
       homeRoomRepository.insertHomeRoom(homeRoom);
       var homerooms = await homeRoomRepository.getHomeRooms();
-      expect(homerooms[0].grade, 1);
-      expect(homerooms[0].lectureClass, 2);
-      homeRoomRepository.deleteHomeRoom(homerooms[0].id);
+      //初期代入データがあるため。
+      expect(homerooms[1].grade, 1);
+      expect(homerooms[1].lectureClass, 2);
+      homeRoomRepository.deleteHomeRoom(homerooms[1].id);
   });
 
   test("REPOSITORY:DELETE HOMEROOM", () async {
