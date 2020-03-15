@@ -119,12 +119,12 @@ class _ChangeFormState extends State<ChangeForm> {
                 height: 50,
                 child: RaisedButton(
                   child: Text(
-                    "登録",
+                    "次へ",
                     style: TextStyle(
                       fontSize: 18,
                     ),
                   ),
-                  color: Colors.orange,
+                  color: Colors.red,
                   textColor: Colors.white,
                   onPressed: () async {
                     Navigator.pushNamed(
@@ -142,3 +142,4 @@ class _ChangeFormState extends State<ChangeForm> {
     );
   }
 }
+

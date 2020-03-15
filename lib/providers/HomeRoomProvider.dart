@@ -18,6 +18,7 @@ class HomeRoomProvider with ChangeNotifier {
 
   HomeRoomProvider() {
     _homeRoomService = initHomeRoomAPI();
+    _seatService = initSeatAPI();
     getAllHomeRoom();
     for (var i = 0; i < config.seatNum; i++) {
       _mapSeat.add("true");
@@ -30,10 +31,10 @@ class HomeRoomProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void registHomeRoom(String grade, String lectureClass) async {
+  void registHomeRoom(String grade, String lectureClass, List<String> seatData) async {
     var homeroomID = await _homeRoomService.createHomeRoom(grade, lectureClass);
     for (var i = 0; i < config.seatNum; i++) {
-      _seatService.insertSeatData(homeroomID, _mapSeat[i]);
+      await _seatService.insertSeatData(homeroomID, seatData[i]);
     }
     notifyListeners();
   }

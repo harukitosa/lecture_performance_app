@@ -16,7 +16,7 @@ class StudentService {
     var students = await studentRepository.getThisRoomStudent(homeRoomID);
     var maxPosition = 0;
     for(var i = 0;i < students.length;i++) {
-      if(maxPosition<students[i].positionNum) {
+      if(maxPosition < students[i].positionNum) {
         maxPosition = students[i].positionNum;
       }
     }
