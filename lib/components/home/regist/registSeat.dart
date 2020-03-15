@@ -3,7 +3,7 @@ import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/common/seatView/editSeatView.dart';
-
+import 'package:lecture_performance_app/config/DataConfig.dart';
 //routerで渡される値
 class HomeRegistSeatArgument {
   final String grade;
@@ -96,6 +96,7 @@ class RegistSeatMap extends StatelessWidget {
 
 class SeatMap extends StatelessWidget {
   final double padding;
+  final config = new AppDataConfig();
   SeatMap({this.padding});
   @override
   Widget build(BuildContext context) {
@@ -108,10 +109,10 @@ class SeatMap extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 7,
-          mainAxisSpacing: 2,
-          crossAxisSpacing: 2,
-          childAspectRatio: 2,
+          crossAxisCount: config.seatWidth,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          childAspectRatio: 2.2,
         ),
         itemBuilder: (context, index) {
           return EditSeatView(homeRoomProvider.mapSeat[index], index, true);

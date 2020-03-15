@@ -19,7 +19,7 @@ class EditSeatView extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(4.0),
         child: Container(
-          color: flag == "true" ? Colors.blue : Colors.black12,
+          color: flag == "true" ? Colors.blue : Colors.grey,
           child: Text(""),
         ),
       ),

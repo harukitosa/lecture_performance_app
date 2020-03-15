@@ -124,7 +124,7 @@ _insertSeatTransaction(Database db) async {
       ''');
     for (var i = 0; i < config.seatNum; i++) {
       await txn.rawInsert('''
-          INSERT INTO seat(homeroom_id, used) VALUES($id, true)
+          INSERT INTO seat(homeroom_id, used) VALUES($id, "true")
         ''');
     }
   });
