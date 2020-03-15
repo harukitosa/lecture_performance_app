@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/db/models/User.dart';
 import 'package:lecture_performance_app/repositories/User.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,8 +8,7 @@ import 'package:path/path.dart';
 void testUserRepository() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-  Database db = await initDB();
-  var userRepository = new UserRepository(db: db);
+  var userRepository = new UserRepository();
   
   test("REPOSITORY:INSERT USER", () async {
     var user = new User(name: "test", password: "testtest", email: "sample@mail.com");

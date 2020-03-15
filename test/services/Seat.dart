@@ -5,21 +5,19 @@ import 'package:lecture_performance_app/services/Seat.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 
 void testSeatService() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-  Database db = await initDB();
-  var homeRoomRepository = new HomeRoomRepository(db: db);
-  var seatRepository = new SeatRepository(db: db);
+  var homeRoomRepository = new HomeRoomRepository();
+  var seatRepository = new SeatRepository();
   var homeRoomService =
       new HomeRoomService(homeRoomRepository: homeRoomRepository);
   var seatService = new SeatService(seatRepository: seatRepository);
   test('SERVICE:SEAT', () async {
-    var homeRoomID = await homeRoomService.createHomeRoom(3, 4);
+    var homeRoomID = await homeRoomService.createHomeRoom("3", "4");
     print("homeRoomID"+homeRoomID.toString());
-    await seatService.insertSeatData(homeRoomID);
+    // await seatService.insertSeatData(homeRoomID);
     var result = await seatService.getThisRoomAllSeatData(homeRoomID);
     print(result);
     expect(result.length, 64);

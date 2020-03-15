@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:lecture_performance_app/repositories/EvaluationType.dart';
@@ -8,8 +7,7 @@ import 'package:lecture_performance_app/db/models/EvaluationType.dart';
 void testEvaluationTypeRepository() async {
     TestWidgetsFlutterBinding.ensureInitialized();
     await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-    Database db = await initDB();
-    var evaluationTypeRepository = new EvaluationTypeRepository(db: db);
+    var evaluationTypeRepository = new EvaluationTypeRepository();
     test('REPOSITORY:INSERT EVALUATIONTYPE', () async {
         var evaluationType = new EvaluationType(title: "いいね");
         var id = await evaluationTypeRepository.insertEvaluationType(evaluationType);

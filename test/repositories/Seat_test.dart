@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/db/models/Seat.dart';
 import 'package:lecture_performance_app/repositories/Seat.dart';
 // import 'package:lecture_performance_app/db/connect_db.dart';
@@ -11,12 +10,11 @@ import 'package:path/path.dart';
 void testSeatRepository() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-  Database db = await initDB();
-  var seatRepository = new SeatRepository(db: db);
-  var homeRoomRepository = new HomeRoomRepository(db: db);
+  var seatRepository = new SeatRepository();
+  var homeRoomRepository = new HomeRoomRepository();
 
   test("REPOSITORY:INSERT SEAT", () async {
-    var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+    var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
     var id = await homeRoomRepository.insertHomeRoom(homeRoom);
     var seat = new Seat(
       used: "false",

@@ -12,13 +12,13 @@ class HomeRoomService {
     return homeRoomRepository.getHomeRooms();
   }
 
-  Future<int> createHomeRoom(int grade, int lectureClass) {
+  Future<int> createHomeRoom(String grade, String lectureClass) {
     var homeRoom = new HomeRoom(grade: grade, lectureClass: lectureClass);
     var id = homeRoomRepository.insertHomeRoom(homeRoom);
     return id;
   }
 
-  Future<void> editHomeRoom(int id, int grade, int lectureClass, String createdTime) {
+  Future<void> editHomeRoom(int id, String grade, String lectureClass, String createdTime) {
     var homeRoom = new HomeRoom(
       id: id, 
       grade: grade, 

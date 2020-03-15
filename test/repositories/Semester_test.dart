@@ -3,19 +3,17 @@ import 'package:lecture_performance_app/repositories/Semester.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/repositories/HomeRoom.dart';
 
 void testSemesterRepository() async {
     TestWidgetsFlutterBinding.ensureInitialized();
     await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-    Database db = await initDB();
-    var homeRoomRepository = new HomeRoomRepository(db: db);
-    var semesterRepository = new SemesterRepository(db: db);
+    var homeRoomRepository = new HomeRoomRepository();
+    var semesterRepository = new SemesterRepository();
 
     test('REPOSITORY:INSERT SEMESTER', () async {
-        var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+        var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
         homeRoomRepository.insertHomeRoom(homeRoom);
         var homeRooms = await homeRoomRepository.getHomeRooms();
         var semester = new Semester(homeRoomID: homeRooms[0].id, title: "春学期");
@@ -27,7 +25,7 @@ void testSemesterRepository() async {
     });
 
     test("REPOSITORY:DELETE SEMESTER", () async {
-        var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+        var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
         homeRoomRepository.insertHomeRoom(homeRoom);
         var homeRooms = await homeRoomRepository.getHomeRooms();
         var semester = new Semester(homeRoomID: homeRooms[0].id, title: "春学期");
@@ -42,7 +40,7 @@ void testSemesterRepository() async {
     });
 
     test('REPOSITORY:UPDATE SEMESTER', () async {
-        var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+        var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
         homeRoomRepository.insertHomeRoom(homeRoom);
         var homeRooms = await homeRoomRepository.getHomeRooms();
         var semester = new Semester(homeRoomID: homeRooms[0].id, title: "春学期");

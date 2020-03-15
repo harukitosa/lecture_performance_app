@@ -12,27 +12,25 @@ import 'package:lecture_performance_app/services/semester.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 
 void testEvaluationService() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-  Database db = await initDB();
-  var evaluationRepository = new EvaluationRepository(db: db);
+  var evaluationRepository = new EvaluationRepository();
   var evaluationService = new EvaluationService(evaluationRepository: evaluationRepository);
-  var evaluationTypeRepository = new EvaluationTypeRepository(db: db);
+  var evaluationTypeRepository = new EvaluationTypeRepository();
   var evaluationTypeService = new EvaluationTypeService(evaluationTypeRepository: evaluationTypeRepository);
-  var studentRepository = new StudentRepository(db: db);
+  var studentRepository = new StudentRepository();
   var studentService = new StudentService(studentRepository: studentRepository);
-  var homeRoomRepository = new HomeRoomRepository(db: db);
+  var homeRoomRepository = new HomeRoomRepository();
   var homeRoomService = new HomeRoomService(homeRoomRepository: homeRoomRepository);
-  var semesterRepository = new SemesterRepository(db: db);
+  var semesterRepository = new SemesterRepository();
   var semesterService = new SemesterService(semesterRepository: semesterRepository);
 
   test('SERVICE:Evaluation',() async {
     var typeID = await evaluationTypeService.createEvaluationType('発音');
     var typeID2 = await evaluationTypeService.createEvaluationType('積極性');
-    var homeRoomID = await homeRoomService.createHomeRoom(2, 2);
+    var homeRoomID = await homeRoomService.createHomeRoom("2", "2");
     var studentID = await studentService.createstudent(homeRoomID, "sample");
     var semesterID = await semesterService.createsemester('春学期', homeRoomID);
     await evaluationService.createEvaluation(studentID, typeID, semesterID, 2);

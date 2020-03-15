@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/repositories/Evaluation.dart';
 import 'package:lecture_performance_app/repositories/EvaluationType.dart';
 import 'package:lecture_performance_app/repositories/Semester.dart';
@@ -18,20 +17,19 @@ import 'package:path/path.dart';
 void testEvaluationRepository() async {
     TestWidgetsFlutterBinding.ensureInitialized();
     await deleteDatabase(join(await getDatabasesPath(), 'database.db'));
-    Database db = await initDB();
-    var evaluationRepository = new EvaluationRepository(db: db);
-    var evaluationTypeRepository = new EvaluationTypeRepository(db: db);
-    var studentRepository = new StudentRepository(db: db);
-    var semesterRepository = new SemesterRepository(db: db);
-    var userRepository = new UserRepository(db: db);
-    var homeRoomRepository = new HomeRoomRepository(db: db);
+    var evaluationRepository = new EvaluationRepository();
+    var evaluationTypeRepository = new EvaluationTypeRepository();
+    var studentRepository = new StudentRepository();
+    var semesterRepository = new SemesterRepository();
+    var userRepository = new UserRepository();
+    var homeRoomRepository = new HomeRoomRepository();
 
     test('REPOSITORY:INSERT EVALUATION', () async {
       var evaluationType = new EvaluationType(title: "いいね");
       var evaluationTypeID = await evaluationTypeRepository.insertEvaluationType(evaluationType);
       var user = new User(name: "test", password: "testtest", email: "sample@mail.com");
       await userRepository.insertUser(user);
-      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
       var homeRoomID = await homeRoomRepository.insertHomeRoom(homeRoom);
       var student = new Student(homeRoomID: homeRoomID, name: "サンプル太郎");
       var studentID = await studentRepository.insertStudent(student);
@@ -52,7 +50,7 @@ void testEvaluationRepository() async {
       var evaluationTypeID = await evaluationTypeRepository.insertEvaluationType(evaluationType);
       var user = new User(name: "test", password: "testtest", email: "sample@mail.com");
       await userRepository.insertUser(user);
-      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
       var homeRoomID = await homeRoomRepository.insertHomeRoom(homeRoom);
       var student = new Student(homeRoomID: homeRoomID, name: "サンプル太郎");
       var studentID = await studentRepository.insertStudent(student);
@@ -75,7 +73,7 @@ void testEvaluationRepository() async {
       var evaluationTypeID = await evaluationTypeRepository.insertEvaluationType(evaluationType);
       var user = new User(name: "test", password: "testtest", email: "sample@mail.com");
       await userRepository.insertUser(user);
-      var homeRoom = new HomeRoom(grade: 1, lectureClass: 2);
+      var homeRoom = new HomeRoom(grade: "1", lectureClass: "2");
       var homeRoomID = await homeRoomRepository.insertHomeRoom(homeRoom);
       var student = new Student(homeRoomID: homeRoomID, name: "サンプル太郎");
       var studentID = await studentRepository.insertStudent(student);

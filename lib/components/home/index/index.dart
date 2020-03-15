@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/classRoom/index.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
-import 'package:lecture_performance_app/wire.dart';
-
-Future _initHomeRoom() async {
-  var db = await initDB();
-  var _homeRoomAPI = initHomeRoomAPI(db);
-  var homeRooms = await _homeRoomAPI.getAllHomeRoom();
-  return homeRooms;
-}
+import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -17,12 +9,22 @@ class Home extends StatelessWidget {
     void _incrementCounter() {
       Navigator.pushNamed(context, '/home/regist');
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
       ),
-      body: Center(
-        child: HomeView(),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => HomeRoomProvider()),
+        ],
+        child: Consumer<HomeRoomProvider>(
+          builder: (context, counter, _) {
+            return Center(
+              child: HomeRoomList(),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
@@ -33,27 +35,11 @@ class Home extends StatelessWidget {
   }
 }
 
-class HomeView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _initHomeRoom(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return HomeRoomList(homeRoom: snapshot.data);
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
-    );
-  }
-}
-
 class HomeRoomList extends StatelessWidget {
-  const HomeRoomList({Key key, this.homeRoom}) : super(key: key);
-  final List<HomeRoom> homeRoom;
   @override
   Widget build(BuildContext context) {
+    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+    homeRoomProvider.getAllHomeRoom();
     return ListView.builder(
       itemBuilder: (context, int index) {
         return Center(
@@ -66,7 +52,7 @@ class HomeRoomList extends StatelessWidget {
                     context,
                     ClassRoom.routeName,
                     arguments: ClassRoomArgument(
-                      homeRoom[index],
+                      homeRoomProvider.homeRoom[index],
                     ),
                   );
                 },
@@ -82,9 +68,9 @@ class HomeRoomList extends StatelessWidget {
                             'Text to announce in accessibility modes',
                       ),
                       title: Text(
-                        homeRoom[index].grade.toString() +
+                        homeRoomProvider.homeRoom[index].grade +
                             "年" +
-                            homeRoom[index].lectureClass.toString() +
+                            homeRoomProvider.homeRoom[index].lectureClass +
                             "組",
                         style: TextStyle(
                           fontSize: 24,
@@ -98,7 +84,8 @@ class HomeRoomList extends StatelessWidget {
           ),
         );
       },
-      itemCount: homeRoom == null ? 0 : homeRoom.length,
+      itemCount:
+          homeRoomProvider == null ? 0 : homeRoomProvider.homeRoom.length,
     );
   }
 }
