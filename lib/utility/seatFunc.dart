@@ -15,6 +15,7 @@ FormatResultSeat calcSeatLen(List<Seat> dataSeat) {
   int resWidth = width;
   List<int> widthEmpty = [];
   List<Seat> resSeat = [];
+  List<Seat> ansSeat = [];
   for (var i = 0; i < width; i++) {
     bool flag = false;
     for (var j = 0; j < dataSeat.length / width; j++) {
@@ -31,7 +32,7 @@ FormatResultSeat calcSeatLen(List<Seat> dataSeat) {
   for (var i = 0; i < dataSeat.length; i++) {
     bool flag = false;
     for (var j = 0; j < widthEmpty.length; j++) {
-      if ((i - widthEmpty[j]) % 7 == 0) {
+      if ((i - widthEmpty[j]) % width == 0) {
         flag = true;
       }
     }
@@ -48,5 +49,27 @@ FormatResultSeat calcSeatLen(List<Seat> dataSeat) {
     }
   }
 
-  return FormatResultSeat(resSeat, resWidth);
+  for (var i = 0; i < resSeat.length / resWidth; i++) {
+    bool flag = false;
+    for (var j = i * resWidth; j < i * resWidth + resWidth; j++) {
+      if (resSeat[j].used == "true") {
+        flag = true;
+      }
+    }
+    if (flag) {
+      for (var j = i * resWidth; j < i * resWidth + resWidth; j++) {
+        ansSeat.add(
+          Seat(
+            id: resSeat[j].id,
+            used: resSeat[j].used,
+            createTime: resSeat[j].createTime,
+            updateTime: resSeat[j].updateTime,
+            homeRoomID: resSeat[j].homeRoomID,
+          ),
+        );
+      }
+    }
+  }
+
+  return FormatResultSeat(ansSeat, resWidth);
 }

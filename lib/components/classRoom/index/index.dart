@@ -61,28 +61,20 @@ class RegistSeatMap extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
-          SeatMap(
-            homeRoomID: homeRoomID,
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 1000.0),
+            child: SeatMap(
+              homeRoomID: homeRoomID,
+            ),
           ),
-          Text("黒板"),
-          // Padding(
-          //   padding: EdgeInsets.only(top: 6),
-          //   child: ButtonTheme(
-          //     minWidth: 300,
-          //     height: 50,
-          //     child: RaisedButton(
-          //       child: Text(
-          //         "次へ",
-          //         style: TextStyle(
-          //           fontSize: 18,
-          //         ),
-          //       ),
-          //       color: Colors.red,
-          //       textColor: Colors.white,
-          //       onPressed: () {},
-          //     ),
-          //   ),
-          // ),
+          Padding(
+            padding: EdgeInsets.only(top: 20.0),
+            child: Container(
+              width: 200,
+              height: 50,
+              color: Colors.blueAccent,
+            ),
+          ),
         ],
       ),
     );
@@ -96,25 +88,27 @@ class SeatMap extends StatelessWidget {
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
 
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.all(0.0),
-        child: GridView.builder(
-          shrinkWrap: true,
-          itemCount: classRoomProvider.viewSeat.length,
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 50),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: classRoomProvider.viewWidth,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            childAspectRatio: 2.2,
-          ),
-          itemBuilder: (context, index) {
-            return ClassRoomSeatView(
-                classRoomProvider.viewSeat[index].used, index, true);
-          },
+    return Padding(
+      padding: EdgeInsets.only(top: 40.0),
+      child: GridView.builder(
+        shrinkWrap: true,
+        itemCount: classRoomProvider.viewSeat == null
+            ? 0
+            : classRoomProvider.viewSeat.length,
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 50),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: classRoomProvider.viewWidth == null
+              ? 7
+              : classRoomProvider.viewWidth,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          childAspectRatio: 2.4,
         ),
+        itemBuilder: (context, index) {
+          return ClassRoomSeatView(
+              classRoomProvider.viewSeat[index].used, index, true);
+        },
       ),
     );
   }
