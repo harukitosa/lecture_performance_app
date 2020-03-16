@@ -26,10 +26,19 @@ class Home extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        label: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text(
+            'クラス登録',
+            style: TextStyle(
+              fontSize: 22,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.blue,
       ),
     );
   }

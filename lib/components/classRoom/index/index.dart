@@ -40,10 +40,19 @@ class ClassRoom extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        label: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text(
+            '管理画面',
+            style: TextStyle(
+              fontSize: 22,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.orange,
       ),
     );
   }
@@ -72,7 +81,15 @@ class RegistSeatMap extends StatelessWidget {
             child: Container(
               width: 200,
               height: 50,
-              color: Colors.blueAccent,
+              color: Colors.redAccent,
+              child: Center(
+                child: Text(
+                  "黒板",
+                  style: TextStyle(
+                    fontSize: 32,
+                  ),
+                ),
+              ),
             ),
           ),
         ],

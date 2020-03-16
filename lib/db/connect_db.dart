@@ -127,5 +127,8 @@ _insertSeatTransaction(Database db) async {
           INSERT INTO seat(homeroom_id, used) VALUES($id, "true")
         ''');
     }
+    await txn.rawInsert('''
+          INSERT INTO semester(homeroom_id, title) VALUES($id, "一学期")
+    ''');
   });
 }

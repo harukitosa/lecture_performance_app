@@ -4,7 +4,6 @@ import 'package:lecture_performance_app/db/models/Seat.dart';
 import 'package:lecture_performance_app/services/Seat.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
-
 class ClassRoomProvider with ChangeNotifier {
   List<Seat> _mapSeat;
   List<Seat> _viewSeat;
@@ -13,6 +12,7 @@ class ClassRoomProvider with ChangeNotifier {
 
   List<Seat> get mapSeat => _mapSeat;
   List<Seat> get viewSeat => _viewSeat;
+
   int get viewWidth => _viewWidth;
 
   ClassRoomProvider(int homeRoomID) {

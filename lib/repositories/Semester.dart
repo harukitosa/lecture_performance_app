@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:sqflite/sqflite.dart';
-import '../db/models/Semester.dart';
+import 'package:lecture_performance_app/db/models/Semester.dart';
 
 class SemesterRepository {
-  final Database db;
 
-  SemesterRepository({this.db});
+
+  SemesterRepository();
 
   Future<int> insertSemester(Semester semester) async {
     var db = await initDB();
