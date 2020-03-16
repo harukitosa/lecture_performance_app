@@ -24,6 +24,7 @@ class ClassRoom extends StatelessWidget {
       appBar: AppBar(
         title:
             Text(args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組"),
+        actions: <Widget>[],
       ),
       body: MultiProvider(
         providers: [
@@ -58,6 +59,31 @@ class ClassRoom extends StatelessWidget {
   }
 }
 
+class PopUpMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var _selectedValue = '一学期';
+    var _usStates = ["一学期", "二学期", "三学期"];
+    return PopupMenuButton<String>(
+      initialValue: _selectedValue,
+      onSelected: (String s) {},
+      itemBuilder: (BuildContext context) {
+        return _usStates.map((String s) {
+          return PopupMenuItem(
+            child: Text(
+              s,
+              style: TextStyle(
+                fontSize: 22,
+              ),
+            ),
+            value: s,
+          );
+        }).toList();
+      },
+    );
+  }
+}
+
 class RegistSeatMap extends StatelessWidget {
   final String grade;
   final String lectureClass;
@@ -70,6 +96,17 @@ class RegistSeatMap extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
+          Row(
+            children: <Widget>[
+              PopUpMenu(),
+              Text(
+                '一学期',
+                style: TextStyle(
+                  fontSize: 28,
+                ),
+              ),
+            ],
+          ),
           ConstrainedBox(
             constraints: BoxConstraints(maxHeight: 1000.0),
             child: SeatMap(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './routes/index.dart';
-
-void main() => runApp(App());
-
-
+import 'package:flutter/rendering.dart';
+void main() {
+  debugPaintSizeEnabled = false;
+  runApp(App());
+}
