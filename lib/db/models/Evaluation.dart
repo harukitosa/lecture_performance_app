@@ -3,7 +3,6 @@ class Evaluation {
   final int id;
   final int studentID;
   final int typeID;
-  final int semesterID;
   final int point;
   final String createTime;
   String updateTime;
@@ -12,7 +11,6 @@ class Evaluation {
     this.id,
     this.studentID,
     this.typeID,
-    this.semesterID,
     this.point,
     this.createTime,
     this.updateTime,
@@ -22,7 +20,6 @@ class Evaluation {
       id: json["id"],
       studentID: json["student_id"],
       typeID: json["type_id"],
-      semesterID: json["semester_id"],
       point: json["point"],
       createTime: json["created_at"],
       updateTime: json["updated_at"],
@@ -33,7 +30,6 @@ class Evaluation {
       'id': id,
       'student_id': studentID,
       'type_id': typeID,
-      'semester_id': semesterID,
       'point': point,
       'created_at': createTime,
       'updated_at': updateTime,

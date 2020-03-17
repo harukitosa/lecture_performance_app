@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/classRoom/index.dart';
+import 'package:lecture_performance_app/components/classRoom/index/index.dart';
 import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +26,19 @@ class Home extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        label: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text(
+            'クラス登録',
+            style: TextStyle(
+              fontSize: 22,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.blue,
       ),
     );
   }

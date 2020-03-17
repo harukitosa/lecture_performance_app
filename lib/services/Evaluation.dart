@@ -12,26 +12,24 @@ class EvaluationService {
     return evaluationRepository.getAllEvaluations();
   }
 
-  Future<List<Evaluation>> getStudentSemester(int studentID, int semesterID) {
-    return evaluationRepository.getStudentSemester(studentID, semesterID);
+  Future<List<Evaluation>> getStudentSemester(int studentID) {
+    return evaluationRepository.getStudentSemester(studentID);
   }
 
-  Future<int> createEvaluation(int studentID, int typeID, int semesterID, int point) {
+  Future<int> createEvaluation(int studentID, int typeID, int point) {
     var evaluation = new Evaluation(
       studentID: studentID,
       typeID: typeID,
-      semesterID: semesterID,
       point: point,
     );
     var id = evaluationRepository.insertEvaluation(evaluation);
     return id;
   }
 
-  Future<void> editEvaluation(int id, int studentID, int typeID, int semesterID, int point, String createdTime) {
+  Future<void> editEvaluation(int id, int studentID, int typeID,  int point, String createdTime) {
     var evaluation = new Evaluation(
       id: id, 
       studentID: studentID,
-      semesterID: semesterID,
       typeID: typeID,
       point: point,
       createTime: createdTime,
