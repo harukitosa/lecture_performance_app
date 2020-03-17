@@ -26,13 +26,12 @@ class EvaluationRepository {
     return list[0];
   }
 
-  Future<List<Evaluation>> getStudentSemester(
-      int studentID, int semesterID) async {
+  Future<List<Evaluation>> getStudentSemester(int studentID) async {
     var db = await initDB();
     final List<Map<String, dynamic>> res = await db.query(
       "evaluation",
-      where: "student_id = ? AND semester_id = ?",
-      whereArgs: [studentID, semesterID],
+      where: "student_id = ?",
+      whereArgs: [studentID],
     );
     List<Evaluation> list =
         res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];

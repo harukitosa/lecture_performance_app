@@ -10,6 +10,7 @@ class FormatResultSeat {
   );
 }
 
+// 列、行、共に空白の欄を取り除いて出力
 FormatResultSeat calcSeatLen(List<Seat> dataSeat) {
   int width = new AppDataConfig().seatWidth;
   int resWidth = width;

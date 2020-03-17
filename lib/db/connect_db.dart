@@ -39,16 +39,16 @@ _createTransaction(Database db) async {
       ''');
 
     // CREATE SEMESTER
-    await db.execute('''
-      CREATE TABLE semester(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        homeroom_id INTEGER,
-        created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-        FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE NO ACTION
-      )
-      ''');
+    // await db.execute('''
+    //   CREATE TABLE semester(
+    //     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //     title TEXT,
+    //     homeroom_id INTEGER,
+    //     created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+    //     updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+    //     FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE NO ACTION
+    //   )
+    //   ''');
 
     // CREATE HOMEROOM
     await db.execute('''
@@ -80,13 +80,11 @@ _createTransaction(Database db) async {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         student_id INTEGER,
         type_id INTEGER,
-        semester_id INTEGER,
         point INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         FOREIGN KEY (student_id) REFERENCES student (id) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (type_id) REFERENCES evaluation_type (id) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (semester_id) REFERENCES semester (id) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (type_id) REFERENCES evaluation_type (id) ON DELETE CASCADE ON UPDATE CASCADE
       )
       ''');
 
@@ -127,8 +125,13 @@ _insertSeatTransaction(Database db) async {
           INSERT INTO seat(homeroom_id, used) VALUES($id, "true")
         ''');
     }
+    for (var i = 0; i < config.seatNum; i++) {
+      await txn.rawInsert('''
+          INSERT INTO student(homeroom_id, name, position_num) VALUES($id, $i, $i)
+        ''');
+    }
     await txn.rawInsert('''
-          INSERT INTO semester(homeroom_id, title) VALUES($id, "一学期")
+      INSERT INTO evaluation_type(title) VALUES('いいね')
     ''');
   });
 }

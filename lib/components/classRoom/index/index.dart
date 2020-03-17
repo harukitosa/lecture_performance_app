@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/components/admin/classroom/index.dart';
 // import 'package:lecture_performance_app/components/home/regist/registConfirm.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
@@ -29,7 +30,8 @@ class ClassRoom extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider(
-              create: (_) => ClassRoomProvider(args.homeRoom.id)),
+            create: (_) => ClassRoomProvider(args.homeRoom.id),
+          ),
         ],
         child: Consumer<ClassRoomProvider>(
           builder: (context, counter, _) {
@@ -42,7 +44,15 @@ class ClassRoom extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            AdminClassRoom.routeName,
+            arguments: AdminClassRoomArgument(
+              args.homeRoom,
+            ),
+          );
+        },
         tooltip: 'Increment',
         label: Padding(
           padding: EdgeInsets.all(12.0),
@@ -59,31 +69,6 @@ class ClassRoom extends StatelessWidget {
   }
 }
 
-class PopUpMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var _selectedValue = '一学期';
-    var _usStates = ["一学期", "二学期", "三学期"];
-    return PopupMenuButton<String>(
-      initialValue: _selectedValue,
-      onSelected: (String s) {},
-      itemBuilder: (BuildContext context) {
-        return _usStates.map((String s) {
-          return PopupMenuItem(
-            child: Text(
-              s,
-              style: TextStyle(
-                fontSize: 22,
-              ),
-            ),
-            value: s,
-          );
-        }).toList();
-      },
-    );
-  }
-}
-
 class RegistSeatMap extends StatelessWidget {
   final String grade;
   final String lectureClass;
@@ -96,17 +81,6 @@ class RegistSeatMap extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              PopUpMenu(),
-              Text(
-                '一学期',
-                style: TextStyle(
-                  fontSize: 28,
-                ),
-              ),
-            ],
-          ),
           ConstrainedBox(
             constraints: BoxConstraints(maxHeight: 1000.0),
             child: SeatMap(
@@ -161,7 +135,16 @@ class SeatMap extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           return ClassRoomSeatView(
-              classRoomProvider.viewSeat[index].used, index, true);
+            classRoomProvider.viewSeat[index].used,
+            index,
+            classRoomProvider.studentList.length > index
+                ? classRoomProvider.studentList[index].name
+                : "",
+            true,
+            classRoomProvider.studentList.length > index
+                ? classRoomProvider.studentList[index].id
+                : 0,
+          );
         },
       ),
     );

@@ -4,9 +4,19 @@ import 'package:flutter/material.dart';
 
 class ClassRoomSeatView extends StatelessWidget {
   final String flag;
+  final String name;
+  final int studentID;
   final int index;
   final bool changeState;
-  ClassRoomSeatView(this.flag, this.index, this.changeState);
+
+  ClassRoomSeatView(
+    this.flag,
+    this.index,
+    this.name,
+    this.changeState,
+    this.studentID,
+  );
+
   @override
   Widget build(BuildContext context) {
     // final classRoomProvider = Provider.of<ClassRoomProvider>(context);
@@ -16,7 +26,9 @@ class ClassRoomSeatView extends StatelessWidget {
         padding: EdgeInsets.all(4.0),
         child: Container(
           color: flag == "true" ? Colors.blue : Colors.grey,
-          child: Text(""),
+          child: Center(
+            child: Text("name:"+name+" id:"+studentID.toString()),
+          ),
         ),
       ),
     );

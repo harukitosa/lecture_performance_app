@@ -40,7 +40,6 @@ class HomeRoomProvider with ChangeNotifier {
     for (var i = 0; i < config.seatNum; i++) {
       await _seatService.insertSeatData(homeroomID, seatData[i]);
     }
-    await _semesterService.createsemester("一学期", homeroomID);
     notifyListeners();
   }
 
