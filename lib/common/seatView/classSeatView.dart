@@ -1,6 +1,8 @@
 // import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
+import 'package:lecture_performance_app/providers/ValuationProvider.dart';
+import 'dart:core';
 
 class ClassRoomSeatView extends StatelessWidget {
   final String flag;
@@ -20,8 +22,76 @@ class ClassRoomSeatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    return InkWell(
-      onTap: () {},
+    final valuationProvider = Provider.of<EvaluationProvider>(context);
+    return GestureDetector(
+      onPanUpdate: (details) {
+        valuationProvider.x = details.delta.dx;
+        valuationProvider.y = details.delta.dy;
+      },
+      onPanEnd: (details) {
+        if (flag == "true") {
+          var x = valuationProvider.x;
+          var y = valuationProvider.y;
+          if (y > x.abs()) {
+            var typeID = valuationProvider.currentTypeID;
+            valuationProvider.evaluation(studentID, typeID, -1);
+            final snackBar = SnackBar(
+              content: Text(
+                name + "さんのポイントを下げました",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              backgroundColor: Colors.redAccent,
+              duration: const Duration(seconds: 1),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+          }
+          if (y < -x.abs()) {
+            var typeID = valuationProvider.currentTypeID;
+            valuationProvider.evaluation(studentID, typeID, 1);
+            final snackBar = SnackBar(
+              content: Text(
+                name + "さんのポイントを付与しました",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              backgroundColor: Colors.greenAccent,
+              duration: const Duration(seconds: 1),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+          }
+          if (x < -y.abs()) {
+            final snackBar = SnackBar(
+              content: Text(
+                "発言",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              backgroundColor: Colors.blueAccent,
+              duration: const Duration(seconds: 1),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+          }
+          if (x > y.abs()) {
+            final snackBar = SnackBar(
+              content: Text(
+                name + "さん出席",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              backgroundColor: Colors.redAccent,
+              duration: const Duration(seconds: 1),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+          }
+          valuationProvider.x = 0.0;
+          valuationProvider.y = 0.0;
+        }
+      },
       child: Padding(
         padding: EdgeInsets.all(4.0),
         child: Container(
