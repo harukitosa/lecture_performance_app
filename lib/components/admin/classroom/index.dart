@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,8 @@ class AdminClassRoom extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 管理画面"),
+          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 管理画面",
+        ),
         actions: <Widget>[],
       ),
       body: MultiProvider(
@@ -31,6 +33,7 @@ class AdminClassRoom extends StatelessWidget {
         child: Consumer<ClassRoomProvider>(
           builder: (context, counter, _) {
             final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+            classRoomProvider.getStudentData(args.homeRoom.id);
             return Center(
               child: StudentTable(studentList: classRoomProvider.studentList),
             );
@@ -38,18 +41,26 @@ class AdminClassRoom extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            RegistStudent.routeName,
+            arguments: RegistStudentArgument(
+              args.homeRoom,
+            ),
+          );
+        },
         tooltip: 'Increment',
         label: Padding(
           padding: EdgeInsets.all(12.0),
           child: Text(
-            '管理画面',
+            '生徒追加',
             style: TextStyle(
               fontSize: 22,
             ),
           ),
         ),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blueAccent,
       ),
     );
   }
@@ -71,12 +82,12 @@ class StudentTable extends StatelessWidget {
           columns: [
             DataColumn(
                 label: Text(
-              'RollNo',
+              '出席番号',
               style: TextStyle(fontSize: 24),
             )),
             DataColumn(
                 label: Text(
-              'Name',
+              '名前',
               style: TextStyle(fontSize: 24),
             )),
             DataColumn(
@@ -85,24 +96,34 @@ class StudentTable extends StatelessWidget {
               style: TextStyle(fontSize: 24),
             )),
           ],
-          rows: studentList
-              .map(
-                (student) => DataRow(cells: [
-                  DataCell(Text(
-                    student.id.toString(),
-                    style: TextStyle(fontSize: 22),
-                  )),
-                  DataCell(Text(
-                    student.name,
-                    style: TextStyle(fontSize: 22),
-                  )),
-                  DataCell(Text(
-                    student.createTime,
-                    style: TextStyle(fontSize: 22),
-                  )),
-                ]),
-              )
-              .toList(),
+          rows: studentList != null
+              ? studentList
+                  .map(
+                    (student) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text(
+                            student.number.toString(),
+                            style: TextStyle(fontSize: 22),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            student.name,
+                            style: TextStyle(fontSize: 22),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            student.createTime,
+                            style: TextStyle(fontSize: 22),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList()
+              : Text("NO STUDENT DATA"),
         ),
       ],
     );

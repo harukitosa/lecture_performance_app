@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
 import 'package:lecture_performance_app/components/home/index/index.dart';
 import 'package:lecture_performance_app/components/classRoom/index/index.dart';
 import 'package:lecture_performance_app/components/home/regist/index.dart';
@@ -22,6 +23,7 @@ class App extends StatelessWidget {
         HomeRegistSeat.routeName: (_) => HomeRegistSeat(),
         HomeRegistConfirm.routeName: (_) => HomeRegistConfirm(),
         AdminClassRoom.routeName: (_) => AdminClassRoom(),
+        RegistStudent.routeName: (_) => RegistStudent(),
         ClassRoom.routeName: (_) => ClassRoom(),
       },
     );

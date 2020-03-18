@@ -12,7 +12,7 @@ class StudentService {
     return await studentRepository.getThisRoomStudent(homeroomID);
   } 
 
-  Future<int> createstudent(int homeRoomID, String name) async {
+  Future<int> createstudent(int homeRoomID, String name, int number) async {
     var students = await studentRepository.getThisRoomStudent(homeRoomID);
     var maxPosition = 0;
     for(var i = 0;i < students.length;i++) {
@@ -20,16 +20,17 @@ class StudentService {
         maxPosition = students[i].positionNum;
       }
     }
-    var student = new Student(homeRoomID: homeRoomID, name: name, positionNum: maxPosition+1);
+    var student = new Student(homeRoomID: homeRoomID, name: name, positionNum: maxPosition+1, number: number);
     var id = studentRepository.insertStudent(student);
     return id;
   }
 
-  Future<void> editstudent(int id, int homeRoomID, int positionNum, String name, String createTime) {
+  Future<void> editstudent(int id, int homeRoomID, int positionNum, String name, int number, String createTime) {
     var student = new Student(
       id: id, 
       homeRoomID: homeRoomID,
       positionNum: positionNum, 
+      number: number,
       name: name,
       createTime: createTime,
       updateTime: getNowTime(),

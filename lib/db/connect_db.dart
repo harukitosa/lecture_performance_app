@@ -68,6 +68,7 @@ _createTransaction(Database db) async {
         homeroom_id INTEGER,
         name TEXT,
         position_num INTEGER,
+        number INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
         FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -127,7 +128,7 @@ _insertSeatTransaction(Database db) async {
     }
     for (var i = 0; i < config.seatNum; i++) {
       await txn.rawInsert('''
-          INSERT INTO student(homeroom_id, name, position_num) VALUES($id, $i, $i)
+          INSERT INTO student(homeroom_id, name, position_num, number) VALUES($id, $i, $i, $i)
         ''');
     }
     await txn.rawInsert('''
