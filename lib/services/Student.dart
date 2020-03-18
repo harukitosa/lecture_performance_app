@@ -12,6 +12,10 @@ class StudentService {
     return await studentRepository.getThisRoomStudent(homeroomID);
   } 
 
+  Future<Student> getStudent(int id) async {
+    return await studentRepository.getOneStudent(id);
+  }
+
   Future<int> createstudent(int homeRoomID, String name, int number) async {
     var students = await studentRepository.getThisRoomStudent(homeRoomID);
     var maxPosition = 0;

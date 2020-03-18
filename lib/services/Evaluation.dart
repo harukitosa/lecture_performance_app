@@ -1,19 +1,27 @@
 import 'package:lecture_performance_app/repositories/Evaluation.dart';
+import 'package:lecture_performance_app/repositories/EvaluationType.dart';
 import '../db/models/Evaluation.dart';
 import '../utility/time.dart';
 class EvaluationService {
 
   final EvaluationRepository evaluationRepository;
+  final EvaluationTypeRepository evaluationTypeRepository;
   EvaluationService({
-    this.evaluationRepository
+    this.evaluationRepository,
+    this.evaluationTypeRepository,
   });
 
   Future<List<Evaluation>> getAllEvaluation() {
     return evaluationRepository.getAllEvaluations();
   }
 
-  Future<List<Evaluation>> getStudentSemester(int studentID) {
-    return evaluationRepository.getStudentSemester(studentID);
+  Future<List<Evaluation>> getStudentSemester(int studentID) async {
+    var res = await evaluationRepository.getStudentSemester(studentID);
+    for(var i = 0;i < res.length;i++) {
+      var ans = await evaluationTypeRepository.getEvaluationType(res[i].typeID);
+      res[i].title = ans.title;
+    }
+    return res;
   }
 
   Future<int> createEvaluation(int studentID, int typeID, int point) {

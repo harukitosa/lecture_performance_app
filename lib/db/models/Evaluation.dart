@@ -6,7 +6,7 @@ class Evaluation {
   final int point;
   final String createTime;
   String updateTime;
-
+  String title;
   Evaluation({
     this.id,
     this.studentID,

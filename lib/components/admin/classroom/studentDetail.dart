@@ -1,139 +1,158 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
-import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/db/models/Student.dart';
+import 'package:lecture_performance_app/providers/StudentProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 
 //routerで渡される値
-class AdminClassRoomArgument {
+class AdminStudentDetailArgument {
   final HomeRoom homeRoom;
-  AdminClassRoomArgument(this.homeRoom);
+  final int studentID;
+  AdminStudentDetailArgument(this.homeRoom, this.studentID);
 }
 
-class AdminClassRoom extends StatelessWidget {
-  static const routeName = '/admin/homeroom';
+class AdminStudentDetail extends StatelessWidget {
+  static const routeName = '/admin/student';
   @override
   Widget build(BuildContext context) {
-    final AdminClassRoomArgument args =
+    final AdminStudentDetailArgument args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 管理画面",
-        ),
+            args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 生徒情報"),
         actions: <Widget>[],
       ),
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (_) => ClassRoomProvider(args.homeRoom.id),
+            create: (_) => StudentProvider(args.studentID),
           ),
         ],
-        child: Consumer<ClassRoomProvider>(
+        child: Consumer<StudentProvider>(
           builder: (context, counter, _) {
-            final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-            classRoomProvider.getStudentData(args.homeRoom.id);
             return Center(
-              child: StudentTable(studentList: classRoomProvider.studentList),
+              child: AdminStudentView(),
             );
           },
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            RegistStudent.routeName,
-            arguments: RegistStudentArgument(
-              args.homeRoom,
-            ),
-          );
-        },
+        onPressed: () {},
         tooltip: 'Increment',
         label: Padding(
           padding: EdgeInsets.all(12.0),
           child: Text(
-            '生徒追加',
+            '管理画面',
             style: TextStyle(
               fontSize: 22,
             ),
           ),
         ),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.orange,
       ),
     );
   }
 }
 
-class StudentTable extends StatelessWidget {
-  final List<Student> studentList;
-
-  StudentTable({this.studentList});
+class AdminStudentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AdminClassRoomArgument args =
-        ModalRoute.of(context).settings.arguments;
+    return AdminEvaluationInfo();
+  }
+}
+
+class AdminStudentInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final studentProvider = Provider.of<StudentProvider>(context);
+    return Column(
+      children: <Widget>[
+        Text(
+          studentProvider.student != null
+              ? '名前:' + studentProvider.student.name
+              : "NOT NAME",
+          style: TextStyle(
+            fontSize: 32,
+          ),
+        ),
+        Text(
+          studentProvider.student != null
+              ? '出席番号:' + studentProvider.student.number.toString()
+              : "NOT NUMBER",
+          style: TextStyle(
+            fontSize: 32,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class AdminEvaluationInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final studentProvider = Provider.of<StudentProvider>(context);
     return ListView(
       children: <Widget>[
-        Center(
-            child: Text(
-          '生徒名簿',
-          style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
-        )),
+        Text(
+          studentProvider.student != null
+              ? '名前:' + studentProvider.student.name
+              : "NOT NAME",
+          style: TextStyle(
+            fontSize: 32,
+          ),
+        ),
+        Text(
+          studentProvider.student != null
+              ? '出席番号:' + studentProvider.student.number.toString()
+              : "NOT NUMBER",
+          style: TextStyle(
+            fontSize: 32,
+          ),
+        ),
         DataTable(
             columns: [
               DataColumn(
                 label: Text(
-                  '出席番号',
+                  'type',
                   style: TextStyle(fontSize: 24),
                 ),
               ),
               DataColumn(
                 label: Text(
-                  '名前',
+                  'point',
                   style: TextStyle(fontSize: 24),
                 ),
               ),
               DataColumn(
                 label: Text(
-                  'POINTS',
+                  '記録日',
                   style: TextStyle(fontSize: 24),
                 ),
               ),
             ],
-            rows: studentList != null
-                ? studentList
+            rows: studentProvider.eval != null
+                ? studentProvider.eval
                     .map(
-                      (student) => DataRow(
+                      (item) => DataRow(
                         cells: [
                           DataCell(
                             Text(
-                              student.number.toString(),
+                              item.title != null ? item.title : "",
                               style: TextStyle(fontSize: 22),
                             ),
                             onTap: () {},
                           ),
                           DataCell(
                             Text(
-                              student.name,
+                              item.point.toString(),
                               style: TextStyle(fontSize: 22),
                             ),
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                AdminStudentDetail.routeName,
-                                arguments: AdminStudentDetailArgument(
-                                  args.homeRoom,
-                                  student.id,
-                                ),
-                              );
-                            },
+                            onTap: () {},
                           ),
                           DataCell(
                             Text(
-                              student.createTime,
+                              item.createTime,
                               style: TextStyle(fontSize: 22),
                             ),
                           ),

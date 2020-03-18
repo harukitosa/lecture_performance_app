@@ -116,7 +116,7 @@ class SeatMap extends StatelessWidget {
     classRoomProvider.getStudentData(homeRoomID);
     valuationProvider.getAllEvaluationType();
     String _name = "";
-    int _number = 0;
+    int _studentID = 0;
     int _indexCount = 0;
     return Padding(
       padding: EdgeInsets.only(top: 40.0),
@@ -141,9 +141,9 @@ class SeatMap extends StatelessWidget {
                 ? classRoomProvider.studentList[index - _indexCount].name
                 : "";
 
-            _number = classRoomProvider.studentList.length != null
+            _studentID = classRoomProvider.studentList.length != null
                 ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider.studentList[index - _indexCount].number
+                    ? classRoomProvider.studentList[index - _indexCount].id
                     : 0
                 : 0;
           } else {
@@ -154,7 +154,7 @@ class SeatMap extends StatelessWidget {
             index,
             _name,
             true,
-            _number,
+            _studentID,
           );
         },
       ),

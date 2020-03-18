@@ -34,18 +34,23 @@ SeatService initSeatAPI() {
 
 StudentService initStudentAPI() {
   var _studentRepository = new StudentRepository();
-  var _studentService = new StudentService(studentRepository: _studentRepository);
+  var _studentService =
+      new StudentService(studentRepository: _studentRepository);
   return _studentService;
 }
 
 EvaluationService initEvaluationAPI() {
   var _evaluationRepository = new EvaluationRepository();
-  var _evaluationService = new EvaluationService(evaluationRepository: _evaluationRepository);
+  var _evaluationTypeRepository = new EvaluationTypeRepository();
+  var _evaluationService = new EvaluationService(
+      evaluationRepository: _evaluationRepository,
+      evaluationTypeRepository: _evaluationTypeRepository);
   return _evaluationService;
 }
 
 EvaluationTypeService initEvaluationTypeAPI() {
   var _evaluationTypeRepository = new EvaluationTypeRepository();
-  var _evaluationService = new EvaluationTypeService(evaluationTypeRepository: _evaluationTypeRepository);
+  var _evaluationService = new EvaluationTypeService(
+      evaluationTypeRepository: _evaluationTypeRepository);
   return _evaluationService;
 }

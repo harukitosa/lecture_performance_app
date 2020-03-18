@@ -12,6 +12,10 @@ class EvaluationTypeService {
     return evaluationTypeRepository.getAllEvaluationTypes();
   }
 
+  Future<EvaluationType> getEvaluationType(id) {
+    return evaluationTypeRepository.getEvaluationType(id);
+  }
+
   Future<int> createEvaluationType(String title) {
     var evaluationType = new EvaluationType(title: title);
     var id = evaluationTypeRepository.insertEvaluationType(evaluationType);
