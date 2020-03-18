@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/admin/classroom/index.dart';
-// import 'package:lecture_performance_app/components/home/regist/registConfirm.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +16,6 @@ class ClassRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ClassRoomArgument args = ModalRoute.of(context).settings.arguments;
-    void _incrementCounter() {
-      Navigator.of(context).pop();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title:
@@ -76,8 +71,6 @@ class RegistSeatMap extends StatelessWidget {
   RegistSeatMap({this.grade, this.lectureClass, this.homeRoomID});
   @override
   Widget build(BuildContext context) {
-    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-
     return Center(
       child: Column(
         children: <Widget>[
@@ -115,7 +108,10 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-
+    classRoomProvider.getStudentData(homeRoomID);
+    String _name = "";
+    int _number = 0;
+    int _indexCount = 0;
     return Padding(
       padding: EdgeInsets.only(top: 40.0),
       child: GridView.builder(
@@ -134,18 +130,25 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2.4,
         ),
         itemBuilder: (context, index) {
+          if (classRoomProvider.viewSeat[index].used == "true") {
+            _name = classRoomProvider.studentList.length > index - _indexCount
+                ? classRoomProvider.studentList[index - _indexCount].name
+                : "";
+
+            _number = classRoomProvider.studentList.length != null
+                ? classRoomProvider.studentList.length > index - _indexCount
+                    ? classRoomProvider.studentList[index - _indexCount].number
+                    : 0
+                : 0;
+          } else {
+            _indexCount++;
+          }
           return ClassRoomSeatView(
             classRoomProvider.viewSeat[index].used,
             index,
-            classRoomProvider.studentList.length > index
-                ? classRoomProvider.studentList[index].name
-                : "",
+            _name,
             true,
-            classRoomProvider.studentList.length != null
-                ? classRoomProvider.studentList.length > index
-                    ? classRoomProvider.studentList[index].id
-                    : 0
-                : 0,
+            _number,
           );
         },
       ),

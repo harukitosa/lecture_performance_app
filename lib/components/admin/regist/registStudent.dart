@@ -37,6 +37,20 @@ class RegistStudent extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        tooltip: 'Increment',
+        label: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text(
+            'まとめて追加',
+            style: TextStyle(
+              fontSize: 22,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.blueAccent,
+      ),
     );
   }
 }
@@ -168,7 +182,6 @@ class _InputFormState extends State<_InputForm> {
 }
 
 Future<void> _confirmPopUp(context) async {
-  final RegistStudentArgument args = ModalRoute.of(context).settings.arguments;
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
