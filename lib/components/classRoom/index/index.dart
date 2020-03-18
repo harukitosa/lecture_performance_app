@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/admin/classroom/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
+import 'package:lecture_performance_app/providers/ValuationProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/common/seatView/classSeatView.dart';
 
@@ -26,6 +27,9 @@ class ClassRoom extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (_) => ClassRoomProvider(args.homeRoom.id),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => EvaluationProvider(),
           ),
         ],
         child: Consumer<ClassRoomProvider>(
@@ -108,7 +112,9 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+    final valuationProvider = Provider.of<EvaluationProvider>(context);
     classRoomProvider.getStudentData(homeRoomID);
+    valuationProvider.getAllEvaluationType();
     String _name = "";
     int _number = 0;
     int _indexCount = 0;
