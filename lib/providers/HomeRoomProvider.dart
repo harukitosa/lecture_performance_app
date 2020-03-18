@@ -5,13 +5,12 @@ import 'package:lecture_performance_app/services/HomeRoom.dart';
 import 'package:lecture_performance_app/services/Seat.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/services/Semester.dart';
 
 class HomeRoomProvider with ChangeNotifier {
   List<HomeRoom> _homeRoom = [];
   List<String> _mapSeat = [];
   HomeRoomService _homeRoomService;
-  SemesterService _semesterService;
+
   SeatService _seatService;
   var config = AppDataConfig();
 
@@ -21,7 +20,7 @@ class HomeRoomProvider with ChangeNotifier {
   HomeRoomProvider() {
     _homeRoomService = initHomeRoomAPI();
     _seatService = initSeatAPI();
-    _semesterService = initSemesterAPI();
+
     getAllHomeRoom();
     for (var i = 0; i < config.seatNum; i++) {
       _mapSeat.add("true");
@@ -35,7 +34,8 @@ class HomeRoomProvider with ChangeNotifier {
   }
 
 //todo: service層に処理を移す
-  void registHomeRoom(String grade, String lectureClass, List<String> seatData) async {
+  void registHomeRoom(
+      String grade, String lectureClass, List<String> seatData) async {
     var homeroomID = await _homeRoomService.createHomeRoom(grade, lectureClass);
     for (var i = 0; i < config.seatNum; i++) {
       await _seatService.insertSeatData(homeroomID, seatData[i]);

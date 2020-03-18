@@ -141,8 +141,10 @@ class SeatMap extends StatelessWidget {
                 ? classRoomProvider.studentList[index].name
                 : "",
             true,
-            classRoomProvider.studentList.length > index
-                ? classRoomProvider.studentList[index].id
+            classRoomProvider.studentList.length != null
+                ? classRoomProvider.studentList.length > index
+                    ? classRoomProvider.studentList[index].id
+                    : 0
                 : 0,
           );
         },

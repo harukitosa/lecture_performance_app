@@ -38,7 +38,7 @@ class Home extends StatelessWidget {
             ),
           ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blueAccent,
       ),
     );
   }

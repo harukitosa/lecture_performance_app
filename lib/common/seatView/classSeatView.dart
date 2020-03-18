@@ -27,7 +27,12 @@ class ClassRoomSeatView extends StatelessWidget {
         child: Container(
           color: flag == "true" ? Colors.blue : Colors.grey,
           child: Center(
-            child: Text("name:"+name+" id:"+studentID.toString()),
+            child: Text(
+              name,
+              style: TextStyle(
+                fontSize: 28,
+              ),
+            ),
           ),
         ),
       ),
