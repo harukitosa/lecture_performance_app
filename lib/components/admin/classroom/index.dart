@@ -19,7 +19,8 @@ class AdminClassRoom extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 管理画面"),
+          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 管理画面",
+        ),
         actions: <Widget>[],
       ),
       body: MultiProvider(
@@ -87,20 +88,28 @@ class StudentTable extends StatelessWidget {
           ],
           rows: studentList
               .map(
-                (student) => DataRow(cells: [
-                  DataCell(Text(
-                    student.id.toString(),
-                    style: TextStyle(fontSize: 22),
-                  )),
-                  DataCell(Text(
-                    student.name,
-                    style: TextStyle(fontSize: 22),
-                  )),
-                  DataCell(Text(
-                    student.createTime,
-                    style: TextStyle(fontSize: 22),
-                  )),
-                ]),
+                (student) => DataRow(
+                  cells: [
+                    DataCell(
+                      Text(
+                        student.id.toString(),
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    ),
+                    DataCell(
+                      Text(
+                        student.name,
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    ),
+                    DataCell(
+                      Text(
+                        student.createTime,
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    ),
+                  ],
+                ),
               )
               .toList(),
         ),
