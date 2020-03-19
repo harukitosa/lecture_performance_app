@@ -15,6 +15,7 @@ class StudentProvider with ChangeNotifier {
     _studentService = initStudentAPI();
     getAllEvaluationType();
     getStudent(studentID);
+    getLatest(studentID);
     getStudentEvaluation(studentID);
     notifyListeners();
   }
@@ -28,6 +29,8 @@ class StudentProvider with ChangeNotifier {
   Student get student => _student;
   List<Evaluation> _eval;
   List<Evaluation> get eval => _eval;
+  List<Evaluation> _latest;
+  List<Evaluation> get latest => _latest;
 
   void getAllEvaluationType() async {
     await _evaluationTypeService
@@ -43,6 +46,11 @@ class StudentProvider with ChangeNotifier {
 
   void getStudent(int studentID) async {
     await _studentService.getStudent(studentID).then((res) => (_student = res));
+    notifyListeners();
+  }
+
+  void getLatest(int studentID) async {
+    await _evaluationService.getLatestStudent(studentID).then((res) => (_latest = res));
     notifyListeners();
   }
 
