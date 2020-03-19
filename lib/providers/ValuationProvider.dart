@@ -31,10 +31,28 @@ class EvaluationProvider with ChangeNotifier {
     await _evaluationTypeService
         .getAllEvaluationType()
         .then((res) => (_evaluationSelect = res));
-    currentTypeID = _evaluationSelect[0].id;
+    currentTypeID = _evaluationSelect[0].id - 1;
     notifyListeners();
   }
 
+  void changeTypeLeft() {
+    if(currentTypeID!=0) {
+      currentTypeID--;
+    } else {
+      currentTypeID = _evaluationSelect.length-1;
+    }
+    notifyListeners();
+  }
+
+  void changeTypeRight() {
+    if(currentTypeID==_evaluationSelect.length-1) {
+      currentTypeID=0;
+    } else {
+      currentTypeID++;
+    }
+    notifyListeners();
+  }
+  
   void evaluation(int studentID, int typeID, int point) async {
     await _evaluationService.createEvaluation(studentID, typeID, point);
     notifyListeners();

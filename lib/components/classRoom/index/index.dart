@@ -75,24 +75,21 @@ class RegistSeatMap extends StatelessWidget {
   RegistSeatMap({this.grade, this.lectureClass, this.homeRoomID});
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 1000.0),
-            child: SeatMap(
-              homeRoomID: homeRoomID,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 20.0),
+    final valuationProvider = Provider.of<EvaluationProvider>(context);
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: EdgeInsets.all(4.0),
             child: Container(
-              width: 200,
-              height: 50,
-              color: Colors.redAccent,
+              width: 800,
+              color: Colors.white,
               child: Center(
                 child: Text(
-                  "黒板",
+                  valuationProvider
+                      .getEvaluationSelect[valuationProvider.currentTypeID]
+                      .title,
                   style: TextStyle(
                     fontSize: 32,
                   ),
@@ -100,8 +97,41 @@ class RegistSeatMap extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+        Expanded(
+          flex: 20,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 1000.0),
+            child: SeatMap(
+              homeRoomID: homeRoomID,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Padding(
+            padding: EdgeInsets.only(top: 20.0),
+            child: Container(
+              width: 200,
+              height: 50,
+              color: Colors.brown,
+              child: Center(
+                child: Text(
+                  "黒板",
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(),
+        ),
+      ],
     );
   }
 }
@@ -112,9 +142,9 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    final valuationProvider = Provider.of<EvaluationProvider>(context);
+    // final valuationProvider = Provider.of<EvaluationProvider>(context);
     classRoomProvider.getStudentData(homeRoomID);
-    valuationProvider.getAllEvaluationType();
+    // valuationProvider.getAllEvaluationType();
     String _name = "";
     int _studentID = 0;
     int _indexCount = 0;
@@ -144,10 +174,12 @@ class SeatMap extends StatelessWidget {
             _studentID = classRoomProvider.studentList.length != null
                 ? classRoomProvider.studentList.length > index - _indexCount
                     ? classRoomProvider.studentList[index - _indexCount].id
-                    : 0
-                : 0;
+                    : -1
+                : -1;
           } else {
             _indexCount++;
+            _name = "";
+            _studentID = -1;
           }
           return ClassRoomSeatView(
             classRoomProvider.viewSeat[index].used,
