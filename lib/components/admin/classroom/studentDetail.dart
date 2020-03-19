@@ -57,31 +57,147 @@ class AdminStudentDetail extends StatelessWidget {
 class AdminStudentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AdminEvaluationInfo();
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 500,
+          child: AdminLatestEvaluationInfo(),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
+            width: 1,
+            color: Colors.blueAccent,
+          ),
+        ),
+        Expanded(
+          flex: 500,
+          child: AdminEvaluationInfo(),
+        ),
+      ],
+    );
   }
 }
 
-class AdminStudentInfo extends StatelessWidget {
+class AdminLatestEvaluationInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final studentProvider = Provider.of<StudentProvider>(context);
-    return Column(
+    return ListView(
       children: <Widget>[
-        Text(
-          studentProvider.student != null
-              ? '名前:' + studentProvider.student.name
-              : "NOT NAME",
-          style: TextStyle(
-            fontSize: 32,
+        Row(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                studentProvider.student != null
+                    ? '名前:' + studentProvider.student.name
+                    : "NOT NAME",
+                style: TextStyle(
+                  fontSize: 32,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                studentProvider.student != null
+                    ? '出席番号:' + studentProvider.student.number.toString()
+                    : "NOT NUMBER",
+                style: TextStyle(
+                  fontSize: 32,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "最新の評価",
+            style: TextStyle(
+              fontSize: 32,
+            ),
           ),
         ),
-        Text(
-          studentProvider.student != null
-              ? '出席番号:' + studentProvider.student.number.toString()
-              : "NOT NUMBER",
-          style: TextStyle(
-            fontSize: 32,
-          ),
+        DataTable(
+          columns: [
+            DataColumn(
+              label: Text(
+                'type',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'point',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                '記録日',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ],
+          rows: studentProvider.latest != null
+              ? studentProvider.latest
+                  .map(
+                    (item) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text(
+                            item.title != null ? item.title : "",
+                            style: TextStyle(fontSize: 22),
+                          ),
+                          onTap: () {},
+                        ),
+                        DataCell(
+                          Text(
+                            item.point.toString(),
+                            style: TextStyle(fontSize: 22),
+                          ),
+                          onTap: () {},
+                        ),
+                        DataCell(
+                          Text(
+                            item.createTime,
+                            style: TextStyle(fontSize: 22),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList()
+              : [
+                  DataRow(
+                    cells: [
+                      DataCell(
+                        Text('NO DATA'),
+                      ),
+                      DataCell(
+                        Text('NO DATA'),
+                      ),
+                      DataCell(
+                        Text('NO DATA'),
+                      )
+                    ],
+                  ),
+                  DataRow(
+                    cells: [
+                      DataCell(
+                        Text('NO DATA'),
+                      ),
+                      DataCell(
+                        Text('NO DATA'),
+                      ),
+                      DataCell(
+                        Text('NO DATA'),
+                      )
+                    ],
+                  ),
+                ],
         ),
       ],
     );
@@ -94,74 +210,75 @@ class AdminEvaluationInfo extends StatelessWidget {
     final studentProvider = Provider.of<StudentProvider>(context);
     return ListView(
       children: <Widget>[
-        Text(
-          studentProvider.student != null
-              ? '名前:' + studentProvider.student.name
-              : "NOT NAME",
-          style: TextStyle(
-            fontSize: 32,
-          ),
-        ),
-        Text(
-          studentProvider.student != null
-              ? '出席番号:' + studentProvider.student.number.toString()
-              : "NOT NUMBER",
-          style: TextStyle(
-            fontSize: 32,
-          ),
-        ),
+        // Text(
+        //   studentProvider.student != null
+        //       ? '名前:' + studentProvider.student.name
+        //       : "NOT NAME",
+        //   style: TextStyle(
+        //     fontSize: 32,
+        //   ),
+        // ),
+        // Text(
+        //   studentProvider.student != null
+        //       ? '出席番号:' + studentProvider.student.number.toString()
+        //       : "NOT NUMBER",
+        //   style: TextStyle(
+        //     fontSize: 32,
+        //   ),
+        // ),
         DataTable(
-            columns: [
-              DataColumn(
-                label: Text(
-                  'type',
-                  style: TextStyle(fontSize: 24),
-                ),
+          columns: [
+            DataColumn(
+              label: Text(
+                'type',
+                style: TextStyle(fontSize: 24),
               ),
-              DataColumn(
-                label: Text(
-                  'point',
-                  style: TextStyle(fontSize: 24),
-                ),
+            ),
+            DataColumn(
+              label: Text(
+                'point',
+                style: TextStyle(fontSize: 24),
               ),
-              DataColumn(
-                label: Text(
-                  '記録日',
-                  style: TextStyle(fontSize: 24),
-                ),
+            ),
+            DataColumn(
+              label: Text(
+                '記録日',
+                style: TextStyle(fontSize: 24),
               ),
-            ],
-            rows: studentProvider.eval != null
-                ? studentProvider.eval
-                    .map(
-                      (item) => DataRow(
-                        cells: [
-                          DataCell(
-                            Text(
-                              item.title != null ? item.title : "",
-                              style: TextStyle(fontSize: 22),
-                            ),
-                            onTap: () {},
+            ),
+          ],
+          rows: studentProvider.eval != null
+              ? studentProvider.eval
+                  .map(
+                    (item) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text(
+                            item.title != null ? item.title : "",
+                            style: TextStyle(fontSize: 22),
                           ),
-                          DataCell(
-                            Text(
-                              item.point.toString(),
-                              style: TextStyle(fontSize: 22),
-                            ),
-                            onTap: () {},
+                          onTap: () {},
+                        ),
+                        DataCell(
+                          Text(
+                            item.point.toString(),
+                            style: TextStyle(fontSize: 22),
                           ),
-                          DataCell(
-                            Text(
-                              item.createTime,
-                              style: TextStyle(fontSize: 22),
-                            ),
+                          onTap: () {},
+                        ),
+                        DataCell(
+                          Text(
+                            item.createTime,
+                            style: TextStyle(fontSize: 22),
                           ),
-                        ],
-                      ),
-                    )
-                    .toList()
-                : [
-                    DataRow(cells: [
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList()
+              : [
+                  DataRow(
+                    cells: [
                       DataCell(
                         Text('NO DATA'),
                       ),
@@ -171,8 +288,10 @@ class AdminEvaluationInfo extends StatelessWidget {
                       DataCell(
                         Text('NO DATA'),
                       )
-                    ]),
-                    DataRow(cells: [
+                    ],
+                  ),
+                  DataRow(
+                    cells: [
                       DataCell(
                         Text('NO DATA'),
                       ),
@@ -182,8 +301,10 @@ class AdminEvaluationInfo extends StatelessWidget {
                       DataCell(
                         Text('NO DATA'),
                       )
-                    ]),
-                  ]),
+                    ],
+                  ),
+                ],
+        ),
       ],
     );
   }

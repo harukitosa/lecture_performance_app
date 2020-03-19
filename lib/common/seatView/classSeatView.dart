@@ -29,18 +29,25 @@ class ClassRoomSeatView extends StatelessWidget {
         valuationProvider.y = details.delta.dy;
       },
       onPanEnd: (details) {
-        if (flag == "true" && studentID != 0) {
+        //下にスワイプ
+        if (flag == "true" && studentID != -1) {
           var x = valuationProvider.x;
           var y = valuationProvider.y;
           if (y > x.abs()) {
-            var typeID = valuationProvider.currentTypeID;
+            var typeID = valuationProvider.currentTypeID + 1;
             valuationProvider.evaluation(studentID, typeID, -1);
             final snackBar = SnackBar(
               content: Container(
                 height: 120,
                 child: Center(
                   child: Text(
-                    name + "さんのポイントを下げました",
+                    name +
+                        "さんの" +
+                        valuationProvider
+                            .getEvaluationSelect[
+                                valuationProvider.currentTypeID]
+                            .title +
+                        "ポイントを下げました",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 28,
@@ -53,15 +60,22 @@ class ClassRoomSeatView extends StatelessWidget {
             );
             Scaffold.of(context).showSnackBar(snackBar);
           }
+          //上にスワイプs
           if (y < -x.abs()) {
-            var typeID = valuationProvider.currentTypeID;
+            var typeID = valuationProvider.currentTypeID + 1;
             valuationProvider.evaluation(studentID, typeID, 1);
             final snackBar = SnackBar(
               content: Container(
                 height: 120,
                 child: Center(
                   child: Text(
-                    name + "さんにポイントを付与しました",
+                    name +
+                        "さんに" +
+                        valuationProvider
+                            .getEvaluationSelect[
+                                valuationProvider.currentTypeID]
+                            .title +
+                        "ポイントを付与しました",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 28,
@@ -74,13 +88,17 @@ class ClassRoomSeatView extends StatelessWidget {
             );
             Scaffold.of(context).showSnackBar(snackBar);
           }
+          //左にスワイプ
           if (x < -y.abs()) {
+            valuationProvider.changeTypeLeft();
             final snackBar = SnackBar(
               content: Container(
                 height: 120,
                 child: Center(
                   child: Text(
-                    "指名",
+                    valuationProvider
+                        .getEvaluationSelect[valuationProvider.currentTypeID]
+                        .title,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 28,
@@ -93,13 +111,17 @@ class ClassRoomSeatView extends StatelessWidget {
             );
             Scaffold.of(context).showSnackBar(snackBar);
           }
+          //右にスワイプ
           if (x > y.abs()) {
+            valuationProvider.changeTypeRight();
             final snackBar = SnackBar(
               content: Container(
                 height: 120,
                 child: Center(
                   child: Text(
-                    "発言",
+                    valuationProvider
+                        .getEvaluationSelect[valuationProvider.currentTypeID]
+                        .title,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 28,

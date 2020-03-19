@@ -2,8 +2,8 @@ import 'package:lecture_performance_app/repositories/Evaluation.dart';
 import 'package:lecture_performance_app/repositories/EvaluationType.dart';
 import '../db/models/Evaluation.dart';
 import '../utility/time.dart';
-class EvaluationService {
 
+class EvaluationService {
   final EvaluationRepository evaluationRepository;
   final EvaluationTypeRepository evaluationTypeRepository;
   EvaluationService({
@@ -17,7 +17,16 @@ class EvaluationService {
 
   Future<List<Evaluation>> getStudentSemester(int studentID) async {
     var res = await evaluationRepository.getStudentSemester(studentID);
-    for(var i = 0;i < res.length;i++) {
+    for (var i = 0; i < res.length; i++) {
+      var ans = await evaluationTypeRepository.getEvaluationType(res[i].typeID);
+      res[i].title = ans.title;
+    }
+    return res;
+  }
+
+  Future<List<Evaluation>> getLatestStudent(int studentID) async {
+    var res = await evaluationRepository.getLatestStudent(studentID);
+    for (var i = 0; i < res.length; i++) {
       var ans = await evaluationTypeRepository.getEvaluationType(res[i].typeID);
       res[i].title = ans.title;
     }
@@ -34,9 +43,10 @@ class EvaluationService {
     return id;
   }
 
-  Future<void> editEvaluation(int id, int studentID, int typeID,  int point, String createdTime) {
+  Future<void> editEvaluation(
+      int id, int studentID, int typeID, int point, String createdTime) {
     var evaluation = new Evaluation(
-      id: id, 
+      id: id,
       studentID: studentID,
       typeID: typeID,
       point: point,

@@ -32,6 +32,21 @@ class EvaluationRepository {
       "evaluation",
       where: "student_id = ?",
       whereArgs: [studentID],
+      orderBy: "created_at DESC",
+    );
+    List<Evaluation> list =
+        res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  Future<List<Evaluation>> getLatestStudent(int studentID) async {
+    var db = await initDB();
+    final List<Map<String, dynamic>> res = await db.query(
+      "evaluation",
+      where: "student_id = ?",
+      whereArgs: [studentID],
+      orderBy: "created_at DESC",
+      limit: 10,
     );
     List<Evaluation> list =
         res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];

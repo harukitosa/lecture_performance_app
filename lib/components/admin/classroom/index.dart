@@ -67,14 +67,17 @@ class AdminClassRoom extends StatelessWidget {
   }
 }
 
+
 class StudentTable extends StatelessWidget {
   final List<Student> studentList;
 
   StudentTable({this.studentList});
+
   @override
   Widget build(BuildContext context) {
     final AdminClassRoomArgument args =
         ModalRoute.of(context).settings.arguments;
+
     return ListView(
       children: <Widget>[
         Center(
@@ -83,66 +86,67 @@ class StudentTable extends StatelessWidget {
           style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
         )),
         DataTable(
-            columns: [
-              DataColumn(
-                label: Text(
-                  '出席番号',
-                  style: TextStyle(fontSize: 24),
-                ),
+          columns: [
+            DataColumn(
+              label: Text(
+                '出席番号',
+                style: TextStyle(fontSize: 24),
               ),
-              DataColumn(
-                label: Text(
-                  '名前',
-                  style: TextStyle(fontSize: 24),
-                ),
+            ),
+            DataColumn(
+              label: Text(
+                '名前',
+                style: TextStyle(fontSize: 24),
               ),
-              DataColumn(
-                label: Text(
-                  'POINTS',
-                  style: TextStyle(fontSize: 24),
-                ),
+            ),
+            DataColumn(
+              label: Text(
+                'POINTS',
+                style: TextStyle(fontSize: 24),
               ),
-            ],
-            rows: studentList != null
-                ? studentList
-                    .map(
-                      (student) => DataRow(
-                        cells: [
-                          DataCell(
-                            Text(
-                              student.number.toString(),
-                              style: TextStyle(fontSize: 22),
-                            ),
-                            onTap: () {},
+            ),
+          ],
+          rows: studentList != null
+              ? studentList
+                  .map(
+                    (student) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text(
+                            student.number.toString(),
+                            style: TextStyle(fontSize: 22),
                           ),
-                          DataCell(
-                            Text(
-                              student.name,
-                              style: TextStyle(fontSize: 22),
-                            ),
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                AdminStudentDetail.routeName,
-                                arguments: AdminStudentDetailArgument(
-                                  args.homeRoom,
-                                  student.id,
-                                ),
-                              );
-                            },
+                          onTap: () {},
+                        ),
+                        DataCell(
+                          Text(
+                            student.name,
+                            style: TextStyle(fontSize: 22),
                           ),
-                          DataCell(
-                            Text(
-                              student.createTime,
-                              style: TextStyle(fontSize: 22),
-                            ),
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AdminStudentDetail.routeName,
+                              arguments: AdminStudentDetailArgument(
+                                args.homeRoom,
+                                student.id,
+                              ),
+                            );
+                          },
+                        ),
+                        DataCell(
+                          Text(
+                            student.createTime,
+                            style: TextStyle(fontSize: 22),
                           ),
-                        ],
-                      ),
-                    )
-                    .toList()
-                : [
-                    DataRow(cells: [
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList()
+              : [
+                  DataRow(
+                    cells: [
                       DataCell(
                         Text('NO DATA'),
                       ),
@@ -152,8 +156,10 @@ class StudentTable extends StatelessWidget {
                       DataCell(
                         Text('NO DATA'),
                       )
-                    ]),
-                    DataRow(cells: [
+                    ],
+                  ),
+                  DataRow(
+                    cells: [
                       DataCell(
                         Text('NO DATA'),
                       ),
@@ -162,9 +168,11 @@ class StudentTable extends StatelessWidget {
                       ),
                       DataCell(
                         Text('NO DATA'),
-                      )
-                    ]),
-                  ]),
+                      ),
+                    ],
+                  ),
+                ],
+        ),
       ],
     );
   }

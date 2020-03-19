@@ -134,5 +134,14 @@ _insertSeatTransaction(Database db) async {
     await txn.rawInsert('''
       INSERT INTO evaluation_type(title) VALUES('いいね')
     ''');
+    await txn.rawInsert('''
+      INSERT INTO evaluation_type(title) VALUES('発言')
+    ''');
+    await txn.rawInsert('''
+      INSERT INTO evaluation_type(title) VALUES('発音')
+    ''');
+    await txn.rawInsert('''
+      INSERT INTO evaluation_type(title) VALUES('正解')
+    ''');
   });
 }
