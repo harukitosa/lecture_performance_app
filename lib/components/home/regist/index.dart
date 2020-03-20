@@ -29,16 +29,23 @@ class _ChangeFormState extends State<ChangeForm> {
   String _grade = '';
   String _lectureClass = '';
   int id;
+  bool validation = false;
 
   void _handleGrade(String e) {
     setState(() {
       _grade = e;
+      if (_grade != "" && _lectureClass != "") {
+        validation = false;
+      }
     });
   }
 
   void _handleLectureClass(String e) {
     setState(() {
       _lectureClass = e;
+      if (_grade != "" && _lectureClass != "") {
+        validation = false;
+      }
     });
   }
 
@@ -75,8 +82,11 @@ class _ChangeFormState extends State<ChangeForm> {
                   child: new TextField(
                     enabled: true,
                     maxLength: 10,
-                    maxLengthEnforced: false,
-                    style: TextStyle(color: Colors.black, fontSize: 40),
+                    maxLengthEnforced: true,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 40,
+                    ),
                     obscureText: false,
                     maxLines: 1,
                     textAlign: TextAlign.center,
@@ -102,8 +112,11 @@ class _ChangeFormState extends State<ChangeForm> {
                   child: new TextField(
                     enabled: true,
                     maxLength: 10,
-                    maxLengthEnforced: false,
-                    style: TextStyle(color: Colors.black, fontSize: 40),
+                    maxLengthEnforced: true,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 40,
+                    ),
                     obscureText: false,
                     maxLines: 1,
                     textAlign: TextAlign.center,
@@ -112,6 +125,15 @@ class _ChangeFormState extends State<ChangeForm> {
                 ),
               ],
             ),
+            validation != false
+                ? Text(
+                    '値を入力してください。',
+                    style: TextStyle(
+                      color: Colors.redAccent,
+                      fontSize: 18,
+                    ),
+                  )
+                : Text(""),
             Padding(
               padding: EdgeInsets.only(top: 50.0),
               child: ButtonTheme(
@@ -127,11 +149,18 @@ class _ChangeFormState extends State<ChangeForm> {
                   color: Colors.red,
                   textColor: Colors.white,
                   onPressed: () async {
-                    Navigator.pushNamed(
-                      context,
-                      HomeRegistSeat.routeName,
-                      arguments: HomeRegistSeatArgument(_grade, _lectureClass),
-                    );
+                    if (_grade == "" || _lectureClass == "") {
+                      setState(() {
+                        validation = true;
+                      });
+                    } else {
+                      Navigator.pushNamed(
+                        context,
+                        HomeRegistSeat.routeName,
+                        arguments:
+                            HomeRegistSeatArgument(_grade, _lectureClass),
+                      );
+                    }
                   },
                 ),
               ),
@@ -142,4 +171,3 @@ class _ChangeFormState extends State<ChangeForm> {
     );
   }
 }
-

@@ -21,6 +21,24 @@ class ClassRoomProvider with ChangeNotifier {
 
   int get viewWidth => _viewWidth;
 
+  bool _sort = false;
+  bool get sort => _sort;
+
+  void sortChange() {
+    _sort = !_sort;
+    notifyListeners();
+  }
+
+  onSortColum(int columnIndex, bool ascending) {
+    if (columnIndex == 0) {
+      if (ascending) {
+        _studentList.sort((a, b) => a.number.compareTo(b.number));
+      } else {
+        _studentList.sort((a, b) => b.number.compareTo(a.number));
+      }
+    }
+  }
+
   ClassRoomProvider(int homeRoomID) {
     _seatService = initSeatAPI();
     _studentService = initStudentAPI();
@@ -45,6 +63,7 @@ class ClassRoomProvider with ChangeNotifier {
     await _studentService.getRoomStudents(homeRoomID).then((res) {
       _studentList = res;
     });
+    _studentList.sort((a, b) => a.positionNum.compareTo(b.positionNum));
     notifyListeners();
   }
 
