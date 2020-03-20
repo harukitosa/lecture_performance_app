@@ -36,7 +36,7 @@ class ClassRoom extends StatelessWidget {
           builder: (context, counter, _) {
             return Center(
               child: RegistSeatMap(
-                homeRoomID: args.homeRoom.id,
+                homeRoomID: args.homeRoom != null ? args.homeRoom.id : -1,
               ),
             );
           },
@@ -87,9 +87,11 @@ class RegistSeatMap extends StatelessWidget {
               color: Colors.white,
               child: Center(
                 child: Text(
-                  valuationProvider
-                      .getEvaluationSelect[valuationProvider.currentTypeID]
-                      .title,
+                  valuationProvider.getEvaluationSelect != null
+                      ? valuationProvider
+                          .getEvaluationSelect[valuationProvider.currentTypeID]
+                          .title
+                      : "",
                   style: TextStyle(
                     fontSize: 32,
                   ),
@@ -142,12 +144,11 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    // final valuationProvider = Provider.of<EvaluationProvider>(context);
     classRoomProvider.getStudentData(homeRoomID);
-    // valuationProvider.getAllEvaluationType();
     String _name = "";
     int _studentID = 0;
     int _indexCount = 0;
+    int _positionNum = 0;
     return Padding(
       padding: EdgeInsets.only(top: 40.0),
       child: GridView.builder(
@@ -167,8 +168,10 @@ class SeatMap extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           if (classRoomProvider.viewSeat[index].used == "true") {
-            _name = classRoomProvider.studentList.length > index - _indexCount
-                ? classRoomProvider.studentList[index - _indexCount].name
+            _name = classRoomProvider.studentList.length != null
+                ? classRoomProvider.studentList.length > index - _indexCount
+                    ? classRoomProvider.studentList[index - _indexCount].name
+                    : ""
                 : "";
 
             _studentID = classRoomProvider.studentList.length != null
@@ -176,9 +179,16 @@ class SeatMap extends StatelessWidget {
                     ? classRoomProvider.studentList[index - _indexCount].id
                     : -1
                 : -1;
+            _positionNum = classRoomProvider.studentList.length != null
+                ? classRoomProvider.studentList.length > index - _indexCount
+                    ? classRoomProvider
+                        .studentList[index - _indexCount].positionNum
+                    : -1
+                : -1;
           } else {
             _indexCount++;
             _name = "";
+            _positionNum = -1;
             _studentID = -1;
           }
           return ClassRoomSeatView(
@@ -187,6 +197,7 @@ class SeatMap extends StatelessWidget {
             _name,
             true,
             _studentID,
+            _positionNum,
           );
         },
       ),

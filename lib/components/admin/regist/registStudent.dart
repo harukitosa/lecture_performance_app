@@ -3,6 +3,7 @@ import 'package:lecture_performance_app/components/admin/classroom/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
+import 'package:flutter/services.dart';
 
 //routerで渡される値
 class RegistStudentArgument {
@@ -64,16 +65,23 @@ class _InputFormState extends State<_InputForm> {
   String _name = '';
   String _number = '';
   int id;
+  bool _validation = false;
 
   void _handleName(String e) {
     setState(() {
       _name = e;
+      if (_name != "" && _number != "") {
+        _validation = false;
+      }
     });
   }
 
   void _handleNumber(String e) {
     setState(() {
       _number = e;
+      if (_name != "" && _number != "") {
+        _validation = false;
+      }
     });
   }
 
@@ -142,6 +150,9 @@ class _InputFormState extends State<_InputForm> {
                     enabled: true,
                     maxLength: 10,
                     maxLengthEnforced: false,
+                    inputFormatters: <TextInputFormatter>[
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
                     keyboardType: TextInputType.number,
                     style: TextStyle(color: Colors.black, fontSize: 40),
                     obscureText: false,
@@ -152,6 +163,13 @@ class _InputFormState extends State<_InputForm> {
                 ),
               ],
             ),
+            _validation == true
+                ? Text('記入してください。',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 18,
+                    ))
+                : Text(''),
             Padding(
               padding: EdgeInsets.only(top: 50.0),
               child: ButtonTheme(
@@ -167,9 +185,18 @@ class _InputFormState extends State<_InputForm> {
                   color: Colors.red,
                   textColor: Colors.white,
                   onPressed: () async {
-                    classRoomProvider.registStudentData(
-                        args.homeRoom.id, int.parse(_number), _name);
-                    _confirmPopUp(context);
+                    if (_name == "" || _number == "") {
+                      setState(() {
+                        _validation = true;
+                      });
+                    } else {
+                      classRoomProvider.registStudentData(
+                        args.homeRoom.id,
+                        int.parse(_number),
+                        _name,
+                      );
+                      _confirmPopUp(context);
+                    }
                   },
                 ),
               ),

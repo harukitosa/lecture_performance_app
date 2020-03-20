@@ -10,6 +10,7 @@ class ClassRoomSeatView extends StatelessWidget {
   final int studentID;
   final int index;
   final bool changeState;
+  final int positionNum;
 
   ClassRoomSeatView(
     this.flag,
@@ -17,6 +18,7 @@ class ClassRoomSeatView extends StatelessWidget {
     this.name,
     this.changeState,
     this.studentID,
+    this.positionNum,
   );
 
   @override
@@ -144,7 +146,7 @@ class ClassRoomSeatView extends StatelessWidget {
           color: flag == "true" ? Colors.blue : Colors.grey,
           child: Center(
             child: Text(
-              name,
+              name + " " + positionNum.toString(),
               style: TextStyle(
                 fontSize: 28,
               ),

@@ -34,7 +34,6 @@ class AdminClassRoom extends StatelessWidget {
         child: Consumer<ClassRoomProvider>(
           builder: (context, counter, _) {
             final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-            classRoomProvider.getStudentData(args.homeRoom.id);
             return Center(
               child: StudentTable(studentList: classRoomProvider.studentList),
             );
@@ -67,7 +66,6 @@ class AdminClassRoom extends StatelessWidget {
   }
 }
 
-
 class StudentTable extends StatelessWidget {
   final List<Student> studentList;
 
@@ -77,7 +75,7 @@ class StudentTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final AdminClassRoomArgument args =
         ModalRoute.of(context).settings.arguments;
-
+    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     return ListView(
       children: <Widget>[
         Center(
@@ -86,8 +84,14 @@ class StudentTable extends StatelessWidget {
           style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
         )),
         DataTable(
+          sortAscending: classRoomProvider.sort,
+          sortColumnIndex: 0,
           columns: [
             DataColumn(
+              onSort: (columnIndex, ascending) {
+                classRoomProvider.sortChange();
+                classRoomProvider.onSortColum(columnIndex, ascending);
+              },
               label: Text(
                 '出席番号',
                 style: TextStyle(fontSize: 24),
