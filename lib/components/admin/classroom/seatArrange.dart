@@ -4,29 +4,25 @@ import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:lecture_performance_app/providers/ValuationProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/common/seatView/classSeatView.dart';
+import 'package:lecture_performance_app/common/seatView/SeatArrangeView.dart';
 
 //routerで渡される値
-class ClassRoomArgument {
+class SeatArrangeArgument {
   final HomeRoom homeRoom;
-  ClassRoomArgument(this.homeRoom);
+  SeatArrangeArgument(this.homeRoom);
 }
 
-class ClassRoom extends StatelessWidget {
-  static const routeName = '/class';
+class SeatArrange extends StatelessWidget {
+  static const routeName = '/admin/class/seat';
   @override
   Widget build(BuildContext context) {
-    final ClassRoomArgument args = ModalRoute.of(context).settings.arguments;
+    final SeatArrangeArgument args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組",
-        ),
+        title:
+            Text(args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組"),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {},
-          ),
+          IconButton(icon: Icon(Icons.settings), onPressed: () {}),
         ],
       ),
       body: MultiProvider(
@@ -47,28 +43,6 @@ class ClassRoom extends StatelessWidget {
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            AdminClassRoom.routeName,
-            arguments: AdminClassRoomArgument(
-              args.homeRoom,
-            ),
-          );
-        },
-        tooltip: 'Increment',
-        label: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Text(
-            '管理画面',
-            style: TextStyle(
-              fontSize: 22,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.orange,
       ),
     );
   }
@@ -93,11 +67,7 @@ class RegistSeatMap extends StatelessWidget {
               color: Colors.white,
               child: Center(
                 child: Text(
-                  valuationProvider.getEvaluationSelect != null
-                      ? valuationProvider
-                          .getEvaluationSelect[valuationProvider.currentTypeID]
-                          .title
-                      : "",
+                  "席替え",
                   style: TextStyle(
                     fontSize: 32,
                   ),
@@ -197,9 +167,9 @@ class SeatMap extends StatelessWidget {
             _positionNum = -1;
             _studentID = -1;
           }
-          return ClassRoomSeatView(
+          return SeatArrangeView(
             classRoomProvider.viewSeat[index].used,
-            index,
+            index - _indexCount,
             _name,
             true,
             _studentID,

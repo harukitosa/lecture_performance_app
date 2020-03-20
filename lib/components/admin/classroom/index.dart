@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
 import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
@@ -33,10 +34,7 @@ class AdminClassRoom extends StatelessWidget {
         ],
         child: Consumer<ClassRoomProvider>(
           builder: (context, counter, _) {
-            final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-            return Center(
-              child: StudentTable(studentList: classRoomProvider.studentList),
-            );
+            return AdminStudentListView();
           },
         ),
       ),
@@ -66,6 +64,56 @@ class AdminClassRoom extends StatelessWidget {
   }
 }
 
+class AdminStudentListView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: Center(
+            child: StudentTable(studentList: classRoomProvider.studentList),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SettingButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final AdminClassRoomArgument args =
+        ModalRoute.of(context).settings.arguments;
+
+    return Container(
+      child: Column(children: <Widget>[
+        Container(
+          height: 50,
+          width: 200,
+          child: RaisedButton(
+            child: Text("席替え"),
+            color: Colors.white,
+            shape: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                SeatArrange.routeName,
+                arguments: SeatArrangeArgument(
+                  args.homeRoom,
+                ),
+              );
+            },
+          ),
+        ),
+      ]),
+    );
+  }
+}
+
 class StudentTable extends StatelessWidget {
   final List<Student> studentList;
 
@@ -79,10 +127,12 @@ class StudentTable extends StatelessWidget {
     return ListView(
       children: <Widget>[
         Center(
-            child: Text(
-          '生徒名簿',
-          style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
-        )),
+          child: Text(
+            '生徒名簿',
+            style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
+          ),
+        ),
+        SettingButtons(),
         DataTable(
           sortAscending: classRoomProvider.sort,
           sortColumnIndex: 0,
