@@ -3,7 +3,7 @@ class Student {
   final int homeRoomID;
   final String name;
   final int number;
-  final int positionNum;
+  int positionNum;
   final String createTime;
   String updateTime;
 
