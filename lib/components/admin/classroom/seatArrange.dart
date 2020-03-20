@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/classroom/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:lecture_performance_app/providers/ValuationProvider.dart';
@@ -55,7 +54,6 @@ class RegistSeatMap extends StatelessWidget {
   RegistSeatMap({this.grade, this.lectureClass, this.homeRoomID});
   @override
   Widget build(BuildContext context) {
-    final valuationProvider = Provider.of<EvaluationProvider>(context);
     return Column(
       children: <Widget>[
         Expanded(
@@ -143,23 +141,20 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2.4,
         ),
         itemBuilder: (context, index) {
-          if (classRoomProvider.viewSeat[index].used == "true") {
-            _name = classRoomProvider.studentList != null
-                ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider.studentList[index - _indexCount].name
-                    : ""
+          if (classRoomProvider.viewSeat[index].used == "true" &&
+              classRoomProvider.studentList != null) {
+            _name = classRoomProvider.studentList.length > index - _indexCount
+                ? classRoomProvider.studentList[index - _indexCount].name
                 : "";
 
-            _studentID = classRoomProvider.studentList != null
-                ? classRoomProvider.studentList.length > index - _indexCount
+            _studentID =
+                classRoomProvider.studentList.length > index - _indexCount
                     ? classRoomProvider.studentList[index - _indexCount].id
-                    : -1
-                : -1;
-            _positionNum = classRoomProvider.studentList != null
-                ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider
-                        .studentList[index - _indexCount].positionNum
-                    : -1
+                    : -1;
+
+            _positionNum = classRoomProvider.studentList.length >
+                    index - _indexCount
+                ? classRoomProvider.studentList[index - _indexCount].positionNum
                 : -1;
           } else {
             _indexCount++;

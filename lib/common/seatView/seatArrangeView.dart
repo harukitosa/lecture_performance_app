@@ -1,7 +1,6 @@
 // import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/providers/ValuationProvider.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'dart:core';
 
