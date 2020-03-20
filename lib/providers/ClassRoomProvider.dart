@@ -7,6 +7,10 @@ import 'package:lecture_performance_app/services/Student.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
 
+class SeatPosition {
+  double x, y;
+}
+
 class ClassRoomProvider with ChangeNotifier {
   List<Seat> _mapSeat;
   List<Seat> get mapSeat => _mapSeat;
@@ -23,6 +27,10 @@ class ClassRoomProvider with ChangeNotifier {
   //* _seatArrange records index number
   int _seatArrange = -1;
   int get seatArrange => _seatArrange;
+
+  //* record position for animaiton
+  List<SeatPosition> _position;
+  List<SeatPosition> get pos => _position;
 
   //* _viewWidth records display seat width
   int _viewWidth;
@@ -63,14 +71,31 @@ class ClassRoomProvider with ChangeNotifier {
         positionNum: studentList[index].positionNum,
         homeRoomID: studentList[_seatArrange].homeRoomID,
       );
-      _studentService.editstudent(a.id, a.homeRoomID, a.positionNum, a.name, a.number, a.createTime);
-      _studentService.editstudent(b.id, b.homeRoomID, b.positionNum, b.name, b.number, b.createTime);
-      getStudentData(a.homeRoomID);
+
+      _studentList[index].positionNum = a.positionNum;
+      _studentList[_seatArrange].positionNum = b.positionNum;
+      notifyListeners();
+      _studentService.editstudent(
+        a.id,
+        a.homeRoomID,
+        a.positionNum,
+        a.name,
+        a.number,
+        a.createTime,
+      );
+      _studentService.editstudent(
+        b.id,
+        b.homeRoomID,
+        b.positionNum,
+        b.name,
+        b.number,
+        b.createTime,
+      );
       _seatArrange = -1;
     } else {
       _seatArrange = index;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   void onSortColum(int columnIndex, bool ascending) {
