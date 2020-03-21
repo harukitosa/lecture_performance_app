@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
 import 'package:lecture_performance_app/components/admin/classroom/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
+import 'package:lecture_performance_app/components/admin/regist/registStudents.dart';
 import 'package:flutter/services.dart';
 
 //routerで渡される値
@@ -39,7 +41,15 @@ class RegistStudent extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            RegistStudents.routeName,
+            arguments: RegistStudentsArgument(
+              args.homeRoom,
+            ),
+          );
+        },
         tooltip: 'Increment',
         label: Padding(
           padding: EdgeInsets.all(12.0),
@@ -195,7 +205,7 @@ class _InputFormState extends State<_InputForm> {
                         int.parse(_number),
                         _name,
                       );
-                      _confirmPopUp(context);
+                      confirmPopUp(context, AdminClassRoom.routeName);
                     }
                   },
                 ),
@@ -206,38 +216,4 @@ class _InputFormState extends State<_InputForm> {
       ),
     );
   }
-}
-
-Future<void> _confirmPopUp(context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          '登録完了しました',
-        ),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(
-                '管理画面に戻ります。',
-              ),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('確認'),
-            onPressed: () {
-              Navigator.popUntil(
-                context,
-                ModalRoute.withName(AdminClassRoom.routeName),
-              );
-            },
-          ),
-        ],
-      );
-    },
-  );
 }

@@ -125,7 +125,7 @@ class RegistSeatMap extends StatelessWidget {
               color: Colors.brown,
               child: Center(
                 child: Text(
-                  "黒板",
+                  "教卓",
                   style: TextStyle(
                     fontSize: 32,
                     color: Colors.white,
@@ -198,9 +198,9 @@ class SeatMap extends StatelessWidget {
             _studentID = -1;
           }
           return ClassRoomSeatView(
-            classRoomProvider.viewSeat != null
+            classRoomProvider.viewSeat.length != 0
                 ? classRoomProvider.viewSeat[index].used
-                : false,
+                : [],
             index,
             _name,
             true,

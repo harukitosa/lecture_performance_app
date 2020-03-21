@@ -128,7 +128,7 @@ class ClassRoomProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void registStudentData(int homeRoomID, int number, String name) async {
+  Future<void> registStudentData(int homeRoomID, int number, String name) async {
     await _studentService.createstudent(homeRoomID, name, number);
     notifyListeners();
   }
