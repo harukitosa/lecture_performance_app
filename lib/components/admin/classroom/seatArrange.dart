@@ -93,7 +93,7 @@ class RegistSeatMap extends StatelessWidget {
               color: Colors.brown,
               child: Center(
                 child: Text(
-                  "黒板",
+                  "教卓",
                   style: TextStyle(
                     fontSize: 32,
                     color: Colors.white,
