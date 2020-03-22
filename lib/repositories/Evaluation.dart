@@ -19,8 +19,12 @@ class EvaluationRepository {
   Future<Evaluation> getEvaluation(int id) async {
     var db = await initDB();
 
-    final List<Map<String, dynamic>> res = await db.query("evaluation",
-        where: "id = ?", whereArgs: [id], limit: 1);
+    final List<Map<String, dynamic>> res = await db.query(
+      "evaluation",
+      where: "id = ?",
+      whereArgs: [id],
+      limit: 1,
+    );
     List<Evaluation> list =
         res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
     return list[0];
@@ -33,6 +37,21 @@ class EvaluationRepository {
       where: "student_id = ?",
       whereArgs: [studentID],
       orderBy: "created_at DESC",
+    );
+    List<Evaluation> list =
+        res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  Future<List<Evaluation>> getEvaluationByType(
+    int typeID,
+    int studentID,
+  ) async {
+    var db = await initDB();
+    final List<Map<String, dynamic>> res = await db.query(
+      "evaluation",
+      where: "type_id = ? AND student_id = ?",
+      whereArgs: [typeID, studentID],
     );
     List<Evaluation> list =
         res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];

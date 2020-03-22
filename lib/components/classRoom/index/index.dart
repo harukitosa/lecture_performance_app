@@ -198,9 +198,11 @@ class SeatMap extends StatelessWidget {
             _studentID = -1;
           }
           return ClassRoomSeatView(
-            classRoomProvider.viewSeat.length != 0
-                ? classRoomProvider.viewSeat[index].used
-                : [],
+            classRoomProvider.viewSeat != null
+                ? classRoomProvider.viewSeat.length != 0
+                    ? classRoomProvider.viewSeat[index].used
+                    : false
+                : false,
             index,
             _name,
             true,

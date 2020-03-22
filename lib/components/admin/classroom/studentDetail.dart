@@ -210,22 +210,6 @@ class AdminEvaluationInfo extends StatelessWidget {
     final studentProvider = Provider.of<StudentProvider>(context);
     return ListView(
       children: <Widget>[
-        // Text(
-        //   studentProvider.student != null
-        //       ? '名前:' + studentProvider.student.name
-        //       : "NOT NAME",
-        //   style: TextStyle(
-        //     fontSize: 32,
-        //   ),
-        // ),
-        // Text(
-        //   studentProvider.student != null
-        //       ? '出席番号:' + studentProvider.student.number.toString()
-        //       : "NOT NUMBER",
-        //   style: TextStyle(
-        //     fontSize: 32,
-        //   ),
-        // ),
         DataTable(
           columns: [
             DataColumn(
@@ -242,19 +226,26 @@ class AdminEvaluationInfo extends StatelessWidget {
             ),
             DataColumn(
               label: Text(
-                '記録日',
+                '合計ポイント数',
                 style: TextStyle(fontSize: 24),
               ),
             ),
           ],
-          rows: studentProvider.eval != null
-              ? studentProvider.eval
+          rows: studentProvider.sumList != null
+              ? studentProvider.sumList
                   .map(
                     (item) => DataRow(
                       cells: [
                         DataCell(
                           Text(
-                            item.title != null ? item.title : "",
+                            item.id != null ? item.id.toString() : "",
+                            style: TextStyle(fontSize: 22),
+                          ),
+                          onTap: () {},
+                        ),
+                        DataCell(
+                          Text(
+                            item.title,
                             style: TextStyle(fontSize: 22),
                           ),
                           onTap: () {},
@@ -262,13 +253,6 @@ class AdminEvaluationInfo extends StatelessWidget {
                         DataCell(
                           Text(
                             item.point.toString(),
-                            style: TextStyle(fontSize: 22),
-                          ),
-                          onTap: () {},
-                        ),
-                        DataCell(
-                          Text(
-                            item.createTime,
                             style: TextStyle(fontSize: 22),
                           ),
                         ),

@@ -35,7 +35,10 @@ class HomeRoomProvider with ChangeNotifier {
 
 //todo: service層に処理を移す
   void registHomeRoom(
-      String grade, String lectureClass, List<String> seatData) async {
+    String grade,
+    String lectureClass,
+    List<String> seatData,
+  ) async {
     var homeroomID = await _homeRoomService.createHomeRoom(grade, lectureClass);
     for (var i = 0; i < config.seatNum; i++) {
       await _seatService.insertSeatData(homeroomID, seatData[i]);

@@ -27,7 +27,15 @@ class ClassRoomSeatView extends StatelessWidget {
     // ポイントの名前
     var title = valuationProvider
         .getEvaluationSelect[valuationProvider.currentTypeID].title;
+    var typeID = valuationProvider.currentTypeID + 1;
+
     return GestureDetector(
+      onDoubleTap: () {
+        valuationProvider.evaluation(studentID, typeID, 0);
+        var text = name + "さんに" + title + "のチェックを付けました";
+        Scaffold.of(context)
+            .showSnackBar(_commonSnackBar(text, Colors.yellowAccent, 28));
+      },
       onPanUpdate: (details) {
         valuationProvider.x = details.delta.dx;
         valuationProvider.y = details.delta.dy;
@@ -39,27 +47,25 @@ class ClassRoomSeatView extends StatelessWidget {
 
           //下にスワイプ
           if (y > x.abs()) {
-            var typeID = valuationProvider.currentTypeID + 1;
             valuationProvider.evaluation(studentID, typeID, -1);
             var text = name + "さんの" + title + "ポイントを下げました";
             Scaffold.of(context)
-                .showSnackBar(commonSnackBar(text, Colors.redAccent, 28));
+                .showSnackBar(_commonSnackBar(text, Colors.redAccent, 28));
           }
 
           //上にスワイプ
           if (y < -x.abs()) {
-            var typeID = valuationProvider.currentTypeID + 1;
             valuationProvider.evaluation(studentID, typeID, 1);
             var text = name + "さんに" + title + "ポイントを付与しました";
             Scaffold.of(context)
-                .showSnackBar(commonSnackBar(text, Colors.greenAccent, 28));
+                .showSnackBar(_commonSnackBar(text, Colors.greenAccent, 28));
           }
 
           //左にスワイプ
           if (x < -y.abs()) {
             valuationProvider.changeTypeLeft();
             Scaffold.of(context).showSnackBar(
-              commonSnackBar(
+              _commonSnackBar(
                 valuationProvider
                     .getEvaluationSelect[valuationProvider.currentTypeID].title,
                 Colors.yellowAccent,
@@ -67,12 +73,12 @@ class ClassRoomSeatView extends StatelessWidget {
               ),
             );
           }
-          
+
           //右にスワイプ
           if (x > y.abs()) {
             valuationProvider.changeTypeRight();
             Scaffold.of(context).showSnackBar(
-              commonSnackBar(
+              _commonSnackBar(
                 valuationProvider
                     .getEvaluationSelect[valuationProvider.currentTypeID].title,
                 Colors.yellowAccent,
@@ -102,7 +108,7 @@ class ClassRoomSeatView extends StatelessWidget {
   }
 }
 
-SnackBar commonSnackBar(String text, Color color, double fontSize) {
+SnackBar _commonSnackBar(String text, Color color, double fontSize) {
   return SnackBar(
     content: Container(
       height: 120,
