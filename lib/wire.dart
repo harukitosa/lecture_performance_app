@@ -50,7 +50,10 @@ EvaluationService initEvaluationAPI() {
 
 EvaluationTypeService initEvaluationTypeAPI() {
   var _evaluationTypeRepository = new EvaluationTypeRepository();
+  var _evaluationRepository = new EvaluationRepository();
   var _evaluationService = new EvaluationTypeService(
-      evaluationTypeRepository: _evaluationTypeRepository);
+      evaluationTypeRepository: _evaluationTypeRepository,
+      evaluationRepository: _evaluationRepository,
+  );
   return _evaluationService;
 }

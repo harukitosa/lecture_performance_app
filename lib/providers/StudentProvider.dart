@@ -17,6 +17,7 @@ class StudentProvider with ChangeNotifier {
     getStudent(studentID);
     getLatest(studentID);
     getStudentEvaluation(studentID);
+    getEvaluationSum(studentID);
     notifyListeners();
   }
 
@@ -31,6 +32,8 @@ class StudentProvider with ChangeNotifier {
   List<Evaluation> get eval => _eval;
   List<Evaluation> _latest;
   List<Evaluation> get latest => _latest;
+  List<SumEvaluationType> _sumList;
+  List<SumEvaluationType> get sumList => _sumList; 
 
   void getAllEvaluationType() async {
     await _evaluationTypeService
@@ -58,6 +61,11 @@ class StudentProvider with ChangeNotifier {
     await _evaluationService
         .getStudentSemester(studentID)
         .then((res) => (_eval = res));
+    notifyListeners();
+  }
+
+  void getEvaluationSum(int studentID) async {
+    await _evaluationTypeService.getEvaluationSum(studentID).then((res) => (_sumList = res));
     notifyListeners();
   }
 }
