@@ -12,7 +12,7 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text("クラス一覧"),
       ),
       body: MultiProvider(
         providers: [
