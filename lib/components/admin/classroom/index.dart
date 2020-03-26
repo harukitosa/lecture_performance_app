@@ -124,6 +124,7 @@ class StudentTable extends StatelessWidget {
     final AdminClassRoomArgument args =
         ModalRoute.of(context).settings.arguments;
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+    classRoomProvider.getStudentData(args.homeRoom.id);
     return ListView(
       children: <Widget>[
         Center(

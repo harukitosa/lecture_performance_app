@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/components/admin/edit/editStudent.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/StudentProvider.dart';
 import 'package:provider/provider.dart';
@@ -37,18 +38,24 @@ class AdminStudentDetail extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            EditStudent.routeName,
+            arguments: EditStudentArgument(studentID: args.studentID),
+          );
+        },
         tooltip: 'Increment',
         label: Padding(
           padding: EdgeInsets.all(12.0),
           child: Text(
-            '管理画面',
+            '生徒情報変更',
             style: TextStyle(
               fontSize: 22,
             ),
           ),
         ),
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.blueAccent,
       ),
     );
   }
@@ -82,10 +89,14 @@ class AdminStudentView extends StatelessWidget {
 class AdminLatestEvaluationInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final AdminStudentDetailArgument args =
+        ModalRoute.of(context).settings.arguments;
     final studentProvider = Provider.of<StudentProvider>(context);
+    studentProvider.getStudent(args.studentID);
     return ListView(
       children: <Widget>[
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(8.0),

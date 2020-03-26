@@ -33,7 +33,57 @@ class StudentProvider with ChangeNotifier {
   List<Evaluation> _latest;
   List<Evaluation> get latest => _latest;
   List<SumEvaluationType> _sumList;
-  List<SumEvaluationType> get sumList => _sumList; 
+  List<SumEvaluationType> get sumList => _sumList;
+
+// 生徒編集用の変数
+  String _name = "";
+  String get name => _name;
+  set setName(String name) => _name = name;
+// 生徒編集用の変数
+  String _number = "";
+  String get number => _number;
+  set setNumber(String number) => _number = number;
+
+  void handleChangeName(String e) {
+    _name = e;
+    notifyListeners();
+  }
+
+  void handleChangeNum(String e) {
+    _number = e;
+    notifyListeners();
+  }
+
+  void updateStudent() async {
+    int _n;
+    bool err = false;
+    try {
+      _n = int.parse(number.toString());
+    } catch (exception) {
+      _n = 0;
+      err = true;
+    }
+    if (!err) {
+      await _studentService.editstudent(
+        student.id,
+        student.homeRoomID,
+        student.positionNum,
+        name,
+        _n,
+        student.createTime,
+      );
+      // _student = new Student(
+      //   id: student.id,
+      //   homeRoomID: student.homeRoomID,
+      //   positionNum: student.positionNum,
+      //   name: name,
+      //   number: _n,
+      //   createTime: student.createTime,
+      //   updateTime: student.updateTime,
+      // );
+    }
+    notifyListeners();
+  }
 
   void getAllEvaluationType() async {
     await _evaluationTypeService
@@ -49,11 +99,15 @@ class StudentProvider with ChangeNotifier {
 
   void getStudent(int studentID) async {
     await _studentService.getStudent(studentID).then((res) => (_student = res));
+    setName = _student.name;
+    setNumber = _student.number.toString();
     notifyListeners();
   }
 
   void getLatest(int studentID) async {
-    await _evaluationService.getLatestStudent(studentID).then((res) => (_latest = res));
+    await _evaluationService
+        .getLatestStudent(studentID)
+        .then((res) => (_latest = res));
     notifyListeners();
   }
 
@@ -65,7 +119,9 @@ class StudentProvider with ChangeNotifier {
   }
 
   void getEvaluationSum(int studentID) async {
-    await _evaluationTypeService.getEvaluationSum(studentID).then((res) => (_sumList = res));
+    await _evaluationTypeService
+        .getEvaluationSum(studentID)
+        .then((res) => (_sumList = res));
     notifyListeners();
   }
 }
