@@ -86,20 +86,20 @@ class ClassRoomSeatView extends StatelessWidget {
               ),
             );
           }
+          
           valuationProvider.x = 0.0;
           valuationProvider.y = 0.0;
         }
       },
-      child: Padding(
-        padding: EdgeInsets.all(4.0),
-        child: Container(
-          color: flag == "true" ? Colors.blue : Colors.grey,
-          child: Center(
-            child: Text(
-              name.length > 5 ? name.substring(0, 5) : name,
-              style: TextStyle(
-                fontSize: 28,
-              ),
+      child: Container(
+        margin: EdgeInsets.all(4.0),
+        color: flag == "true" ? Colors.blue : Colors.grey,
+        child: Center(
+          child: Text(
+            // 五文字以上なら先頭五文字のみ出力
+            name.length > 5 ? name.substring(0, 5) : name,
+            style: TextStyle(
+              fontSize: 28,
             ),
           ),
         ),
