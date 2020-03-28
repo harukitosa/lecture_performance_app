@@ -39,9 +39,7 @@ class EditStudent extends StatelessWidget {
   }
 }
 
-
 class EditStudentView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final studentProvider = Provider.of<StudentProvider>(context);
@@ -51,13 +49,12 @@ class EditStudentView extends StatelessWidget {
         height: 600,
         padding: EdgeInsets.all(16.0),
         margin: EdgeInsets.all(60.0),
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(width: 1.0, color: Color(0xFFFFDFDFDF)),
-            left: BorderSide(width: 1.0, color: Color(0xFFFFDFDFDF)),
-            right: BorderSide(width: 1.0, color: Color(0xFFFF7F7F7F)),
-            bottom: BorderSide(width: 1.0, color: Color(0xFFFF7F7F7F)),
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1.0,
+            color: Color(0xFFFFaFaFaF),
           ),
+          borderRadius: BorderRadius.circular(30),
         ),
         child: Column(
           children: <Widget>[
@@ -68,6 +65,7 @@ class EditStudentView extends StatelessWidget {
                 size: 90.0,
               ),
             ),
+            Text('生徒情報編集'),
             studentProvider.student != null
                 ? Container(
                     padding: EdgeInsets.all(16.0),
@@ -75,11 +73,6 @@ class EditStudentView extends StatelessWidget {
                       decoration: InputDecoration(labelText: '名前'),
                       initialValue: studentProvider.student.name,
                       onChanged: studentProvider.handleChangeName,
-                      // validator: (value) {
-                      //   if (value.isEmpty) {
-                      //     return 'Please enter your first name.';
-                      //   }
-                      // },
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -93,11 +86,6 @@ class EditStudentView extends StatelessWidget {
                       decoration: InputDecoration(labelText: '出席番号'),
                       initialValue: studentProvider.student.number.toString(),
                       onChanged: studentProvider.handleChangeNum,
-                      // validator: (value) {
-                      //   if (value.isEmpty) {
-                      //     return 'Please enter your first name.';
-                      //   }
-                      // },
                       style: TextStyle(
                         fontSize: 24,
                       ),
