@@ -102,7 +102,10 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Text(
                 studentProvider.student != null
-                    ? '名前:' + studentProvider.student.name
+                    ? '名前:' +
+                        studentProvider.student.lastName +
+                        " " +
+                        studentProvider.student.firstName
                     : "NOT NAME",
                 style: TextStyle(
                   fontSize: 32,

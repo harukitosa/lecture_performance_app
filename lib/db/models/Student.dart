@@ -1,7 +1,8 @@
 class Student {
   final int id;
   final int homeRoomID;
-  final String name;
+  final String firstName;
+  final String lastName;
   final int number;
   int positionNum;
   final String createTime;
@@ -10,7 +11,8 @@ class Student {
   Student({
     this.id,
     this.homeRoomID,
-    this.name,
+    this.firstName,
+    this.lastName,
     this.number,
     this.positionNum,
     this.createTime,
@@ -20,7 +22,8 @@ class Student {
   factory Student.fromMap(Map<String, dynamic> json) => new Student(
         id: json["id"],
         homeRoomID: json["homeroom_id"],
-        name: json["name"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
         number: json["number"],
         positionNum: json["position_num"],
         createTime: json["created_at"],
@@ -30,7 +33,8 @@ class Student {
   Map<String, dynamic> toMapNew() {
     return {
       'id': id,
-      'name': name,
+      'first_name': firstName,
+      'last_name': lastName,
       'number': number,
       'position_num': positionNum,
       'homeroom_id': homeRoomID,

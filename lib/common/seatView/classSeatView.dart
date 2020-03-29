@@ -86,7 +86,7 @@ class ClassRoomSeatView extends StatelessWidget {
               ),
             );
           }
-          
+
           valuationProvider.x = 0.0;
           valuationProvider.y = 0.0;
         }

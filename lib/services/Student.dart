@@ -16,7 +16,8 @@ class StudentService {
 
   Future<int> createstudent(
     int homeRoomID,
-    String name,
+    String firstName,
+    String lastName,
     int number,
   ) async {
     var students = await studentRepository.getThisRoomStudent(homeRoomID);
@@ -29,7 +30,8 @@ class StudentService {
     }
     var student = new Student(
         homeRoomID: homeRoomID,
-        name: name,
+        firstName: firstName,
+        lastName: lastName,
         positionNum: maxPosition + 1,
         number: number);
     var id = studentRepository.insertStudent(student);
@@ -40,7 +42,8 @@ class StudentService {
     int id,
     int homeRoomID,
     int positionNum,
-    String name,
+    String firstName,
+    String lastName,
     int number,
     String createTime,
   ) {
@@ -49,7 +52,8 @@ class StudentService {
       homeRoomID: homeRoomID,
       positionNum: positionNum,
       number: number,
-      name: name,
+      firstName: firstName,
+      lastName: lastName,
       createTime: createTime,
       updateTime: getNowTime(),
     );

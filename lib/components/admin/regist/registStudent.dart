@@ -5,7 +5,6 @@ import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudents.dart';
-import 'package:flutter/services.dart';
 
 //routerで渡される値
 class RegistStudentArgument {
@@ -74,15 +73,25 @@ class RegistStudentForm extends StatefulWidget {
 }
 
 class _RegistStudentFormState extends State<RegistStudentForm> {
-  String _name = '';
+  String _firstName = '';
+  String _lastName = '';
   String _number = '';
   int id;
   bool _validation = false;
 
-  void _handleName(String e) {
+  void _handleFirstName(String e) {
     setState(() {
-      _name = e;
-      if (_name != "" && _number != "") {
+      _firstName = e;
+      if (_firstName != "" && _number != "") {
+        _validation = false;
+      }
+    });
+  }
+
+  void _handleLastName(String e) {
+    setState(() {
+      _lastName = e;
+      if (_lastName != "" && _number != "" && _firstName != "") {
         _validation = false;
       }
     });
@@ -91,7 +100,7 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
   void _handleNumber(String e) {
     setState(() {
       _number = e;
-      if (_name != "" && _number != "") {
+      if (_firstName != "" && _number != "" && _lastName != "") {
         _validation = false;
       }
     });
@@ -130,11 +139,21 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
                 Container(
                   padding: EdgeInsets.all(16.0),
                   child: TextFormField(
-                    decoration: InputDecoration(labelText: '名前'),
+                    decoration: InputDecoration(labelText: '姓'),
                     style: TextStyle(
                       fontSize: 24,
                     ),
-                    onChanged: _handleName,
+                    onChanged: _handleLastName,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: '名'),
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                    onChanged: _handleFirstName,
                   ),
                 ),
                 Container(
@@ -159,7 +178,9 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
                   padding: EdgeInsets.all(16.0),
                   child: RaisedButton(
                     onPressed: () async {
-                      if (_name == "" || _number == "") {
+                      if (_firstName == "" ||
+                          _number == "" ||
+                          _lastName == "") {
                         setState(() {
                           _validation = true;
                         });
@@ -167,7 +188,8 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
                         classRoomProvider.registStudentData(
                           args.homeRoom.id,
                           int.parse(_number),
-                          _name,
+                          _firstName,
+                          _lastName,
                         );
                         confirmPopUp(context, AdminClassRoom.routeName);
                       }

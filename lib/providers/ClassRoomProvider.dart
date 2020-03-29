@@ -56,7 +56,8 @@ class ClassRoomProvider with ChangeNotifier {
     if (_seatArrange != -1) {
       var a = new Student(
         id: studentList[index].id,
-        name: studentList[index].name,
+        firstName: studentList[index].firstName,
+        lastName: studentList[index].lastName,
         createTime: studentList[index].createTime,
         number: studentList[index].number,
         positionNum: studentList[_seatArrange].positionNum,
@@ -65,7 +66,8 @@ class ClassRoomProvider with ChangeNotifier {
 
       var b = new Student(
         id: studentList[_seatArrange].id,
-        name: studentList[_seatArrange].name,
+        firstName: studentList[_seatArrange].firstName,
+        lastName: studentList[_seatArrange].lastName,
         createTime: studentList[_seatArrange].createTime,
         number: studentList[_seatArrange].number,
         positionNum: studentList[index].positionNum,
@@ -79,7 +81,8 @@ class ClassRoomProvider with ChangeNotifier {
         a.id,
         a.homeRoomID,
         a.positionNum,
-        a.name,
+        a.firstName,
+        a.lastName,
         a.number,
         a.createTime,
       );
@@ -87,7 +90,8 @@ class ClassRoomProvider with ChangeNotifier {
         b.id,
         b.homeRoomID,
         b.positionNum,
-        b.name,
+        b.firstName,
+        b.lastName,
         b.number,
         b.createTime,
       );
@@ -128,8 +132,18 @@ class ClassRoomProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> registStudentData(int homeRoomID, int number, String name) async {
-    await _studentService.createstudent(homeRoomID, name, number);
+  Future<void> registStudentData(
+    int homeRoomID,
+    int number,
+    String firstName,
+    String lastName,
+  ) async {
+    await _studentService.createstudent(
+      homeRoomID,
+      firstName,
+      lastName,
+      number,
+    );
     notifyListeners();
   }
 }

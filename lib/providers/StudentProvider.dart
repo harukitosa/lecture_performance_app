@@ -36,16 +36,25 @@ class StudentProvider with ChangeNotifier {
   List<SumEvaluationType> get sumList => _sumList;
 
 // 生徒編集用の変数
-  String _name = "";
-  String get name => _name;
-  set setName(String name) => _name = name;
+  String _firstName = "";
+  String get firstName => _firstName;
+  set setFirstName(String firstName) => _firstName = firstName;
+  // 生徒編集用の変数
+  String _lastName = "";
+  String get lastName => _lastName;
+  set setLastName(String lastName) => _lastName = lastName;
 // 生徒編集用の変数
   String _number = "";
   String get number => _number;
   set setNumber(String number) => _number = number;
 
-  void handleChangeName(String e) {
-    _name = e;
+  void handleChangeFirstName(String e) {
+    _firstName = e;
+    notifyListeners();
+  }
+
+  void handleChangeLastName(String e) {
+    _lastName = e;
     notifyListeners();
   }
 
@@ -68,19 +77,11 @@ class StudentProvider with ChangeNotifier {
         student.id,
         student.homeRoomID,
         student.positionNum,
-        name,
+        _firstName,
+        _lastName,
         _n,
         student.createTime,
       );
-      // _student = new Student(
-      //   id: student.id,
-      //   homeRoomID: student.homeRoomID,
-      //   positionNum: student.positionNum,
-      //   name: name,
-      //   number: _n,
-      //   createTime: student.createTime,
-      //   updateTime: student.updateTime,
-      // );
     }
     notifyListeners();
   }
@@ -99,7 +100,8 @@ class StudentProvider with ChangeNotifier {
 
   void getStudent(int studentID) async {
     await _studentService.getStudent(studentID).then((res) => (_student = res));
-    setName = _student.name;
+    setFirstName = _student.firstName;
+    setLastName = _student.lastName;
     setNumber = _student.number.toString();
     notifyListeners();
   }

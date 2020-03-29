@@ -124,7 +124,7 @@ class StudentTable extends StatelessWidget {
     final AdminClassRoomArgument args =
         ModalRoute.of(context).settings.arguments;
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    classRoomProvider.getStudentData(args.homeRoom.id);
+    // classRoomProvider.getStudentData(args.homeRoom.id);
     return ListView(
       children: <Widget>[
         Center(
@@ -175,7 +175,7 @@ class StudentTable extends StatelessWidget {
                         ),
                         DataCell(
                           Text(
-                            student.name,
+                            student.lastName,
                             style: TextStyle(fontSize: 22),
                           ),
                           onTap: () {

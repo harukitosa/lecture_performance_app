@@ -103,15 +103,17 @@ class _InputFormState extends State<_InputForm> {
         onPressed: () async {
           List data = fileText.replaceAll('\n', ',').split(',');
           print(data);
-          for (var i = 0; i < data.length; i += 2) {
-            // print("name" + data[i]);
-            // print("num" + data[i + 1]);
+          for (var i = 0; i < data.length; i += 3) {
+            print("num" + data[i]);
+            print("lastName" + data[i + 1]);
+            print("firstName" + data[i + 2]);
             try {
               var num = int.parse(data[i + 1]);
               await classRoomProvider.registStudentData(
                 args.homeRoom.id,
                 num,
-                data[i],
+                data[i + 2],
+                data[i + 1],
               );
             } catch (exception) {}
           }

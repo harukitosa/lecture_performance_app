@@ -155,6 +155,7 @@ class SeatMap extends StatelessWidget {
     int _studentID = 0;
     int _indexCount = 0;
     int _positionNum = 0;
+    String _viewSeat = "false";
     return Padding(
       padding: EdgeInsets.only(top: 40.0),
       child: GridView.builder(
@@ -173,10 +174,11 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2.4,
         ),
         itemBuilder: (context, index) {
-          if (classRoomProvider.viewSeat[index].used == "true") {
+          if (classRoomProvider.viewSeat[index] != null &&
+              classRoomProvider.viewSeat[index].used == "true") {
             _name = classRoomProvider.studentList != null
                 ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider.studentList[index - _indexCount].name
+                    ? classRoomProvider.studentList[index - _indexCount].lastName
                     : ""
                 : "";
 
@@ -191,6 +193,11 @@ class SeatMap extends StatelessWidget {
                         .studentList[index - _indexCount].positionNum
                     : -1
                 : -1;
+            _viewSeat = classRoomProvider.viewSeat != null
+                ? classRoomProvider.viewSeat.length != 0
+                    ? classRoomProvider.viewSeat[index].used
+                    : "false"
+                : "false";
           } else {
             _indexCount++;
             _name = "";
@@ -198,11 +205,7 @@ class SeatMap extends StatelessWidget {
             _studentID = -1;
           }
           return ClassRoomSeatView(
-            classRoomProvider.viewSeat != null
-                ? classRoomProvider.viewSeat.length != 0
-                    ? classRoomProvider.viewSeat[index].used
-                    : false
-                : false,
+            _viewSeat,
             index,
             _name,
             true,

@@ -66,7 +66,8 @@ _createTransaction(Database db) async {
       CREATE TABLE student(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         homeroom_id INTEGER,
-        name TEXT,
+        first_name TEXT,
+        last_name TEXT,
         position_num INTEGER,
         number INTEGER,
         created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
@@ -128,7 +129,7 @@ _insertSeatTransaction(Database db) async {
     }
     for (var i = 0; i < config.seatNum; i++) {
       await txn.rawInsert('''
-          INSERT INTO student(homeroom_id, name, position_num, number) VALUES($id, $i, $i, $i)
+          INSERT INTO student(homeroom_id, first_name, last_name, position_num, number) VALUES($id, $i, $i, $i, $i)
         ''');
     }
     await txn.rawInsert('''

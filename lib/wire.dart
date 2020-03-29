@@ -1,15 +1,12 @@
-import 'package:lecture_performance_app/db/models/EvaluationType.dart';
 import 'package:lecture_performance_app/repositories/Evaluation.dart';
 import 'package:lecture_performance_app/repositories/EvaluationType.dart';
 import 'package:lecture_performance_app/repositories/Seat.dart';
 import 'package:lecture_performance_app/repositories/Student.dart';
-import 'package:lecture_performance_app/repositories/semester.dart';
 import 'package:lecture_performance_app/services/Evaluation.dart';
 import 'package:lecture_performance_app/services/EvaluationType.dart';
 import 'package:lecture_performance_app/services/HomeRoom.dart';
 import 'package:lecture_performance_app/repositories/HomeRoom.dart';
 import 'package:lecture_performance_app/services/Seat.dart';
-import 'package:lecture_performance_app/services/Semester.dart';
 import 'package:lecture_performance_app/services/Student.dart';
 
 HomeRoomService initHomeRoomAPI() {
