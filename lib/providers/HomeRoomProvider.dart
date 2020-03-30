@@ -33,11 +33,13 @@ class HomeRoomProvider with ChangeNotifier {
 
   void getAllHomeRoom() async {
     await _homeRoomService.getAllHomeRoom().then((res) => (_homeRoom = res));
-    if (_homeRoom.isNotEmpty) {
-      await _seatService
-          .getThisRoomAllSeatData(_homeRoom[0].id)
-          .then((res) => (_currentSeat = res));
-    }
+    notifyListeners();
+  }
+
+  void getSeatData(int id) async {
+    await _seatService
+        .getThisRoomAllSeatData(id)
+        .then((res) => (_currentSeat = res));
     notifyListeners();
   }
 

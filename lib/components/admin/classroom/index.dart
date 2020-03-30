@@ -151,6 +151,7 @@ class SettingButtons extends StatelessWidget {
                   arguments: EditSeatArgument(
                     args.homeRoom.grade,
                     args.homeRoom.lectureClass,
+                    args.homeRoom.id,
                   ),
                 );
               },
@@ -216,7 +217,7 @@ class StudentTable extends StatelessWidget {
                         ),
                         DataCell(
                           Text(
-                            student.lastName,
+                            student.lastName + " " + student.firstName,
                             style: TextStyle(fontSize: 22),
                           ),
                           onTap: () {

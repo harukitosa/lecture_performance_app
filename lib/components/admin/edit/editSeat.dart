@@ -6,7 +6,8 @@ import 'package:lecture_performance_app/config/DataConfig.dart';
 class EditSeatArgument {
   final String grade;
   final String lectureClass;
-  EditSeatArgument(this.grade, this.lectureClass);
+  final int homeRoomID;
+  EditSeatArgument(this.grade, this.lectureClass, this.homeRoomID);
 }
 
 class EditSeat extends StatelessWidget {
@@ -30,6 +31,7 @@ class EditSeat extends StatelessWidget {
               child: EditSeatMap(
                 grade: arg.grade,
                 lectureClass: arg.lectureClass,
+                id: arg.homeRoomID,
               ),
             );
           },
@@ -42,11 +44,12 @@ class EditSeat extends StatelessWidget {
 class EditSeatMap extends StatelessWidget {
   final String grade;
   final String lectureClass;
-  EditSeatMap({this.grade, this.lectureClass});
+  final int id;
+  EditSeatMap({this.grade, this.lectureClass, this.id});
   @override
   Widget build(BuildContext context) {
-    // final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
-
+    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+    homeRoomProvider.getSeatData(id);
     return Center(
       child: Column(
         children: <Widget>[

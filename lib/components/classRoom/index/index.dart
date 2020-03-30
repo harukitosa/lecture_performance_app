@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/admin/classroom/index.dart';
+import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:lecture_performance_app/providers/ValuationProvider.dart';
@@ -14,6 +15,7 @@ class ClassRoomArgument {
 
 class ClassRoom extends StatelessWidget {
   static const routeName = '/class';
+  final config = AppStyle();
   @override
   Widget build(BuildContext context) {
     final ClassRoomArgument args = ModalRoute.of(context).settings.arguments;
@@ -64,11 +66,12 @@ class ClassRoom extends StatelessWidget {
           child: Text(
             '管理画面',
             style: TextStyle(
-              fontSize: 22,
+              fontSize: config.size4,
+              color: config.st,
             ),
           ),
         ),
-        backgroundColor: Colors.orange,
+        backgroundColor: config.pd,
       ),
     );
   }
@@ -78,69 +81,69 @@ class RegistSeatMap extends StatelessWidget {
   final String grade;
   final String lectureClass;
   final int homeRoomID;
+  final config = AppStyle();
   RegistSeatMap({this.grade, this.lectureClass, this.homeRoomID});
   @override
   Widget build(BuildContext context) {
     final valuationProvider = Provider.of<EvaluationProvider>(context);
+    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     return Column(
       children: <Widget>[
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: EdgeInsets.all(4.0),
-            child: Container(
-              width: 800,
-              color: Colors.white,
-              child: Center(
-                child: Text(
-                  valuationProvider.getEvaluationSelect != null
-                      ? valuationProvider
-                          .getEvaluationSelect[valuationProvider.currentTypeID]
-                          .title
-                      : "",
-                  style: TextStyle(
-                    fontSize: 32,
-                  ),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
+            Widget>[
+          Container(),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(100.0),
+              ),
+              color: config.s,
+            ),
+            width: 200,
+            child: Center(
+              child: Text(
+                valuationProvider.getEvaluationSelect != null
+                    ? valuationProvider
+                        .getEvaluationSelect[valuationProvider.currentTypeID]
+                        .title
+                    : "",
+                style: TextStyle(
+                  fontSize: config.size3,
+                  color: config.st,
                 ),
               ),
             ),
           ),
-        ),
-        Expanded(
-          flex: 20,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 1000.0, maxWidth: 1200),
-            child: Container(
-              height: 100,
-              child: SeatMap(
-                homeRoomID: homeRoomID,
-              ),
+        ]),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: 800.0,
+            maxWidth: classRoomProvider.viewWidth == null
+                ? 700.0
+                : (classRoomProvider.viewWidth * 170).toDouble(),
+          ),
+          child: Container(
+            child: SeatMap(
+              homeRoomID: homeRoomID,
             ),
           ),
         ),
-        Expanded(
-          flex: 3,
-          child: Padding(
-            padding: EdgeInsets.only(top: 20.0),
-            child: Container(
-              width: 200,
-              height: 50,
-              color: Colors.brown,
-              child: Center(
-                child: Text(
-                  "教卓",
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.white,
-                  ),
+        Padding(
+          padding: EdgeInsets.only(top: 20.0),
+          child: Container(
+            width: 200,
+            height: 50,
+            color: Colors.brown,
+            child: Center(
+              child: Text(
+                "教卓",
+                style: TextStyle(
+                  fontSize: 32,
+                  color: Colors.white,
                 ),
               ),
             ),
           ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(),
         ),
       ],
     );
@@ -154,6 +157,7 @@ class SeatMap extends StatelessWidget {
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     classRoomProvider.getStudentData(homeRoomID);
+    classRoomProvider.getSeatData(homeRoomID);
     String _name = "";
     int _studentID = 0;
     int _indexCount = 0;
@@ -183,8 +187,8 @@ class SeatMap extends StatelessWidget {
                 ? classRoomProvider.studentList.length > index - _indexCount
                     ? classRoomProvider
                         .studentList[index - _indexCount].lastName
-                    : "non data"
-                : "non data";
+                    : ""
+                : "";
 
             _studentID = classRoomProvider.studentList != null
                 ? classRoomProvider.studentList.length > index - _indexCount
