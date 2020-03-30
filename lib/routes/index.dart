@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
 import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
+import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
 import 'package:lecture_performance_app/components/admin/edit/editStudent.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudents.dart';
@@ -32,6 +33,7 @@ class App extends StatelessWidget {
         RegistStudent.routeName: (_) => RegistStudent(),
         RegistStudents.routeName: (_) => RegistStudents(),
         EditStudent.routeName: (_) => EditStudent(),
+        EditSeat.routeName: (_) => EditSeat(),
         ClassRoom.routeName: (_) => ClassRoom(),
       },
     );
