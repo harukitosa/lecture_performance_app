@@ -118,7 +118,7 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    // classRoomProvider.getStudentData(homeRoomID);
+    classRoomProvider.getStudentData(homeRoomID);
     String _name = "";
     int _studentID = 0;
     int _indexCount = 0;

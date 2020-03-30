@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
 import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
+import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
+import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,7 @@ class AdminClassRoomArgument {
 
 class AdminClassRoom extends StatelessWidget {
   static const routeName = '/admin/homeroom';
+  final config = AppStyle();
   @override
   Widget build(BuildContext context) {
     final AdminClassRoomArgument args =
@@ -23,6 +26,10 @@ class AdminClassRoom extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 管理画面",
+          style: TextStyle(
+            fontSize: config.size4,
+            color: config.st,
+          ),
         ),
         actions: <Widget>[],
       ),
@@ -54,11 +61,12 @@ class AdminClassRoom extends StatelessWidget {
           child: Text(
             '生徒追加',
             style: TextStyle(
-              fontSize: 22,
+              fontSize: config.size4,
+              color: config.st,
             ),
           ),
         ),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: config.pd,
       ),
     );
   }
@@ -86,27 +94,67 @@ class SettingButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final AdminClassRoomArgument args =
         ModalRoute.of(context).settings.arguments;
+    final common = AppStyle();
 
     return Container(
-      child: Column(children: <Widget>[
-        Container(
-          height: 50,
-          width: 200,
-          child: RaisedButton(
-            child: Text("席替え"),
-            color: Colors.white,
-            shape: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                SeatArrange.routeName,
-                arguments: SeatArrangeArgument(
-                  args.homeRoom,
+      child: Row(children: <Widget>[
+        Expanded(
+          child: Container(
+            height: 100,
+            width: 200,
+            padding: EdgeInsets.all(8.0),
+            child: RaisedButton(
+              child: Text(
+                "席替え",
+                style: TextStyle(
+                  color: common.st,
+                  fontSize: common.size4,
                 ),
-              );
-            },
+              ),
+              color: common.s,
+              shape: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  SeatArrange.routeName,
+                  arguments: SeatArrangeArgument(
+                    args.homeRoom,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            height: 100,
+            width: 200,
+            padding: EdgeInsets.all(8.0),
+            child: RaisedButton(
+              child: Text(
+                "座席位置変更",
+                style: TextStyle(
+                  color: common.st,
+                  fontSize: common.size4,
+                ),
+              ),
+              color: common.sl,
+              shape: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  EditSeat.routeName,
+                  arguments: EditSeatArgument(
+                    args.homeRoom.grade,
+                    args.homeRoom.lectureClass,
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ]),
@@ -124,15 +172,8 @@ class StudentTable extends StatelessWidget {
     final AdminClassRoomArgument args =
         ModalRoute.of(context).settings.arguments;
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    // classRoomProvider.getStudentData(args.homeRoom.id);
     return ListView(
       children: <Widget>[
-        Center(
-          child: Text(
-            '生徒名簿',
-            style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
-          ),
-        ),
         SettingButtons(),
         DataTable(
           sortAscending: classRoomProvider.sort,

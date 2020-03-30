@@ -109,9 +109,12 @@ class RegistSeatMap extends StatelessWidget {
         Expanded(
           flex: 20,
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 1000.0),
-            child: SeatMap(
-              homeRoomID: homeRoomID,
+            constraints: BoxConstraints(maxHeight: 1000.0, maxWidth: 1200),
+            child: Container(
+              height: 100,
+              child: SeatMap(
+                homeRoomID: homeRoomID,
+              ),
             ),
           ),
         ),
@@ -171,16 +174,17 @@ class SeatMap extends StatelessWidget {
               : classRoomProvider.viewWidth,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
-          childAspectRatio: 2.4,
+          childAspectRatio: 2,
         ),
         itemBuilder: (context, index) {
           if (classRoomProvider.viewSeat[index] != null &&
               classRoomProvider.viewSeat[index].used == "true") {
             _name = classRoomProvider.studentList != null
                 ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider.studentList[index - _indexCount].lastName
-                    : ""
-                : "";
+                    ? classRoomProvider
+                        .studentList[index - _indexCount].lastName
+                    : "non data"
+                : "non data";
 
             _studentID = classRoomProvider.studentList != null
                 ? classRoomProvider.studentList.length > index - _indexCount
@@ -203,6 +207,7 @@ class SeatMap extends StatelessWidget {
             _name = "";
             _positionNum = -1;
             _studentID = -1;
+            _viewSeat = "false";
           }
           return ClassRoomSeatView(
             _viewSeat,
