@@ -181,7 +181,8 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2,
         ),
         itemBuilder: (context, index) {
-          if (classRoomProvider.viewSeat[index] != null &&
+          if (classRoomProvider.viewSeat != null &&
+              classRoomProvider.viewSeat[index] != null &&
               classRoomProvider.viewSeat[index].used == "true") {
             _name = classRoomProvider.studentList != null
                 ? classRoomProvider.studentList.length > index - _indexCount

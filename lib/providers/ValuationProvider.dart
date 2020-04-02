@@ -4,7 +4,6 @@ import 'package:lecture_performance_app/db/models/EvaluationType.dart';
 import 'package:lecture_performance_app/services/Evaluation.dart';
 import 'package:lecture_performance_app/services/EvaluationType.dart';
 import 'package:lecture_performance_app/wire.dart';
-
 class EvaluationProvider with ChangeNotifier {
   EvaluationService _evaluationService;
   EvaluationTypeService _evaluationTypeService;

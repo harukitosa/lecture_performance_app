@@ -7,18 +7,23 @@ import 'package:lecture_performance_app/services/Student.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
 
-class SeatPosition {
-  double x, y;
+class DisplayBadge {
+  bool isShow;
+  String text;
+  Color color;
+  DisplayBadge({this.isShow, this.text, this.color});
 }
 
 class ClassRoomProvider with ChangeNotifier {
-  List<Seat> _mapSeat;
+  List<Seat> _mapSeat = [];
   List<Seat> get mapSeat => _mapSeat;
 
-  List<Seat> _viewSeat;
+  List<Seat> _viewSeat = [];
   List<Seat> get viewSeat => _viewSeat;
+  List<DisplayBadge> _seatBadge = [];
+  List<DisplayBadge> get seatBadge => _seatBadge;
 
-  List<Student> _studentList;
+  List<Student> _studentList = [];
   List<Student> get studentList => _studentList;
 
   bool _sort = false;
@@ -27,10 +32,6 @@ class ClassRoomProvider with ChangeNotifier {
   //* _seatArrange records index number
   int _seatArrange = -1;
   int get seatArrange => _seatArrange;
-
-  //* record position for animaiton
-  List<SeatPosition> _position;
-  List<SeatPosition> get pos => _position;
 
   //* _viewWidth records display seat width
   int _viewWidth;
@@ -52,6 +53,14 @@ class ClassRoomProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void badgeChange(index, color, text) {
+    _seatBadge[index].isShow = !_seatBadge[index].isShow;
+    _seatBadge[index].color = color;
+    _seatBadge[index].text = text;
+    notifyListeners();
+  }
+
+  /// 席替えの時に使用
   void seatArrangePointer(int index) {
     if (_seatArrange != -1) {
       var a = new Student(
@@ -115,10 +124,18 @@ class ClassRoomProvider with ChangeNotifier {
   void getSeatData(homeRoomID) async {
     await _seatService.getThisRoomAllSeatData(homeRoomID).then(
       (res) {
+        // 7*7の列
         _mapSeat = res;
+        // 表示するシートのみ
         var ans = calcSeatLen(_mapSeat);
         _viewSeat = ans.seat;
         _viewWidth = ans.width;
+        if (_seatBadge != []) {
+          for (var i = 0; i < _viewSeat.length; i++) {
+            DisplayBadge s = new DisplayBadge(isShow: false, color: Colors.red, text: "non");
+            _seatBadge.add(s);
+          }
+        }
       },
     );
     notifyListeners();
