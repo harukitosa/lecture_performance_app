@@ -70,9 +70,22 @@ class EditStudentView extends StatelessWidget {
                 ? Container(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: '名前'),
+                      decoration: InputDecoration(labelText: '姓'),
                       initialValue: studentProvider.student.lastName,
                       onChanged: studentProvider.handleChangeLastName,
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                  )
+                : Text('Now Loading'),
+            studentProvider.student != null
+                ? Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: '名前'),
+                      initialValue: studentProvider.student.firstName,
+                      onChanged: studentProvider.handleChangeFirstName,
                       style: TextStyle(
                         fontSize: 24,
                       ),

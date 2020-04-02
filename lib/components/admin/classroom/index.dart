@@ -45,28 +45,103 @@ class AdminClassRoom extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            RegistStudent.routeName,
-            arguments: RegistStudentArgument(
-              args.homeRoom,
-            ),
-          );
-        },
-        tooltip: 'Increment',
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          _FloatingButton(
+            route: () {
+              Navigator.pushNamed(
+                context,
+                RegistStudent.routeName,
+                arguments: RegistStudentArgument(
+                  args.homeRoom,
+                ),
+              );
+            },
+            title: "生徒追加",
+            heroName: "student",
+            fontSize: config.size4,
+            textColor: config.st,
+            backColor: config.sl,
+          ),
+          _FloatingButton(
+            route: () {
+              Navigator.pushNamed(
+                context,
+                EditSeat.routeName,
+                arguments: EditSeatArgument(
+                  args.homeRoom.grade,
+                  args.homeRoom.lectureClass,
+                  args.homeRoom.id,
+                ),
+              );
+            },
+            title: "座席位置変更",
+            heroName: "seat",
+            fontSize: config.size4,
+            textColor: config.st,
+            backColor: config.s,
+          ),
+          _FloatingButton(
+            route: () {
+              Navigator.pushNamed(
+                context,
+                SeatArrange.routeName,
+                arguments: SeatArrangeArgument(
+                  args.homeRoom,
+                ),
+              );
+            },
+            title: "席替え",
+            heroName: "changeSeat",
+            fontSize: config.size4,
+            textColor: config.st,
+            backColor: config.sd,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _FloatingButton extends StatelessWidget {
+
+  final VoidCallback route;
+  final String title;
+  final String heroName;
+  final double fontSize;
+  final Color textColor;
+  final Color backColor;
+  const _FloatingButton({
+    Key key,
+    @required this.route,
+    @required this.title,
+    @required this.heroName,
+    @required this.fontSize,
+    @required this.textColor,
+    @required this.backColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(4.0),
+      width: 200,
+      child: FloatingActionButton.extended(
+        tooltip: title,
+        heroTag: heroName,
         label: Padding(
           padding: EdgeInsets.all(12.0),
           child: Text(
-            '生徒追加',
+            title,
             style: TextStyle(
-              fontSize: config.size4,
-              color: config.st,
+              fontSize: fontSize,
+              color: textColor,
             ),
           ),
         ),
-        backgroundColor: config.pd,
+        backgroundColor: backColor,
+        onPressed: route,
       ),
     );
   }
@@ -89,80 +164,6 @@ class AdminStudentListView extends StatelessWidget {
   }
 }
 
-class SettingButtons extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final AdminClassRoomArgument args =
-        ModalRoute.of(context).settings.arguments;
-    final common = AppStyle();
-
-    return Container(
-      child: Row(children: <Widget>[
-        Expanded(
-          child: Container(
-            height: 100,
-            width: 200,
-            padding: EdgeInsets.all(8.0),
-            child: RaisedButton(
-              child: Text(
-                "席替え",
-                style: TextStyle(
-                  color: common.st,
-                  fontSize: common.size4,
-                ),
-              ),
-              color: common.s,
-              shape: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  SeatArrange.routeName,
-                  arguments: SeatArrangeArgument(
-                    args.homeRoom,
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            height: 100,
-            width: 200,
-            padding: EdgeInsets.all(8.0),
-            child: RaisedButton(
-              child: Text(
-                "座席位置変更",
-                style: TextStyle(
-                  color: common.st,
-                  fontSize: common.size4,
-                ),
-              ),
-              color: common.sl,
-              shape: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  EditSeat.routeName,
-                  arguments: EditSeatArgument(
-                    args.homeRoom.grade,
-                    args.homeRoom.lectureClass,
-                    args.homeRoom.id,
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ]),
-    );
-  }
-}
-
 class StudentTable extends StatelessWidget {
   final List<Student> studentList;
 
@@ -175,7 +176,6 @@ class StudentTable extends StatelessWidget {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     return ListView(
       children: <Widget>[
-        SettingButtons(),
         DataTable(
           sortAscending: classRoomProvider.sort,
           sortColumnIndex: 0,
