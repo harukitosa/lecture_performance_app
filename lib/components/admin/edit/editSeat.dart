@@ -93,7 +93,9 @@ class SeatMap extends StatelessWidget {
       padding: EdgeInsets.all(0.0),
       child: GridView.builder(
         shrinkWrap: true,
-        itemCount: homeRoomProvider.mapSeat.length,
+        itemCount: homeRoomProvider.currentSeat!= null
+            ? homeRoomProvider.currentSeat.length
+            : 0,
         physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -104,7 +106,9 @@ class SeatMap extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           return EditSeatView(
-            homeRoomProvider.currentSeat[index].used,
+            homeRoomProvider.currentSeat != null
+                ? homeRoomProvider.currentSeat[index].used
+                : "false",
             index,
             true,
           );
