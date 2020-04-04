@@ -51,20 +51,12 @@ class ClassRoom extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            AdminClassRoom.routeName,
-            arguments: AdminClassRoomArgument(
-              args.homeRoom,
-            ),
-          );
-        },
+        onPressed: () {},
         tooltip: 'Increment',
         label: Padding(
           padding: EdgeInsets.all(12.0),
           child: Text(
-            '管理画面',
+            'Undo',
             style: TextStyle(
               fontSize: config.size4,
               color: config.st,
@@ -85,36 +77,45 @@ class RegistSeatMap extends StatelessWidget {
   RegistSeatMap({this.grade, this.lectureClass, this.homeRoomID});
   @override
   Widget build(BuildContext context) {
-    final valuationProvider = Provider.of<EvaluationProvider>(context);
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+    final ClassRoomArgument args = ModalRoute.of(context).settings.arguments;
     return Column(
       children: <Widget>[
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
-            Widget>[
-          Container(),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(100.0),
-              ),
-              color: config.s,
-            ),
-            width: 200,
-            child: Center(
-              child: Text(
-                valuationProvider.getEvaluationSelect != null
-                    ? valuationProvider
-                        .getEvaluationSelect[valuationProvider.currentTypeID]
-                        .title
-                    : "",
-                style: TextStyle(
-                  fontSize: config.size3,
-                  color: config.st,
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(100.0),
+                  ),
+                  color: config.s,
+                ),
+                width: 200,
+                height: 50,
+                child: Center(
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        AdminClassRoom.routeName,
+                        arguments: AdminClassRoomArgument(
+                          args.homeRoom,
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "管理画面",
+                      style: TextStyle(
+                        fontSize: config.size4,
+                        color: config.st,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ]),
+            ]),
         ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: 800.0,

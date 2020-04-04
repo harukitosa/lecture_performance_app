@@ -6,6 +6,7 @@ import 'package:lecture_performance_app/services/Seat.dart';
 import 'package:lecture_performance_app/services/Student.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
+import 'dart:async';
 
 class DisplayBadge {
   bool isShow;
@@ -53,11 +54,13 @@ class ClassRoomProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void badgeChange(index, color, text) {
-    _seatBadge[index].isShow = !_seatBadge[index].isShow;
+  void badgeChange(index, color, text) async {
+    _seatBadge[index].isShow = !_seatBadge[index].isShow ;
     _seatBadge[index].color = color;
     _seatBadge[index].text = text;
-    notifyListeners();
+    await new Future.delayed(new Duration(seconds: 1));
+    _seatBadge[index].isShow = !_seatBadge[index].isShow ;
+    // notifyListeners();
   }
 
   /// 席替えの時に使用
@@ -132,7 +135,8 @@ class ClassRoomProvider with ChangeNotifier {
         _viewWidth = ans.width;
         if (_seatBadge != []) {
           for (var i = 0; i < _viewSeat.length; i++) {
-            DisplayBadge s = new DisplayBadge(isShow: false, color: Colors.red, text: "non");
+            DisplayBadge s =
+                new DisplayBadge(isShow: false, color: Colors.red, text: "non");
             _seatBadge.add(s);
           }
         }
