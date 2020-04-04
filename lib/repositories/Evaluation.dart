@@ -58,6 +58,7 @@ class EvaluationRepository {
     return list;
   }
 
+  // 最新10件の成績を返す
   Future<List<Evaluation>> getLatestStudent(int studentID) async {
     var db = await initDB();
     final List<Map<String, dynamic>> res = await db.query(

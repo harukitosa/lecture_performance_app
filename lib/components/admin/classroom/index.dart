@@ -105,7 +105,6 @@ class AdminClassRoom extends StatelessWidget {
 }
 
 class _FloatingButton extends StatelessWidget {
-
   final VoidCallback route;
   final String title;
   final String heroName;
@@ -203,7 +202,7 @@ class StudentTable extends StatelessWidget {
               ),
             ),
           ],
-          rows: studentList != null
+          rows: (studentList != null)
               ? studentList
                   .map(
                     (student) => DataRow(

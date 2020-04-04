@@ -36,19 +36,20 @@ class ClassRoomSeatView extends StatelessWidget {
         : 1;
 
     return GestureDetector(
-      // onDoubleTap: () {
-      //   valuationProvider.evaluation(studentID, typeID, 0);
-      //   var text = name + "さんにチェックを付けました";
-      //   Scaffold.of(context)
-      //       .showSnackBar(_commonSnackBar(text, Colors.yellowAccent, 28));
-      // },
+      onDoubleTap: () {
+        valuationProvider.evaluation(studentID, typeID + 1, -1);
+        var text = name + "さんの積極性ポイントを減らしました。";
+        classRoomProvider.badgeChange(index, Colors.redAccent, "-1pt");
+        Scaffold.of(context)
+            .showSnackBar(_commonSnackBar(text, Colors.redAccent, 28));
+      },
       onPanUpdate: (details) {
         valuationProvider.x = details.delta.dx;
         valuationProvider.y = details.delta.dy;
       },
       onLongPress: () {
         valuationProvider.evaluation(studentID, typeID, 0);
-        var text = name + "さんにチェックを付けました";
+        var text = name + "さんの回答にチェックを付けました";
         classRoomProvider.badgeChange(index, Colors.yellowAccent, "0pt");
         Scaffold.of(context)
             .showSnackBar(_commonSnackBar(text, Colors.yellowAccent, 28));
@@ -63,13 +64,13 @@ class ClassRoomSeatView extends StatelessWidget {
             valuationProvider.evaluation(studentID, typeID, -1);
             classRoomProvider.badgeChange(index, Colors.redAccent, "-1pt");
             Scaffold.of(context).showSnackBar(_commonSnackBar(
-                name + "さんに悪い答え、消極的ポイントを付与しました", Colors.redAccent, 28));
+                name + "さんの回答ポイントを減らしました", Colors.redAccent, 28));
           }
 
           //上にスワイプ
           if (y < -x.abs()) {
             valuationProvider.evaluation(studentID, typeID, 2);
-            var text = name + "さんにポイントを付与しました";
+            var text = name + "さんに回答ポイントを付与しました";
             classRoomProvider.badgeChange(index, Colors.greenAccent, "+2pt");
             Scaffold.of(context)
                 .showSnackBar(_commonSnackBar(text, Colors.greenAccent, 28));
@@ -77,7 +78,7 @@ class ClassRoomSeatView extends StatelessWidget {
 
           //左にスワイプ
           if (x < -y.abs()) {
-            valuationProvider.evaluation(studentID, typeID, 1);
+            valuationProvider.evaluation(studentID, typeID + 1, 1);
             classRoomProvider.badgeChange(index, Colors.greenAccent, "+1pt");
             Scaffold.of(context).showSnackBar(
               _commonSnackBar(
@@ -94,7 +95,7 @@ class ClassRoomSeatView extends StatelessWidget {
             classRoomProvider.badgeChange(index, Colors.greenAccent, "+1pt");
             Scaffold.of(context).showSnackBar(
               _commonSnackBar(
-                name + "さんに良い答えポイントを付与しました",
+                name + "さんに回答ポイントを付与しました",
                 Colors.greenAccent,
                 28,
               ),
