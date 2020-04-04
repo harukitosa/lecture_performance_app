@@ -133,16 +133,10 @@ _insertSeatTransaction(Database db) async {
         ''');
     }
     await txn.rawInsert('''
-      INSERT INTO evaluation_type(title) VALUES('いいね')
+      INSERT INTO evaluation_type(title) VALUES('回答')
     ''');
     await txn.rawInsert('''
-      INSERT INTO evaluation_type(title) VALUES('発言')
-    ''');
-    await txn.rawInsert('''
-      INSERT INTO evaluation_type(title) VALUES('発音')
-    ''');
-    await txn.rawInsert('''
-      INSERT INTO evaluation_type(title) VALUES('正解')
+      INSERT INTO evaluation_type(title) VALUES('積極性')
     ''');
   });
 }

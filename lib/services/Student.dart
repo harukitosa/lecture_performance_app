@@ -29,11 +29,12 @@ class StudentService {
       }
     }
     var student = new Student(
-        homeRoomID: homeRoomID,
-        firstName: firstName,
-        lastName: lastName,
-        positionNum: maxPosition + 1,
-        number: number);
+      homeRoomID: homeRoomID,
+      firstName: firstName,
+      lastName: lastName,
+      positionNum: maxPosition + 1,
+      number: number,
+    );
     var id = studentRepository.insertStudent(student);
     return id;
   }

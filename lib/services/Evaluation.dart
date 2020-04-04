@@ -33,6 +33,17 @@ class EvaluationService {
     return res;
   }
 
+  Future<int> getStudentSum(int studentID) async {
+    var res = await evaluationRepository.getStudentSemester(studentID);
+    int sum = 0;
+    if (res.isNotEmpty) {
+      res.forEach((Evaluation item) {
+        sum += item.point;
+      });
+    }
+    return sum;
+  }
+
   Future<int> createEvaluation(int studentID, int typeID, int point) {
     var evaluation = new Evaluation(
       studentID: studentID,
