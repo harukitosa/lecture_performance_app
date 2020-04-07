@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/db/models/Seat.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:lecture_performance_app/services/Evaluation.dart';
+import 'package:lecture_performance_app/services/EvaluationType.dart';
 import 'package:lecture_performance_app/services/Seat.dart';
 import 'package:lecture_performance_app/services/Student.dart';
 import 'package:lecture_performance_app/wire.dart';
@@ -34,6 +35,10 @@ class ClassRoomProvider with ChangeNotifier {
 
   List<Student> _studentList = [];
   List<Student> get studentList => _studentList;
+
+  /// ↓に移動させたい
+  List<StudentInfo> _studentInfo = [];
+  List<StudentInfo> get studentInfo => _studentInfo;
 
   var _studentVal = HashMap();
   get studentVal => _studentVal;
@@ -77,6 +82,7 @@ class ClassRoomProvider with ChangeNotifier {
   }
 
   /// 席替えの時に使用
+  /// serviceに移す
   void seatArrangePointer(int index) {
     if (_seatArrange != -1) {
       var a = new Student(
@@ -163,7 +169,6 @@ class ClassRoomProvider with ChangeNotifier {
     await _studentService.getRoomStudents(homeRoomID).then((res) {
       _studentList = res;
     });
-
     _studentList.sort((a, b) => a.positionNum.compareTo(b.positionNum));
     notifyListeners();
   }

@@ -2,6 +2,13 @@ import 'package:lecture_performance_app/repositories/Student.dart';
 import '../db/models/Student.dart';
 import '../utility/time.dart';
 
+class StudentPoints {
+  final int id;
+  final String name;
+  final int point;
+  StudentPoints({this.id, this.name, this.point});
+}
+
 class StudentService {
   final StudentRepository studentRepository;
   StudentService({this.studentRepository});
@@ -13,6 +20,7 @@ class StudentService {
   Future<Student> getStudent(int id) async {
     return await studentRepository.getOneStudent(id);
   }
+
 
   Future<int> createstudent(
     int homeRoomID,

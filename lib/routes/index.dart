@@ -16,26 +16,25 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: '/home',
-      routes: {
-        '/home': (context) => new Home(),
-        '/home/regist': (context) => HomeRegist(),
-        HomeRegistSeat.routeName: (_) => HomeRegistSeat(),
-        HomeRegistConfirm.routeName: (_) => HomeRegistConfirm(),
-        AdminClassRoom.routeName: (_) => AdminClassRoom(),
-        AdminStudentDetail.routeName: (_) => AdminStudentDetail(),
-        SeatArrange.routeName: (_) => SeatArrange(),
-        RegistStudent.routeName: (_) => RegistStudent(),
-        RegistStudents.routeName: (_) => RegistStudents(),
-        EditStudent.routeName: (_) => EditStudent(),
-        EditSeat.routeName: (_) => EditSeat(),
-        ClassRoom.routeName: (_) => ClassRoom(),
-      },
-    );
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/home',
+        routes: {
+          '/home': (context) => new Home(),
+          '/home/regist': (context) => HomeRegist(),
+          HomeRegistSeat.routeName: (_) => HomeRegistSeat(),
+          HomeRegistConfirm.routeName: (_) => HomeRegistConfirm(),
+          AdminClassRoom.routeName: (_) => AdminClassRoom(),
+          AdminStudentDetail.routeName: (_) => AdminStudentDetail(),
+          SeatArrange.routeName: (_) => SeatArrange(),
+          RegistStudent.routeName: (_) => RegistStudent(),
+          RegistStudents.routeName: (_) => RegistStudents(),
+          EditStudent.routeName: (_) => EditStudent(),
+          EditSeat.routeName: (_) => EditSeat(),
+          ClassRoom.routeName: (_) => ClassRoom(),
+        });
   }
 }

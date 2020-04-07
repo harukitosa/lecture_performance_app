@@ -5,7 +5,6 @@ import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 
@@ -155,7 +154,7 @@ class AdminStudentListView extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Center(
-            child: StudentTable(studentList: classRoomProvider.studentList),
+            child: StudentTable(),
           ),
         ),
       ],
@@ -164,10 +163,6 @@ class AdminStudentListView extends StatelessWidget {
 }
 
 class StudentTable extends StatelessWidget {
-  final List<Student> studentList;
-
-  StudentTable({this.studentList});
-
   @override
   Widget build(BuildContext context) {
     final AdminClassRoomArgument args =
@@ -202,21 +197,23 @@ class StudentTable extends StatelessWidget {
               ),
             ),
           ],
-          rows: (studentList != null)
-              ? studentList
+          rows: (classRoomProvider.studentList != null)
+              ? classRoomProvider.studentList
                   .map(
-                    (student) => DataRow(
+                    (item) => DataRow(
                       cells: [
                         DataCell(
                           Text(
-                            student.number.toString(),
+                            item.number.toString(),
                             style: TextStyle(fontSize: 22),
                           ),
                           onTap: () {},
                         ),
                         DataCell(
                           Text(
-                            student.lastName + " " + student.firstName,
+                            item.lastName +
+                                " " +
+                                item.firstName,
                             style: TextStyle(fontSize: 22),
                           ),
                           onTap: () {
@@ -225,14 +222,14 @@ class StudentTable extends StatelessWidget {
                               AdminStudentDetail.routeName,
                               arguments: AdminStudentDetailArgument(
                                 args.homeRoom,
-                                student.id,
+                                item.id,
                               ),
                             );
                           },
                         ),
                         DataCell(
                           Text(
-                            student.createTime,
+                            item.id.toString(),
                             style: TextStyle(fontSize: 22),
                           ),
                         ),

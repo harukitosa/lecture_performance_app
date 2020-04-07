@@ -26,7 +26,6 @@ class HomeRoomRepository {
 
   Future<void> deleteHomeRoom(int id) async {
     var db = await initDB();
-
     await db.delete(
       'homeroom',
       where: "id = ?",

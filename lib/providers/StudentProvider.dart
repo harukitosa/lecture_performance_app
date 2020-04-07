@@ -35,7 +35,7 @@ class StudentProvider with ChangeNotifier {
   List<SumEvaluationType> _sumList;
   List<SumEvaluationType> get sumList => _sumList;
 
-// 生徒編集用の変数
+  // 生徒編集用の変数
   String _firstName = "";
   String get firstName => _firstName;
   set setFirstName(String firstName) => _firstName = firstName;
@@ -43,7 +43,7 @@ class StudentProvider with ChangeNotifier {
   String _lastName = "";
   String get lastName => _lastName;
   set setLastName(String lastName) => _lastName = lastName;
-// 生徒編集用の変数
+  // 生徒編集用の変数
   String _number = "";
   String get number => _number;
   set setNumber(String number) => _number = number;
