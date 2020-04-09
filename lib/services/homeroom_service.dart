@@ -1,12 +1,12 @@
-import 'package:lecture_performance_app/repositories/HomeRoom.dart';
+import 'package:lecture_performance_app/repositories/homeroom_repository.dart';
 import '../db/models/HomeRoom.dart';
 import '../utility/time.dart';
 class HomeRoomService {
 
-  final HomeRoomRepository homeRoomRepository;
-  HomeRoomService({
+  final IHomeRoomRepository homeRoomRepository;
+  HomeRoomService(
     this.homeRoomRepository
-  });
+  );
 
   Future<List<HomeRoom>> getAllHomeRoom() {
     return homeRoomRepository.getHomeRooms();

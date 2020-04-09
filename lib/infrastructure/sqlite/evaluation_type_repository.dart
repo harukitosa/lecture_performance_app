@@ -1,13 +1,17 @@
-import 'dart:async';
-import 'package:lecture_performance_app/db/connect_db.dart';
+import 'package:lecture_performance_app/repositories/evaluation_type_repository.dart';
 import 'package:sqflite/sqflite.dart';
-import '../db/models/EvaluationType.dart';
+import 'package:lecture_performance_app/db/models/EvaluationType.dart';
+import 'package:lecture_performance_app/db/connect_db.dart';
 
-class EvaluationTypeRepository {
+IEvaluationTypeRepository newEvaluationTypeRepository() {
+  return new EvaluationTypeRepository();
+}
+
+class EvaluationTypeRepository extends IEvaluationTypeRepository {
   EvaluationTypeRepository();
 
   Future<int> insertEvaluationType(EvaluationType evaluationType) async {
-    var db = await initDB();
+    Database db = await DBManager.instance.initDB();
     var id = await db.insert(
       'evaluation_type',
       evaluationType.toMapNew(),
@@ -17,7 +21,7 @@ class EvaluationTypeRepository {
   }
 
   Future<EvaluationType> getEvaluationType(int id) async {
-    var db = await initDB();
+    Database db = await DBManager.instance.initDB();
     final List<Map<String, dynamic>> res = await db.query("evaluation_type",
         where: "id = ?", whereArgs: [id], limit: 1);
     List<EvaluationType> list = res.isNotEmpty
@@ -27,7 +31,7 @@ class EvaluationTypeRepository {
   }
 
   Future<List<EvaluationType>> getAllEvaluationTypes() async {
-    var db = await initDB();
+    Database db = await DBManager.instance.initDB();
     final List<Map<String, dynamic>> res = await db.query('evaluation_type');
     List<EvaluationType> list = res.isNotEmpty
         ? res.map((c) => EvaluationType.fromMap(c)).toList()
@@ -36,7 +40,7 @@ class EvaluationTypeRepository {
   }
 
   Future<void> deleteEvaluationType(int id) async {
-    var db = await initDB();
+    Database db = await DBManager.instance.initDB();
     await db.delete(
       'evaluation_type',
       where: "id = ?",
@@ -45,7 +49,7 @@ class EvaluationTypeRepository {
   }
 
   Future<void> updateEvaluationType(EvaluationType evaluationType) async {
-    var db = await initDB();
+    Database db = await DBManager.instance.initDB();
     await db.update(
       'evaluation_type',
       evaluationType.toMapNew(),

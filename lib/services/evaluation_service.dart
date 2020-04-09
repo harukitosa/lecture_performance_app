@@ -1,15 +1,17 @@
-import 'package:lecture_performance_app/repositories/Evaluation.dart';
-import 'package:lecture_performance_app/repositories/EvaluationType.dart';
+import 'package:lecture_performance_app/repositories/evaluation_repository.dart';
+import 'package:lecture_performance_app/repositories/evaluation_type_repository.dart';
 import '../db/models/Evaluation.dart';
 import '../utility/time.dart';
 
 class EvaluationService {
-  final EvaluationRepository evaluationRepository;
-  final EvaluationTypeRepository evaluationTypeRepository;
-  EvaluationService({
+
+  final IEvaluationRepository evaluationRepository;
+  final IEvaluationTypeRepository evaluationTypeRepository;
+
+  EvaluationService(
     this.evaluationRepository,
     this.evaluationTypeRepository,
-  });
+  );
 
   Future<List<Evaluation>> getAllEvaluation() {
     return evaluationRepository.getAllEvaluations();

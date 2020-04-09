@@ -1,10 +1,10 @@
-import 'package:lecture_performance_app/repositories/Seat.dart';
+import 'package:lecture_performance_app/repositories/seat_repository.dart';
 import 'package:lecture_performance_app/utility/time.dart';
 import 'package:lecture_performance_app/db/models/Seat.dart';
 
 class SeatService {
-  final SeatRepository seatRepository;
-  SeatService({this.seatRepository});
+  final ISeatRepository seatRepository;
+  SeatService(this.seatRepository);
 
   Future<List<Seat>> getAllSeatData() async {
     return seatRepository.getAllseats();
