@@ -9,6 +9,7 @@ import 'package:lecture_performance_app/services/homeroom_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
 
+/// 依存性の注入を行っている
 HomeRoomService initHomeRoomAPI() {
   var _homeRoomRepository = new HomeRoomRepository();
   var _homeRoomService = new HomeRoomService(_homeRoomRepository);
