@@ -1,13 +1,16 @@
-import 'dart:async';
-import 'package:lecture_performance_app/db/connect_db.dart';
+import 'package:lecture_performance_app/repositories/evaluation_repository.dart';
 import 'package:sqflite/sqflite.dart';
-import '../db/models/Evaluation.dart';
+import 'package:lecture_performance_app/db/models/Evaluation.dart';
 
-class EvaluationRepository {
-  EvaluationRepository();
+class EvaluationRepository extends IEvaluationRepository {
+  Database db;
+  EvaluationRepository(this.db);
+
+  IEvaluationRepository newEvaluationRepository(Database db) {
+    return EvaluationRepository(db);
+  }
 
   Future<int> insertEvaluation(Evaluation evaluation) async {
-    var db = await initDB();
     var id = await db.insert(
       'evaluation',
       evaluation.toMapNew(),
@@ -17,8 +20,6 @@ class EvaluationRepository {
   }
 
   Future<Evaluation> getEvaluation(int id) async {
-    var db = await initDB();
-
     final List<Map<String, dynamic>> res = await db.query(
       "evaluation",
       where: "id = ?",
@@ -31,7 +32,6 @@ class EvaluationRepository {
   }
 
   Future<List<Evaluation>> getStudentSemester(int studentID) async {
-    var db = await initDB();
     final List<Map<String, dynamic>> res = await db.query(
       "evaluation",
       where: "student_id = ?",
@@ -47,7 +47,6 @@ class EvaluationRepository {
     int typeID,
     int studentID,
   ) async {
-    var db = await initDB();
     final List<Map<String, dynamic>> res = await db.query(
       "evaluation",
       where: "type_id = ? AND student_id = ?",
@@ -60,7 +59,6 @@ class EvaluationRepository {
 
   // 最新10件の成績を返す
   Future<List<Evaluation>> getLatestStudent(int studentID) async {
-    var db = await initDB();
     final List<Map<String, dynamic>> res = await db.query(
       "evaluation",
       where: "student_id = ?",
@@ -74,7 +72,6 @@ class EvaluationRepository {
   }
 
   Future<List<Evaluation>> getAllEvaluations() async {
-    var db = await initDB();
     final List<Map<String, dynamic>> res = await db.query('evaluation');
     List<Evaluation> list =
         res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
@@ -82,7 +79,6 @@ class EvaluationRepository {
   }
 
   Future<void> deleteEvaluation(int id) async {
-    var db = await initDB();
     await db.delete(
       'evaluation',
       where: "id = ?",
@@ -91,7 +87,6 @@ class EvaluationRepository {
   }
 
   Future<void> updateEvaluation(Evaluation evaluation) async {
-    var db = await initDB();
     await db.update(
       'evaluation',
       evaluation.toMapNew(),
