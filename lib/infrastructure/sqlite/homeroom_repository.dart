@@ -1,17 +1,17 @@
 import 'package:lecture_performance_app/repositories/homeroom_repository.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/db/connect_db.dart';
 
+IHomeRoomRepository newHomeRoomRepository() {
+  return new HomeRoomRepository();
+}
 
 class HomeRoomRepository extends IHomeRoomRepository {
-  Database db;
-  HomeRoomRepository(this.db);
-
-  IHomeRoomRepository newHomeRoomRepository(Database db) {
-    return new HomeRoomRepository(db);
-  }
+  HomeRoomRepository();
 
   Future<int> insertHomeRoom(HomeRoom homeRoom) async {
+    Database db = await DBManager.instance.initDB();
     var id = await db.insert(
       'homeroom',
       homeRoom.toMapNew(),
@@ -21,6 +21,7 @@ class HomeRoomRepository extends IHomeRoomRepository {
   }
 
   Future<List<HomeRoom>> getHomeRooms() async {
+    Database db = await DBManager.instance.initDB();
     final List<Map<String, dynamic>> res = await db.query("homeroom");
     List<HomeRoom> list =
         res.isNotEmpty ? res.map((c) => HomeRoom.fromMap(c)).toList() : [];
@@ -28,6 +29,7 @@ class HomeRoomRepository extends IHomeRoomRepository {
   }
 
   Future<void> deleteHomeRoom(int id) async {
+    Database db = await DBManager.instance.initDB();
     await db.delete(
       'homeroom',
       where: "id = ?",
@@ -36,6 +38,7 @@ class HomeRoomRepository extends IHomeRoomRepository {
   }
 
   Future<void> updateHomeRoom(HomeRoom homeRoom) async {
+    Database db = await DBManager.instance.initDB();
     await db.update(
       'homeroom',
       homeRoom.toMapNew(),

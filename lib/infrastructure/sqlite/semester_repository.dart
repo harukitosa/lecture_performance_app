@@ -1,16 +1,17 @@
 import 'package:lecture_performance_app/repositories/semester_repository.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lecture_performance_app/db/models/Semester.dart';
+import 'package:lecture_performance_app/db/connect_db.dart';
+
+ISemesterRepository newSemesterRepository() {
+  return new SemesterRepository();
+}
 
 class SemesterRepository extends ISemesterRepository {
-  Database db;
-  SemesterRepository(this.db);
-
-  ISemesterRepository newSemesterRepository(Database db) {
-    return new SemesterRepository(db);
-  }
+  SemesterRepository();
 
   Future<int> insertSemester(Semester semester) async {
+        Database db = await DBManager.instance.initDB();
     var id = await db.insert(
       'semester',
       semester.toMapNew(),
@@ -21,6 +22,7 @@ class SemesterRepository extends ISemesterRepository {
   }
 
   Future<Semester> getSemester(int id) async {
+        Database db = await DBManager.instance.initDB();
     final List<Map<String, dynamic>> res =
         await db.query("semester", where: "id = ?", whereArgs: [id], limit: 1);
     List<Semester> list =
@@ -29,6 +31,7 @@ class SemesterRepository extends ISemesterRepository {
   }
 
   Future<List<Semester>> getAllSemesters() async {
+        Database db = await DBManager.instance.initDB();
     final List<Map<String, dynamic>> res = await db.query('semester');
     List<Semester> list =
         res.isNotEmpty ? res.map((c) => Semester.fromMap(c)).toList() : [];
@@ -36,6 +39,7 @@ class SemesterRepository extends ISemesterRepository {
   }
 
   Future<void> deleteSemester(int id) async {
+        Database db = await DBManager.instance.initDB();
     await db.delete(
       'semester',
       where: "id = ?",
@@ -44,6 +48,7 @@ class SemesterRepository extends ISemesterRepository {
   }
 
   Future<int> updateSemester(Semester semester) async {
+        Database db = await DBManager.instance.initDB();
     var id = await db.update(
       'semester',
       semester.toMapNew(),

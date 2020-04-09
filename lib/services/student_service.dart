@@ -1,10 +1,10 @@
-import 'package:lecture_performance_app/repositories/Student.dart';
+import 'package:lecture_performance_app/repositories/student_repository.dart';
 import '../db/models/Student.dart';
 import '../utility/time.dart';
 
 class StudentService {
-  final StudentRepository studentRepository;
-  StudentService({this.studentRepository});
+  final IStudentRepository studentRepository;
+  StudentService(this.studentRepository);
 
   Future<List<Student>> getRoomStudents(int homeroomID) async {
     return await studentRepository.getThisRoomStudent(homeroomID);

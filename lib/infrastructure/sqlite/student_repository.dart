@@ -1,16 +1,17 @@
 import 'package:lecture_performance_app/repositories/student_repository.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
+import 'package:lecture_performance_app/db/connect_db.dart';
+
+IStudentRepository newStudentRepository() {
+  return new StudentRepository();
+}
 
 class StudentRepository extends IStudentRepository {
-  Database db;
-  StudentRepository(this.db);
-
-  IStudentRepository newStudentRepository(Database db) {
-    return new StudentRepository(db);
-  }
+  StudentRepository();
 
   Future<int> insertStudent(Student student) async {
+    Database db = await DBManager.instance.initDB();
     var id = await db.insert(
       'student',
       student.toMapNew(),
@@ -20,6 +21,7 @@ class StudentRepository extends IStudentRepository {
   }
 
   Future<List<Student>> getThisRoomStudent(int homeroomID) async {
+    Database db = await DBManager.instance.initDB();
     final List<Map<String, dynamic>> res = await db.query(
       "student",
       where: "homeroom_id = ?",
@@ -32,6 +34,7 @@ class StudentRepository extends IStudentRepository {
   }
 
   Future<Student> getOneStudent(int id) async {
+    Database db = await DBManager.instance.initDB();
     final List<Map<String, dynamic>> res = await db.query(
       "student",
       where: "id = ?",
@@ -43,6 +46,7 @@ class StudentRepository extends IStudentRepository {
   }
 
   Future<List<Student>> getAllStudents() async {
+    Database db = await DBManager.instance.initDB();
     final List<Map<String, dynamic>> res = await db.query('student');
     List<Student> list =
         res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
@@ -50,6 +54,7 @@ class StudentRepository extends IStudentRepository {
   }
 
   Future<void> deleteStudent(int id) async {
+    Database db = await DBManager.instance.initDB();
     await db.delete(
       'student',
       where: "id = ?",
@@ -58,6 +63,7 @@ class StudentRepository extends IStudentRepository {
   }
 
   Future<void> updateStudent(Student student) async {
+    Database db = await DBManager.instance.initDB();
     await db.update(
       'student',
       student.toMapNew(),

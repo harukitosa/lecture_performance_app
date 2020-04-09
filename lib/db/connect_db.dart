@@ -3,17 +3,26 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 
-Future<Database> initDB() async {
-  final database = openDatabase(
-    join(await getDatabasesPath(), 'database.db'),
-    version: 1,
-    onConfigure: _onConfigure,
-    onCreate: _onCreate,
-  );
-
-  Database db = await database;
-
-  return db;
+class DBManager {
+  static Database _database;
+  static final DBManager _dbManager = new DBManager._internal();
+  DBManager._internal();
+  static DBManager get instance => _dbManager;
+  
+  Future<Database> initDB() async {
+    if (_database != null)
+      return _database;
+    else {
+      final database = openDatabase(
+        join(await getDatabasesPath(), 'database.db'),
+        version: 1,
+        onConfigure: _onConfigure,
+        onCreate: _onCreate,
+      );
+      _database = await database;
+      return _database;
+    }
+  }
 }
 
 _onConfigure(Database db) async {

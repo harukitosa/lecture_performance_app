@@ -1,14 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/db/models/Seat.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
-import 'package:lecture_performance_app/services/Evaluation.dart';
-import 'package:lecture_performance_app/services/Seat.dart';
-import 'package:lecture_performance_app/services/Student.dart';
+import 'package:lecture_performance_app/services/evaluation_service.dart';
+import 'package:lecture_performance_app/services/seat_service.dart';
+import 'package:lecture_performance_app/services/student_service.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
 import 'dart:async';
 import 'dart:collection';
+
+import 'package:sqflite/sqlite_api.dart';
 
 class DisplayBadge {
   bool isShow;
@@ -52,6 +55,8 @@ class ClassRoomProvider with ChangeNotifier {
   SeatService _seatService;
   StudentService _studentService;
   EvaluationService _evaluationService;
+
+
 
   ClassRoomProvider(int homeRoomID) {
     _seatService = initSeatAPI();

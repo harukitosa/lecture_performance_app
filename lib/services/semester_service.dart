@@ -4,9 +4,9 @@ import '../utility/time.dart';
 class SemesterService {
 
   final SemesterRepository semesterRepository;
-  SemesterService({
+  SemesterService(
     this.semesterRepository
-  });
+  );
 
   Future<List<Semester>> getAllsemester() {
     return semesterRepository.getAllSemesters();

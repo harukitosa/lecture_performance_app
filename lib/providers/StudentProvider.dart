@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/db/models/Evaluation.dart';
 import 'package:lecture_performance_app/db/models/EvaluationType.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
-import 'package:lecture_performance_app/services/Evaluation.dart';
-import 'package:lecture_performance_app/services/EvaluationType.dart';
-import 'package:lecture_performance_app/services/Student.dart';
+import 'package:lecture_performance_app/services/evaluation_service.dart';
+import 'package:lecture_performance_app/services/evaluation_type_service.dart';
+import 'package:lecture_performance_app/services/student_service.dart';
 import 'package:lecture_performance_app/wire.dart';
 
 class StudentProvider with ChangeNotifier {

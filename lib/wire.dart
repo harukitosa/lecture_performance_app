@@ -1,47 +1,37 @@
-import 'package:lecture_performance_app/repositories/Evaluation.dart';
-import 'package:lecture_performance_app/repositories/EvaluationType.dart';
-import 'package:lecture_performance_app/repositories/Seat.dart';
-import 'package:lecture_performance_app/repositories/Student.dart';
-import 'package:lecture_performance_app/services/Evaluation.dart';
-import 'package:lecture_performance_app/services/EvaluationType.dart';
-import 'package:lecture_performance_app/services/HomeRoom.dart';
-import 'package:lecture_performance_app/repositories/HomeRoom.dart';
-import 'package:lecture_performance_app/services/Seat.dart';
-import 'package:lecture_performance_app/services/Student.dart';
+import 'package:lecture_performance_app/infrastructure/sqlite/evaluation_repository.dart';
+import 'package:lecture_performance_app/infrastructure/sqlite/evaluation_type_repository.dart';
+import 'package:lecture_performance_app/infrastructure/sqlite/homeroom_repository.dart';
+import 'package:lecture_performance_app/infrastructure/sqlite/seat_repository.dart';
+import 'package:lecture_performance_app/infrastructure/sqlite/student_repository.dart';
+import 'package:lecture_performance_app/services/evaluation_service.dart';
+import 'package:lecture_performance_app/services/evaluation_type_service.dart';
+import 'package:lecture_performance_app/services/homeroom_service.dart';
+import 'package:lecture_performance_app/services/seat_service.dart';
+import 'package:lecture_performance_app/services/student_service.dart';
 
 HomeRoomService initHomeRoomAPI() {
   var _homeRoomRepository = new HomeRoomRepository();
-  var _homeRoomService =
-      new HomeRoomService(homeRoomRepository: _homeRoomRepository);
+  var _homeRoomService = new HomeRoomService(_homeRoomRepository);
   return _homeRoomService;
 }
 
 SeatService initSeatAPI() {
   var _seatRepository = new SeatRepository();
-  var _seatService = new SeatService(seatRepository: _seatRepository);
+  var _seatService = new SeatService(_seatRepository);
   return _seatService;
 }
 
-// SemesterService initSemesterAPI() {
-//   var _semesterRepository = new SemesterRepository();
-//   var _semesterService =
-//       new SemesterService(semesterRepository: _semesterRepository);
-//   return _semesterService;
-// }
-
 StudentService initStudentAPI() {
   var _studentRepository = new StudentRepository();
-  var _studentService =
-      new StudentService(studentRepository: _studentRepository);
+  var _studentService = new StudentService(_studentRepository);
   return _studentService;
 }
 
 EvaluationService initEvaluationAPI() {
   var _evaluationRepository = new EvaluationRepository();
   var _evaluationTypeRepository = new EvaluationTypeRepository();
-  var _evaluationService = new EvaluationService(
-      evaluationRepository: _evaluationRepository,
-      evaluationTypeRepository: _evaluationTypeRepository);
+  var _evaluationService =
+      new EvaluationService(_evaluationRepository, _evaluationTypeRepository);
   return _evaluationService;
 }
 
@@ -49,8 +39,6 @@ EvaluationTypeService initEvaluationTypeAPI() {
   var _evaluationTypeRepository = new EvaluationTypeRepository();
   var _evaluationRepository = new EvaluationRepository();
   var _evaluationService = new EvaluationTypeService(
-      evaluationTypeRepository: _evaluationTypeRepository,
-      evaluationRepository: _evaluationRepository,
-  );
+      _evaluationTypeRepository, _evaluationRepository);
   return _evaluationService;
 }
