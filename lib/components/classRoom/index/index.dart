@@ -164,6 +164,7 @@ class SeatMap extends StatelessWidget {
     int _indexCount = 0;
     int _positionNum = 0;
     String _viewSeat = "false";
+    Color _seatColor = Colors.green;
     return Padding(
       padding: EdgeInsets.only(top: 40.0),
       child: GridView.builder(
@@ -208,12 +209,19 @@ class SeatMap extends StatelessWidget {
                     ? classRoomProvider.viewSeat[index].used
                     : "false"
                 : "false";
+            _seatColor = classRoomProvider.studentList != null
+                ? classRoomProvider.studentList.length > index - _indexCount
+                    ? classRoomProvider.studentList[index - _indexCount]
+                        .seatColor()
+                    : Colors.blueAccent
+                : Colors.blueAccent;
           } else {
             _indexCount++;
             _name = "";
             _positionNum = -1;
             _studentID = -1;
             _viewSeat = "false";
+            _seatColor = Colors.blueAccent;
           }
           return ClassRoomSeatView(
             _viewSeat,
@@ -222,6 +230,8 @@ class SeatMap extends StatelessWidget {
             true,
             _studentID,
             _positionNum,
+            _seatColor,
+            index - _indexCount,
           );
         },
       ),
