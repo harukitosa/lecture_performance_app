@@ -12,6 +12,8 @@ class ClassRoomSeatView extends StatelessWidget {
   final int index;
   final bool changeState;
   final int positionNum;
+  final Color seatColor;
+  final int stuIndex;
 
   ClassRoomSeatView(
     this.flag,
@@ -20,6 +22,8 @@ class ClassRoomSeatView extends StatelessWidget {
     this.changeState,
     this.studentID,
     this.positionNum,
+    this.seatColor,
+    this.stuIndex,
   );
 
   @override
@@ -39,6 +43,7 @@ class ClassRoomSeatView extends StatelessWidget {
       onDoubleTap: () {
         valuationProvider.evaluation(studentID, typeID + 1, -1);
         var text = name + "さんの積極性ポイントを減らしました。";
+        classRoomProvider.timeUpdate(stuIndex);
         classRoomProvider.badgeChange(index, Colors.redAccent, "-1pt");
         Scaffold.of(context)
             .showSnackBar(_commonSnackBar(text, Colors.redAccent, 28));
@@ -50,6 +55,7 @@ class ClassRoomSeatView extends StatelessWidget {
       onLongPress: () {
         valuationProvider.evaluation(studentID, typeID, 0);
         var text = name + "さんの回答にチェックを付けました";
+        classRoomProvider.timeUpdate(stuIndex);
         classRoomProvider.badgeChange(index, Colors.yellowAccent, "0pt");
         Scaffold.of(context)
             .showSnackBar(_commonSnackBar(text, Colors.yellowAccent, 28));
@@ -62,6 +68,7 @@ class ClassRoomSeatView extends StatelessWidget {
           //下にスワイプ
           if (y > x.abs()) {
             valuationProvider.evaluation(studentID, typeID, -1);
+            classRoomProvider.timeUpdate(stuIndex);
             classRoomProvider.badgeChange(index, Colors.redAccent, "-1pt");
             Scaffold.of(context).showSnackBar(_commonSnackBar(
                 name + "さんの回答ポイントを減らしました", Colors.redAccent, 28));
@@ -71,6 +78,8 @@ class ClassRoomSeatView extends StatelessWidget {
           if (y < -x.abs()) {
             valuationProvider.evaluation(studentID, typeID, 2);
             var text = name + "さんに回答ポイントを付与しました";
+            classRoomProvider.timeUpdate(stuIndex);
+
             classRoomProvider.badgeChange(index, Colors.greenAccent, "+2pt");
             Scaffold.of(context)
                 .showSnackBar(_commonSnackBar(text, Colors.greenAccent, 28));
@@ -79,6 +88,8 @@ class ClassRoomSeatView extends StatelessWidget {
           //左にスワイプ
           if (x < -y.abs()) {
             valuationProvider.evaluation(studentID, typeID + 1, 1);
+            classRoomProvider.timeUpdate(stuIndex);
+
             classRoomProvider.badgeChange(index, Colors.greenAccent, "+1pt");
             Scaffold.of(context).showSnackBar(
               _commonSnackBar(
@@ -92,6 +103,8 @@ class ClassRoomSeatView extends StatelessWidget {
           //右にスワイプ
           if (x > y.abs()) {
             valuationProvider.evaluation(studentID, typeID, 1);
+            classRoomProvider.timeUpdate(stuIndex);
+
             classRoomProvider.badgeChange(index, Colors.greenAccent, "+1pt");
             Scaffold.of(context).showSnackBar(
               _commonSnackBar(
@@ -108,7 +121,7 @@ class ClassRoomSeatView extends StatelessWidget {
       child: Stack(children: <Widget>[
         Container(
           margin: EdgeInsets.all(4.0),
-          color: flag == "true" ? Colors.blue : Colors.grey,
+          color: flag == "true" ? seatColor : Colors.grey,
           child: Center(
             child: Text(
               // 五文字以上なら先頭五文字のみ出力

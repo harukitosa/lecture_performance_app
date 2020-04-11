@@ -5,6 +5,7 @@ import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
 import 'package:lecture_performance_app/services/student_evaluation_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
+import 'package:lecture_performance_app/utility/time.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
 import 'dart:async';
@@ -55,7 +56,6 @@ class ClassRoomProvider with ChangeNotifier {
 
   StudentWithEvaluationService _sweService;
 
-  int _homeRoomID;
 
   ClassRoomProvider(int homeRoomID) {
     _seatService = initSeatAPI();
@@ -63,11 +63,15 @@ class ClassRoomProvider with ChangeNotifier {
     _sweService = initStudentWithEvaluationServiceAPI();
     getSeatData(homeRoomID);
     getStudentData(homeRoomID);
-    _homeRoomID = homeRoomID;
   }
 
   void sortChange() {
     _sort = !_sort;
+    notifyListeners();
+  }
+
+  void timeUpdate(index) async {
+    _studentList[index].lastTime = getNowTime();
     notifyListeners();
   }
 
@@ -82,7 +86,7 @@ class ClassRoomProvider with ChangeNotifier {
 
   /// 席替えの時に使用
   void seatArrangePointer(int index) {
-    print('-------------seat---------------');
+    print('seatArrangePointer');
     if (_seatArrange != -1) {
       int firstID = studentList[index].id;
       int secondID = studentList[_seatArrange].id;
@@ -130,11 +134,9 @@ class ClassRoomProvider with ChangeNotifier {
   }
 
   void getStudentData(homeRoomID) async {
-    print("---------getStudentData---------");
+    print("getStudentData");
     await _sweService.getRoomStudents(homeRoomID).then((res) {
       _studentList = res;
-      print(res[0].evaluationSum);
-      print(_studentList[0].evaluationSum);
       notifyListeners();
     });
     _studentList.sort((a, b) => a.positionNum.compareTo(b.positionNum));

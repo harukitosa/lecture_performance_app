@@ -1,13 +1,21 @@
+import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/utility/time.dart';
+
 class Student {
   final int id;
   final int homeRoomID;
   final String firstName;
   final String lastName;
   final int number;
-  int positionNum;
-  int evaluationSum;
   final String createTime;
   String updateTime;
+  int positionNum;
+
+  /// 合計の成績値
+  int evaluationSum;
+
+  /// 最後に当たった時間
+  String lastTime;
 
   Student({
     this.id,
@@ -22,6 +30,27 @@ class Student {
 
   set changePos(int posNum) {
     positionNum = posNum;
+  }
+
+  //時間によって分岐
+  Color seatColor() {
+    var _n = getNowTime();
+    DateTime _now = DateTime.parse(_n);
+    if (lastTime != null) {
+      var _twohoursBefore = _now.subtract(new Duration(hours: 2));
+      var _oneweekBefore = _now.subtract(new Duration(days: 7));
+      DateTime _last = DateTime.parse(lastTime);
+      if (_twohoursBefore.compareTo(_last) < 0) {
+        return Colors.blueAccent;
+      } else {
+        if (_oneweekBefore.compareTo(_last) < 0) {
+          return Colors.greenAccent;
+        } else {
+          return Colors.orangeAccent;
+        }
+      }
+    }
+    return Colors.blueAccent;
   }
 
   String get name => lastName + " " + firstName;
