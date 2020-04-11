@@ -19,6 +19,10 @@ class Student {
     this.updateTime,
   });
 
+  set changePos(int posNum) {
+    positionNum = posNum;
+  }
+
   factory Student.fromMap(Map<String, dynamic> json) => new Student(
         id: json["id"],
         homeRoomID: json["homeroom_id"],

@@ -64,4 +64,17 @@ class StudentService {
   Future<void> deletestudent(int id) {
     return studentRepository.deleteStudent(id);
   }
+
+  /// 席替えを行う
+  /// @params
+  /// int firstID, secondID
+  Future<void> changePositionNum(int firstID, secondID) async {
+    var first = await studentRepository.getOneStudent(firstID);
+    var second = await studentRepository.getOneStudent(secondID);
+    var store = first.positionNum;
+    first.changePos = second.positionNum;
+    second.positionNum = store;
+    studentRepository.updateStudent(first);
+    studentRepository.updateStudent(second);
+  }
 }

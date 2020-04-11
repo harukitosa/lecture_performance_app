@@ -54,14 +54,12 @@ class ClassRoomProvider with ChangeNotifier {
 
   SeatService _seatService;
   StudentService _studentService;
-  EvaluationService _evaluationService;
-
-
+  // EvaluationService _evaluationService;
 
   ClassRoomProvider(int homeRoomID) {
     _seatService = initSeatAPI();
     _studentService = initStudentAPI();
-    _evaluationService = initEvaluationAPI();
+    // _evaluationService = initEvaluationAPI();
     getSeatData(homeRoomID);
     getStudentData(homeRoomID);
     notifyListeners();
@@ -84,48 +82,13 @@ class ClassRoomProvider with ChangeNotifier {
   /// 席替えの時に使用
   void seatArrangePointer(int index) {
     if (_seatArrange != -1) {
-      var a = new Student(
-        id: studentList[index].id,
-        firstName: studentList[index].firstName,
-        lastName: studentList[index].lastName,
-        createTime: studentList[index].createTime,
-        number: studentList[index].number,
-        positionNum: studentList[_seatArrange].positionNum,
-        homeRoomID: studentList[index].homeRoomID,
-      );
-
-      var b = new Student(
-        id: studentList[_seatArrange].id,
-        firstName: studentList[_seatArrange].firstName,
-        lastName: studentList[_seatArrange].lastName,
-        createTime: studentList[_seatArrange].createTime,
-        number: studentList[_seatArrange].number,
-        positionNum: studentList[index].positionNum,
-        homeRoomID: studentList[_seatArrange].homeRoomID,
-      );
-
-      _studentList[index].positionNum = a.positionNum;
-      _studentList[_seatArrange].positionNum = b.positionNum;
+      var store = studentList[index].positionNum;
+      studentList[index].positionNum = studentList[_seatArrange].positionNum;
+      studentList[index].positionNum = store;
+      int firstID = studentList[index].id;
+      int secondID = studentList[_seatArrange].id;
+      _studentService.changePositionNum(firstID, secondID);
       notifyListeners();
-      _studentService.editstudent(
-        a.id,
-        a.homeRoomID,
-        a.positionNum,
-        a.firstName,
-        a.lastName,
-        a.number,
-        a.createTime,
-      );
-
-      _studentService.editstudent(
-        b.id,
-        b.homeRoomID,
-        b.positionNum,
-        b.firstName,
-        b.lastName,
-        b.number,
-        b.createTime,
-      );
       _seatArrange = -1;
     } else {
       _seatArrange = index;
