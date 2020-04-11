@@ -23,8 +23,8 @@ class EditStudent extends StatelessWidget {
       ),
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (_) => StudentProvider(args.studentID),
+          ChangeNotifierProvider.value(
+            value: StudentProvider(args.studentID),
           ),
         ],
         child: Consumer<StudentProvider>(

@@ -7,6 +7,7 @@ import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/evaluation_type_service.dart';
 import 'package:lecture_performance_app/services/homeroom_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
+import 'package:lecture_performance_app/services/student_evaluation_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
 
 /// 依存性の注入を行っている
@@ -42,4 +43,11 @@ EvaluationTypeService initEvaluationTypeAPI() {
   var _evaluationService = new EvaluationTypeService(
       _evaluationTypeRepository, _evaluationRepository);
   return _evaluationService;
+}
+
+StudentWithEvaluationService initStudentWithEvaluationServiceAPI() {
+  var _evaluationRepository = new EvaluationRepository();
+  var _studentRepository = new StudentRepository();
+  var _sweService = new StudentWithEvaluationService(_studentRepository, _evaluationRepository);
+  return _sweService;
 }

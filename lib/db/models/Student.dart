@@ -5,6 +5,7 @@ class Student {
   final String lastName;
   final int number;
   int positionNum;
+  int evaluationSum;
   final String createTime;
   String updateTime;
 
@@ -22,6 +23,8 @@ class Student {
   set changePos(int posNum) {
     positionNum = posNum;
   }
+
+  String get name => lastName + " " + firstName;
 
   factory Student.fromMap(Map<String, dynamic> json) => new Student(
         id: json["id"],

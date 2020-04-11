@@ -1,17 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 import 'package:lecture_performance_app/db/models/Seat.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
-import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
+import 'package:lecture_performance_app/services/student_evaluation_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
 import 'dart:async';
 import 'dart:collection';
-
-import 'package:sqflite/sqlite_api.dart';
 
 class DisplayBadge {
   bool isShow;
@@ -56,13 +53,17 @@ class ClassRoomProvider with ChangeNotifier {
   StudentService _studentService;
   // EvaluationService _evaluationService;
 
+  StudentWithEvaluationService _sweService;
+
+  int _homeRoomID;
+
   ClassRoomProvider(int homeRoomID) {
     _seatService = initSeatAPI();
     _studentService = initStudentAPI();
-    // _evaluationService = initEvaluationAPI();
+    _sweService = initStudentWithEvaluationServiceAPI();
     getSeatData(homeRoomID);
     getStudentData(homeRoomID);
-    notifyListeners();
+    _homeRoomID = homeRoomID;
   }
 
   void sortChange() {
@@ -81,15 +82,16 @@ class ClassRoomProvider with ChangeNotifier {
 
   /// 席替えの時に使用
   void seatArrangePointer(int index) {
+    print('-------------seat---------------');
     if (_seatArrange != -1) {
-      var store = studentList[index].positionNum;
-      studentList[index].positionNum = studentList[_seatArrange].positionNum;
-      studentList[index].positionNum = store;
       int firstID = studentList[index].id;
       int secondID = studentList[_seatArrange].id;
       _studentService.changePositionNum(firstID, secondID);
-      notifyListeners();
+      var store = studentList[index];
+      studentList[index] = studentList[_seatArrange];
+      studentList[_seatArrange] = store;
       _seatArrange = -1;
+      notifyListeners();
     } else {
       _seatArrange = index;
       notifyListeners();
@@ -128,12 +130,14 @@ class ClassRoomProvider with ChangeNotifier {
   }
 
   void getStudentData(homeRoomID) async {
-    await _studentService.getRoomStudents(homeRoomID).then((res) {
+    print("---------getStudentData---------");
+    await _sweService.getRoomStudents(homeRoomID).then((res) {
       _studentList = res;
+      print(res[0].evaluationSum);
+      print(_studentList[0].evaluationSum);
+      notifyListeners();
     });
-
     _studentList.sort((a, b) => a.positionNum.compareTo(b.positionNum));
-    notifyListeners();
   }
 
   Future<void> registStudentData(
