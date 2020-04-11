@@ -30,8 +30,8 @@ class RegistStudents extends StatelessWidget {
       ),
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (_) => ClassRoomProvider(args.homeRoom.id),
+          ChangeNotifierProvider.value(
+            value: ClassRoomProvider(args.homeRoom.id),
           ),
         ],
         child: Consumer<ClassRoomProvider>(

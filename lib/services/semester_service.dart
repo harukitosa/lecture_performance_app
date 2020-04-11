@@ -1,4 +1,4 @@
-import 'package:lecture_performance_app/repositories/semester.dart';
+import 'package:lecture_performance_app/infrastructure/sqlite/semester_repository.dart';
 import '../db/models/Semester.dart';
 import '../utility/time.dart';
 class SemesterService {

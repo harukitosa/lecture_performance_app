@@ -1,5 +1,4 @@
 class User {
-
   final int id;
   final String name;
   final String password;
@@ -17,13 +16,13 @@ class User {
   });
 
   factory User.fromMap(Map<String, dynamic> json) => new User(
-      id: json["id"],
-      name: json["name"],
-      password: json["password"],
-      email: json["email"],
-      createTime: json["created_at"],
-      updateTime: json["updated_at"],
-  );
+        id: json["id"],
+        name: json["name"],
+        password: json["password"],
+        email: json["email"],
+        createTime: json["created_at"],
+        updateTime: json["updated_at"],
+      );
 
   Map<String, dynamic> toMapNew() {
     return {

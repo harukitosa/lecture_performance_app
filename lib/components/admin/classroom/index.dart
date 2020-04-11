@@ -35,8 +35,8 @@ class AdminClassRoom extends StatelessWidget {
       ),
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (_) => ClassRoomProvider(args.homeRoom.id),
+          ChangeNotifierProvider.value(
+            value: ClassRoomProvider(args.homeRoom.id),
           ),
         ],
         child: Consumer<ClassRoomProvider>(
@@ -147,6 +147,9 @@ class _FloatingButton extends StatelessWidget {
 }
 
 class AdminStudentListView extends StatelessWidget {
+  // final AdminClassRoomArgument args =
+  //     ModalRoute.of(context).settings.arguments;
+  // classRoomProvider.getStudentData(args.homeRoom.id);
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
@@ -232,7 +235,7 @@ class StudentTable extends StatelessWidget {
                         ),
                         DataCell(
                           Text(
-                            student.createTime,
+                            student.evaluationSum.toString(),
                             style: TextStyle(fontSize: 22),
                           ),
                         ),

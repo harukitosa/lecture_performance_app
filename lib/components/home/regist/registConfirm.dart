@@ -23,7 +23,7 @@ class HomeRegistConfirm extends StatelessWidget {
       ),
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => HomeRoomProvider()),
+          ChangeNotifierProvider.value(value: HomeRoomProvider()),
         ],
         child: Consumer<HomeRoomProvider>(
           builder: (context, counter, _) {

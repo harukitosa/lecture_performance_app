@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/common/seatView/editSeatView.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
+
 //routerで渡される値
 class HomeRegistSeatArgument {
   final String grade;
@@ -23,7 +24,7 @@ class HomeRegistSeat extends StatelessWidget {
       ),
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => HomeRoomProvider()),
+          ChangeNotifierProvider.value(value: HomeRoomProvider()),
         ],
         child: Consumer<HomeRoomProvider>(
           builder: (context, counter, _) {

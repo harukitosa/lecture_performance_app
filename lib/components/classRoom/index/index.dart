@@ -33,11 +33,11 @@ class ClassRoom extends StatelessWidget {
       ),
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-            create: (_) => ClassRoomProvider(args.homeRoom.id),
+          ChangeNotifierProvider.value(
+            value: ClassRoomProvider(args.homeRoom.id),
           ),
-          ChangeNotifierProvider(
-            create: (_) => EvaluationProvider(),
+          ChangeNotifierProvider.value(
+            value: EvaluationProvider(),
           ),
         ],
         child: Consumer<ClassRoomProvider>(
@@ -157,7 +157,7 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    classRoomProvider.getStudentData(homeRoomID);
+    // classRoomProvider.getStudentData(homeRoomID);
     classRoomProvider.getSeatData(homeRoomID);
     String _name = "";
     int _studentID = 0;
