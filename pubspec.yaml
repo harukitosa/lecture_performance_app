@@ -20,6 +20,7 @@ dependencies:
   sqflite: ^1.2.2
   file_picker: ^1.4.3+2
   badges: ^1.1.1
+  stack: ^0.0.1
   flutter:
     sdk: flutter
 

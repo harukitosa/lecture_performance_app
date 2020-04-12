@@ -58,24 +58,6 @@ class EditSeatMap extends StatelessWidget {
             style: TextStyle(fontSize: 32),
           ),
           SeatMap(),
-          Padding(
-            padding: EdgeInsets.only(top: 6),
-            child: ButtonTheme(
-              minWidth: 300,
-              height: 50,
-              child: RaisedButton(
-                child: Text(
-                  "次へ",
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                color: Colors.red,
-                textColor: Colors.white,
-                onPressed: () {},
-              ),
-            ),
-          ),
         ],
       ),
     );
