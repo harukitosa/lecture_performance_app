@@ -50,7 +50,7 @@ class Student {
         }
       }
     }
-    return Colors.blueAccent;
+    return Colors.orangeAccent;
   }
 
   String get name => lastName + " " + firstName;
