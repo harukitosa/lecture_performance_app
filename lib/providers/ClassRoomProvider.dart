@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/db/models/Seat.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
+import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
 import 'package:lecture_performance_app/services/student_evaluation_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
@@ -9,6 +10,7 @@ import 'package:lecture_performance_app/utility/time.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
 import 'dart:async';
+import 'package:stack/stack.dart' as Col;
 import 'dart:collection';
 
 class DisplayBadge {
@@ -18,10 +20,11 @@ class DisplayBadge {
   DisplayBadge({this.isShow, this.text, this.color});
 }
 
-class StudentInfo {
-  Student student;
-  int sumPoint;
-  StudentInfo({this.student, this.sumPoint});
+class Command {
+  int evaID;
+  String time;
+  int indexNum;
+  Command(evaID, time, indexNum);
 }
 
 class ClassRoomProvider with ChangeNotifier {
@@ -50,17 +53,18 @@ class ClassRoomProvider with ChangeNotifier {
   int _viewWidth;
   int get viewWidth => _viewWidth;
 
+  Col.Stack<Command> sta = Col.Stack();
+
   SeatService _seatService;
   StudentService _studentService;
-  // EvaluationService _evaluationService;
-
+  EvaluationService _evaluationService;
   StudentWithEvaluationService _sweService;
-
 
   ClassRoomProvider(int homeRoomID) {
     _seatService = initSeatAPI();
     _studentService = initStudentAPI();
     _sweService = initStudentWithEvaluationServiceAPI();
+    _evaluationService = initEvaluationAPI();
     getSeatData(homeRoomID);
     getStudentData(homeRoomID);
   }
@@ -71,8 +75,42 @@ class ClassRoomProvider with ChangeNotifier {
   }
 
   void timeUpdate(index) async {
-    _studentList[index].lastTime = getNowTime();
     notifyListeners();
+  }
+
+  void evaluation(int studentID, int typeID, int point, int index) async {
+    // 一致確認
+    Command c = new Command(-1, "", -1);
+    if (_studentList[index].id == studentID) {
+      c.indexNum = index;
+      c.time = _studentList[index].lastTime;
+      _studentList[index].lastTime = getNowTime();
+    }
+    var id =
+        await _evaluationService.createEvaluation(studentID, typeID, point);
+    c.evaID = id;
+    sta.push(c);
+    print(sta.top().evaID);
+    print(sta.top().indexNum);
+    print(sta.top().time);
+    notifyListeners();
+  }
+
+  void undo(BuildContext context) async {
+    if (sta.isNotEmpty) {
+      Command c = sta.top();
+      sta.pop();
+      _studentList[c.indexNum].lastTime = c.time;
+      await _evaluationService.deleteEvaluation(c.evaID);
+      notifyListeners();
+      Scaffold.of(context).showSnackBar(
+        _commonSnackBar(
+          "取り消しました",
+          Colors.yellowAccent,
+          28,
+        ),
+      );
+    }
   }
 
   /// 成績をつけた際のバッジ
@@ -156,4 +194,30 @@ class ClassRoomProvider with ChangeNotifier {
     );
     notifyListeners();
   }
+}
+
+SnackBar _commonSnackBar(String text, Color color, double fontSize) {
+  return SnackBar(
+    elevation: 10,
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(30),
+      ),
+    ),
+    content: Container(
+      height: 60,
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: fontSize,
+          ),
+        ),
+      ),
+    ),
+    backgroundColor: color,
+    duration: const Duration(milliseconds: 500),
+  );
 }

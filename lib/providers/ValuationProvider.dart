@@ -51,9 +51,5 @@ class EvaluationProvider with ChangeNotifier {
     }
     notifyListeners();
   }
-  
-  void evaluation(int studentID, int typeID, int point) async {
-    await _evaluationService.createEvaluation(studentID, typeID, point);
-    notifyListeners();
-  }
+
 }

@@ -19,51 +19,60 @@ class ClassRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ClassRoomArgument args = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組",
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: ClassRoomProvider(args.homeRoom.id),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(
-            value: ClassRoomProvider(args.homeRoom.id),
-          ),
-          ChangeNotifierProvider.value(
-            value: EvaluationProvider(),
-          ),
-        ],
-        child: Consumer<ClassRoomProvider>(
-          builder: (context, counter, _) {
-            return Center(
-              child: RegistSeatMap(
-                homeRoomID: args.homeRoom != null ? args.homeRoom.id : -1,
+        ChangeNotifierProvider.value(
+          value: EvaluationProvider(),
+        ),
+      ],
+      child: Consumer<ClassRoomProvider>(
+        builder: (context, counter, _) {
+          final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組",
               ),
-            );
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        tooltip: 'Increment',
-        label: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Text(
-            'Undo',
-            style: TextStyle(
-              fontSize: config.size4,
-              color: config.st,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () {},
+                ),
+              ],
             ),
-          ),
-        ),
-        backgroundColor: config.pd,
+            body: Column(
+              children: <Widget>[
+                RegistSeatMap(
+                  homeRoomID: args.homeRoom != null ? args.homeRoom.id : -1,
+                ),
+              ],
+            ),
+            floatingActionButton: new Builder(
+              builder: (BuildContext context) {
+                return FloatingActionButton.extended(
+                  onPressed: () {
+                    classRoomProvider.undo(context);
+                  },
+                  tooltip: 'Increment',
+                  label: Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Text(
+                      'Undo',
+                      style: TextStyle(
+                        fontSize: config.size4,
+                        color: config.st,
+                      ),
+                    ),
+                  ),
+                  backgroundColor: config.pd,
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
@@ -238,3 +247,4 @@ class SeatMap extends StatelessWidget {
     );
   }
 }
+

@@ -32,7 +32,12 @@ class Student {
     positionNum = posNum;
   }
 
-  //時間によって分岐
+  /// seatColor()
+  /// 生徒の座席の色を返す
+  /// 成績をつけた最新の時間が
+  /// 二時間以内 blueAccent
+  /// 二時間より経過 greenAccent
+  /// 二週間経過
   Color seatColor() {
     var _n = getNowTime();
     DateTime _now = DateTime.parse(_n);
@@ -50,7 +55,7 @@ class Student {
         }
       }
     }
-    return Colors.blueAccent;
+    return Colors.orangeAccent;
   }
 
   String get name => lastName + " " + firstName;
