@@ -41,22 +41,22 @@ class ClassRoomSeatView extends StatelessWidget {
 
     return GestureDetector(
       onDoubleTap: () {
-        classRoomProvider.evaluation(studentID, typeID + 1, -1, stuIndex);
-        var text = name + "さんの積極性ポイントを減らしました。";
-        classRoomProvider.badgeChange(index, Colors.redAccent, "-1pt");
+        classRoomProvider.evaluation(studentID, typeID, 0, stuIndex);
+        var text = name + "さんの回答にチェックを付けました";
+        classRoomProvider.badgeChange(index, Colors.yellowAccent, "0pt");
         Scaffold.of(context)
-            .showSnackBar(_commonSnackBar(text, Colors.redAccent, 28));
+            .showSnackBar(_commonSnackBar(text, Colors.yellowAccent, 28));ïï
       },
       onPanUpdate: (details) {
         valuationProvider.x = details.delta.dx;
         valuationProvider.y = details.delta.dy;
       },
       onLongPress: () {
-        classRoomProvider.evaluation(studentID, typeID, 0, stuIndex);
-        var text = name + "さんの回答にチェックを付けました";
-        classRoomProvider.badgeChange(index, Colors.yellowAccent, "0pt");
-        Scaffold.of(context)
-            .showSnackBar(_commonSnackBar(text, Colors.yellowAccent, 28));
+        // classRoomProvider.evaluation(studentID, typeID + 1, -1, stuIndex);
+        // var text = name + "さんの積極性ポイントを減らしました。";
+        // classRoomProvider.badgeChange(index, Colors.redAccent, "-1pt");
+        // Scaffold.of(context)
+        //     .showSnackBar(_commonSnackBar(text, Colors.redAccent, 28));Ï
       },
       onPanEnd: (details) async {
         if (flag == "true" && studentID != -1) {
