@@ -93,7 +93,26 @@ class RegistSeatMap extends StatelessWidget {
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(),
+              Container(
+                decoration: BoxDecoration(
+                  color: config.pl,
+                ),
+                width: 200,
+                height: 50,
+                child: Center(
+                  child: Text(
+                    classRoomProvider.sta.isNotEmpty
+                        ? classRoomProvider.sta.top().student.lastName +
+                            ":" +
+                            classRoomProvider.sta.top().point.toString()
+                        : "NOACTION",
+                    style: TextStyle(
+                      fontSize: config.size4,
+                      color: config.st,
+                    ),
+                  ),
+                ),
+              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -247,4 +266,3 @@ class SeatMap extends StatelessWidget {
     );
   }
 }
-

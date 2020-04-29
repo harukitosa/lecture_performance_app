@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/db/models/EvaluationType.dart';
-import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/evaluation_type_service.dart';
 import 'package:lecture_performance_app/wire.dart';
 class EvaluationProvider with ChangeNotifier {
-  EvaluationService _evaluationService;
   EvaluationTypeService _evaluationTypeService;
   int currentTypeID;
   double x = 0.0;
@@ -20,7 +18,6 @@ class EvaluationProvider with ChangeNotifier {
   List<EvaluationType> _evaluationSelect;
   List<EvaluationType> get getEvaluationSelect => _evaluationSelect;
   EvaluationProvider() {
-    _evaluationService = initEvaluationAPI();
     _evaluationTypeService = initEvaluationTypeAPI();
     getAllEvaluationType();
     notifyListeners();
