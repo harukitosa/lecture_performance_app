@@ -24,7 +24,15 @@ class Command {
   int evaID;
   String time;
   int indexNum;
-  Command(evaID, time, indexNum);
+  Student student;
+  int point;
+  Command(
+    this.evaID,
+    this.time,
+    this.indexNum,
+    this.student,
+    this.point,
+  );
 }
 
 class ClassRoomProvider with ChangeNotifier {
@@ -80,19 +88,23 @@ class ClassRoomProvider with ChangeNotifier {
 
   void evaluation(int studentID, int typeID, int point, int index) async {
     // 一致確認
-    Command c = new Command(-1, "", -1);
+    Command c = new Command(-1, "", -1, null, point);
     if (_studentList[index].id == studentID) {
       c.indexNum = index;
       c.time = _studentList[index].lastTime;
       _studentList[index].lastTime = getNowTime();
+      c.student = _studentList[index];
     }
+    // print(point);
     var id =
         await _evaluationService.createEvaluation(studentID, typeID, point);
     c.evaID = id;
     sta.push(c);
-    print(sta.top().evaID);
-    print(sta.top().indexNum);
-    print(sta.top().time);
+    // print(sta.top().evaID);
+    // print(sta.top().indexNum);
+    // print(sta.top().time);
+    // print(sta.top().student.name);
+    // print(sta.top().point);
     notifyListeners();
   }
 
@@ -118,7 +130,7 @@ class ClassRoomProvider with ChangeNotifier {
     _seatBadge[index].isShow = !_seatBadge[index].isShow;
     _seatBadge[index].color = color;
     _seatBadge[index].text = text;
-    await new Future.delayed(new Duration(seconds: 1));
+    await new Future.delayed(new Duration(seconds: 2));
     _seatBadge[index].isShow = !_seatBadge[index].isShow;
   }
 
@@ -218,6 +230,6 @@ SnackBar _commonSnackBar(String text, Color color, double fontSize) {
       ),
     ),
     backgroundColor: color,
-    duration: const Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 1000),
   );
 }

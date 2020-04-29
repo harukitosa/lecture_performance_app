@@ -30,11 +30,6 @@ class ClassRoomSeatView extends StatelessWidget {
   Widget build(BuildContext context) {
     final valuationProvider = Provider.of<EvaluationProvider>(context);
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    // ポイントの名前
-    // var title = valuationProvider.currentTypeID != null
-    //     ? valuationProvider
-    //         .getEvaluationSelect[valuationProvider.currentTypeID].title
-    //     : "";
     var typeID = valuationProvider.currentTypeID != null
         ? valuationProvider.currentTypeID + 1
         : 1;
@@ -45,18 +40,11 @@ class ClassRoomSeatView extends StatelessWidget {
         var text = name + "さんの回答にチェックを付けました";
         classRoomProvider.badgeChange(index, Colors.yellowAccent, "0pt");
         Scaffold.of(context)
-            .showSnackBar(_commonSnackBar(text, Colors.yellowAccent, 28));ïï
+            .showSnackBar(_commonSnackBar(text, Colors.yellowAccent, 28));
       },
       onPanUpdate: (details) {
         valuationProvider.x = details.delta.dx;
         valuationProvider.y = details.delta.dy;
-      },
-      onLongPress: () {
-        // classRoomProvider.evaluation(studentID, typeID + 1, -1, stuIndex);
-        // var text = name + "さんの積極性ポイントを減らしました。";
-        // classRoomProvider.badgeChange(index, Colors.redAccent, "-1pt");
-        // Scaffold.of(context)
-        //     .showSnackBar(_commonSnackBar(text, Colors.redAccent, 28));Ï
       },
       onPanEnd: (details) async {
         if (flag == "true" && studentID != -1) {
@@ -165,6 +153,6 @@ SnackBar _commonSnackBar(String text, Color color, double fontSize) {
       ),
     ),
     backgroundColor: color,
-    duration: const Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 1000),
   );
 }
