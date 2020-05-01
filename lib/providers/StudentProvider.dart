@@ -39,7 +39,7 @@ class StudentProvider with ChangeNotifier {
   String _firstName = "";
   String get firstName => _firstName;
   set setFirstName(String firstName) => _firstName = firstName;
-  // 生徒編集用の変数
+// 生徒編集用の変数
   String _lastName = "";
   String get lastName => _lastName;
   set setLastName(String lastName) => _lastName = lastName;
@@ -48,6 +48,8 @@ class StudentProvider with ChangeNotifier {
   String get number => _number;
   set setNumber(String number) => _number = number;
 
+
+// 入力用の関数
   void handleChangeFirstName(String e) {
     _firstName = e;
     notifyListeners();

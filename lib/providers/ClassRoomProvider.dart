@@ -6,6 +6,7 @@ import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
 import 'package:lecture_performance_app/services/student_evaluation_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
+import 'package:lecture_performance_app/common/snackBar/commonSnackBar.dart';
 import 'package:lecture_performance_app/utility/time.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
@@ -82,10 +83,6 @@ class ClassRoomProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void timeUpdate(index) async {
-    notifyListeners();
-  }
-
   void evaluation(int studentID, int typeID, int point, int index) async {
     // 一致確認
     Command c = new Command(-1, "", -1, null, point);
@@ -94,17 +91,11 @@ class ClassRoomProvider with ChangeNotifier {
       c.time = _studentList[index].lastTime;
       _studentList[index].lastTime = getNowTime();
       c.student = _studentList[index];
-    }
-    // print(point);
+    } 
     var id =
         await _evaluationService.createEvaluation(studentID, typeID, point);
     c.evaID = id;
     sta.push(c);
-    // print(sta.top().evaID);
-    // print(sta.top().indexNum);
-    // print(sta.top().time);
-    // print(sta.top().student.name);
-    // print(sta.top().point);
     notifyListeners();
   }
 
@@ -116,7 +107,7 @@ class ClassRoomProvider with ChangeNotifier {
       await _evaluationService.deleteEvaluation(c.evaID);
       notifyListeners();
       Scaffold.of(context).showSnackBar(
-        _commonSnackBar(
+        commonSnackBar(
           "取り消しました",
           Colors.yellowAccent,
           28,
@@ -206,30 +197,4 @@ class ClassRoomProvider with ChangeNotifier {
     );
     notifyListeners();
   }
-}
-
-SnackBar _commonSnackBar(String text, Color color, double fontSize) {
-  return SnackBar(
-    elevation: 10,
-    behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(30),
-      ),
-    ),
-    content: Container(
-      height: 60,
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: fontSize,
-          ),
-        ),
-      ),
-    ),
-    backgroundColor: color,
-    duration: const Duration(milliseconds: 1000),
-  );
 }

@@ -185,14 +185,15 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    // classRoomProvider.getStudentData(homeRoomID);
     classRoomProvider.getSeatData(homeRoomID);
+
     String _name = "";
     int _studentID = 0;
     int _indexCount = 0;
     int _positionNum = 0;
     String _viewSeat = "false";
     Color _seatColor = Colors.green;
+
     return Padding(
       padding: EdgeInsets.only(top: 40.0),
       child: GridView.builder(
@@ -211,38 +212,15 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2,
         ),
         itemBuilder: (context, index) {
-          if (classRoomProvider.viewSeat != null &&
-              classRoomProvider.viewSeat[index] != null &&
-              classRoomProvider.viewSeat[index].used == "true") {
-            _name = classRoomProvider.studentList != null
-                ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider
-                        .studentList[index - _indexCount].lastName
-                    : ""
-                : "";
-
-            _studentID = classRoomProvider.studentList != null
-                ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider.studentList[index - _indexCount].id
-                    : -1
-                : -1;
-            _positionNum = classRoomProvider.studentList != null
-                ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider
-                        .studentList[index - _indexCount].positionNum
-                    : -1
-                : -1;
-            _viewSeat = classRoomProvider.viewSeat != null
-                ? classRoomProvider.viewSeat.length != 0
-                    ? classRoomProvider.viewSeat[index].used
-                    : "false"
-                : "false";
-            _seatColor = classRoomProvider.studentList != null
-                ? classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider.studentList[index - _indexCount]
-                        .seatColor()
-                    : Colors.blueAccent
-                : Colors.blueAccent;
+          if (classRoomProvider.viewSeat[index].used == "true" &&
+              classRoomProvider.studentList.length > index - _indexCount) {
+            _name = classRoomProvider.studentList[index - _indexCount].lastName;
+            _studentID = classRoomProvider.studentList[index - _indexCount].id;
+            _positionNum =
+                classRoomProvider.studentList[index - _indexCount].positionNum;
+            _seatColor =
+                classRoomProvider.studentList[index - _indexCount].seatColor();
+            _viewSeat = classRoomProvider.viewSeat[index].used;
           } else {
             _indexCount++;
             _name = "";
