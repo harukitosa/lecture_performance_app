@@ -47,18 +47,6 @@ _createTransaction(Database db) async {
       )
       ''');
 
-    // CREATE SEMESTER
-    // await db.execute('''
-    //   CREATE TABLE semester(
-    //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    //     title TEXT,
-    //     homeroom_id INTEGER,
-    //     created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-    //     updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-    //     FOREIGN KEY (homeroom_id) REFERENCES homeroom (id) ON DELETE CASCADE ON UPDATE NO ACTION
-    //   )
-    //   ''');
-
     // CREATE HOMEROOM
     await db.execute('''
       CREATE TABLE homeroom(
