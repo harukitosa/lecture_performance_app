@@ -108,7 +108,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
                         studentProvider.student.firstName
                     : "NOT NAME",
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 28,
                 ),
               ),
             ),
