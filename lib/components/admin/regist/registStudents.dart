@@ -64,6 +64,8 @@ class _InputFormState extends State<_InputForm> {
     final RegistStudentsArgument args =
         ModalRoute.of(context).settings.arguments;
 
+    /// csvファイルでデータの登録を行っている
+    /// [num][lastName][firstName]の順番に登録していく。
     _storeButton() async {
       List data = fileText.replaceAll('\n', ',').split(',');
       print(data);
@@ -96,11 +98,10 @@ class _InputFormState extends State<_InputForm> {
       // ファイルの中身を取得
       if (file != null) {
         fileText = await file.readAsString();
+        setState(() {
+          display = basename(file.path);
+        });
       }
-      // 画面に表示
-      setState(() {
-        display = basename(file.path);
-      });
     }
 
     return Column(

@@ -37,7 +37,7 @@ class Student {
   /// 成績をつけた最新の時間が
   /// 二時間以内 blueAccent
   /// 二時間より経過 greenAccent
-  /// 二週間経過
+  /// 二週間経過 orangeAccesnt
   Color seatColor() {
     var _n = getNowTime();
     DateTime _now = DateTime.parse(_n);

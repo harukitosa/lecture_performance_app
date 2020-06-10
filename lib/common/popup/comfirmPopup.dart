@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-
-// routeは確認後、遷移画面urlを指定する。
+/// 保存後の確認popup component
+/// 
+/// 確認後[route]で受け取ったルーティングに飛ばす
+/// 
+/// example
+/// ```
+/// confirmPopUp(context, AdminClassRoom.routeName);
+/// ```
+/// 
 Future<void> confirmPopUp(context, route) async {
   return showDialog<void>(
     context: context,
