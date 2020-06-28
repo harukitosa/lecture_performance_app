@@ -11,6 +11,7 @@ import 'package:lecture_performance_app/components/home/regist/index.dart';
 import 'package:lecture_performance_app/components/home/regist/registConfirm.dart';
 import 'package:lecture_performance_app/components/home/regist/registSeat.dart';
 import 'package:lecture_performance_app/components/admin/classroom/index.dart';
+import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
 
 class App extends StatelessWidget {
   @override
@@ -25,6 +26,7 @@ class App extends StatelessWidget {
       routes: {
         '/home': (context) => new Home(),
         '/home/regist': (context) => HomeRegist(),
+        DeleteClassRoom.routeName: (_) => DeleteClassRoom(),
         HomeRegistSeat.routeName: (_) => HomeRegistSeat(),
         HomeRegistConfirm.routeName: (_) => HomeRegistConfirm(),
         AdminClassRoom.routeName: (_) => AdminClassRoom(),

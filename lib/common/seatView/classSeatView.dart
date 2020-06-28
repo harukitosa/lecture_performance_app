@@ -105,9 +105,9 @@ class ClassRoomSeatView extends StatelessWidget {
           child: Center(
             child: Text(
               // 五文字以上なら先頭五文字のみ出力
-              name.length > 5 ? name.substring(0, 5) : name,
+              name.length > 7 ? name.substring(0, 7) : name,
               style: TextStyle(
-                fontSize: 28,
+                fontSize: 22,
               ),
             ),
           ),

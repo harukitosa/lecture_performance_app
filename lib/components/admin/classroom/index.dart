@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
 import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
 import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
+import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
@@ -31,7 +32,18 @@ class AdminClassRoom extends StatelessWidget {
             color: config.st,
           ),
         ),
-        actions: <Widget>[],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                DeleteClassRoom.routeName,
+                arguments: DeleteClassRoomArguments(args.homeRoom),
+              );
+            },
+          ),
+        ],
       ),
       body: MultiProvider(
         providers: [
