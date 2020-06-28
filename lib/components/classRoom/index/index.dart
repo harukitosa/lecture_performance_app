@@ -36,12 +36,6 @@ class ClassRoom extends StatelessWidget {
               title: Text(
                 args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組",
               ),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.settings),
-                  onPressed: () {},
-                ),
-              ],
             ),
             body: Column(
               children: <Widget>[
@@ -153,7 +147,7 @@ class RegistSeatMap extends StatelessWidget {
           ),
           child: Container(
             child: SeatMap(
-              homeRoomID: homeRoomID,
+              homeRoomID: homeRoomID != null ? homeRoomID : 0,
             ),
           ),
         ),

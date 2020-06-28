@@ -20,9 +20,6 @@ class SeatArrange extends StatelessWidget {
       appBar: AppBar(
         title:
             Text(args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組"),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.settings), onPressed: () {}),
-        ],
       ),
       body: MultiProvider(
         providers: [
