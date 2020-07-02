@@ -91,8 +91,8 @@ class ClassRoomProvider with ChangeNotifier {
       c.time = _studentList[index].lastTime;
       _studentList[index].lastTime = getNowTime();
       c.student = _studentList[index];
-    } 
-    var id =
+    }
+    final id =
         await _evaluationService.createEvaluation(studentID, typeID, point);
     c.evaID = id;
     sta.push(c);
