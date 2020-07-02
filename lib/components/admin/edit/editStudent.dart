@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
 import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/StudentProvider.dart';
+import 'package:lecture_performance_app/wire.dart';
+import 'package:lecture_performance_app/services/student_service.dart';
+import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
 
 class EditStudentArgument {
   int studentID;
@@ -19,7 +21,17 @@ class EditStudent extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("生徒情報編集画面"),
-        actions: <Widget>[],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.delete,
+              size: 32,
+            ),
+            onPressed: () {
+              _deleteStudentAlertPopUp(context, args.studentID);
+            },
+          ),
+        ],
       ),
       body: MultiProvider(
         providers: [
@@ -39,6 +51,71 @@ class EditStudent extends StatelessWidget {
   }
 }
 
+Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
+  return showDialog(
+    context: context,
+    builder: (_) {
+      return AlertDialog(
+        title: Text("この生徒を削除"),
+        content: Text("この動作は一度行うと取り消すことができません。それでも削除しますか？"),
+        actions: <Widget>[
+          // ボタン領域
+          FlatButton(
+            child: Text("キャンセル"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          FlatButton(
+            child: Text("削除する"),
+            onPressed: () {
+              StudentService _studentServices = initStudentAPI();
+              _studentServices.deletestudent(id);
+              Navigator.pop(context);
+              _confirmPopUp(context);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _confirmPopUp(context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          '削除しました',
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                'ホーム画面に戻ります。',
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('確認'),
+            onPressed: () {
+              Navigator.popUntil(
+                context,
+                // homeではない方がいいかも
+                ModalRoute.withName("/home"),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class EditStudentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -56,18 +133,18 @@ class EditStudentView extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(30),
         ),
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.person,
-                color: Colors.black,
-                size: 90.0,
-              ),
-            ),
-            Text('生徒情報編集'),
-            studentProvider.student != null
-                ? Container(
+        child: studentProvider.student != null
+            ? Column(
+                children: <Widget>[
+                  Container(
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.black,
+                      size: 90.0,
+                    ),
+                  ),
+                  Text('生徒情報編集'),
+                  Container(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
                       decoration: InputDecoration(labelText: '姓'),
@@ -77,10 +154,8 @@ class EditStudentView extends StatelessWidget {
                         fontSize: 24,
                       ),
                     ),
-                  )
-                : Text('Now Loading'),
-            studentProvider.student != null
-                ? Container(
+                  ),
+                  Container(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
                       decoration: InputDecoration(labelText: '名前'),
@@ -90,10 +165,8 @@ class EditStudentView extends StatelessWidget {
                         fontSize: 24,
                       ),
                     ),
-                  )
-                : Text('Now Loading'),
-            studentProvider.student != null
-                ? Container(
+                  ),
+                  Container(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
                       decoration: InputDecoration(labelText: '出席番号'),
@@ -103,27 +176,27 @@ class EditStudentView extends StatelessWidget {
                         fontSize: 24,
                       ),
                     ),
-                  )
-                : Text('Now Loading'),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              child: RaisedButton(
-                onPressed: () {
-                  studentProvider.updateStudent();
-                  confirmPopUp(context, AdminStudentDetail.routeName);
-                },
-                color: Colors.redAccent,
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  '保存',
-                  style: TextStyle(
-                    fontSize: 18,
                   ),
-                ),
-              ),
-            ),
-          ],
-        ),
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: RaisedButton(
+                      onPressed: () {
+                        studentProvider.updateStudent();
+                        confirmPopUp(context, AdminStudentDetail.routeName);
+                      },
+                      color: Colors.redAccent,
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        '保存',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Text("NO DATA"),
       ),
     );
   }
