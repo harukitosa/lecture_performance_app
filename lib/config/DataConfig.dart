@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppDataConfig {
+  AppDataConfig();
   static const _seatNum = 49;
   int get seatNum => (_seatNum);
   static const _seatWidth = 7;
@@ -33,6 +34,7 @@ class AppStyle {
   Color get sd => _sd;
   Color get pt => _pt;
   Color get st => _st;
+
   /// font-size
   static const _size1 = 48.0;
   static const _size2 = 40.0;

@@ -24,7 +24,7 @@ class App extends StatelessWidget {
       ),
       initialRoute: '/home',
       routes: {
-        '/home': (context) => new Home(),
+        '/home': (context) => Home(),
         '/home/regist': (context) => HomeRegist(),
         DeleteClassRoom.routeName: (_) => DeleteClassRoom(),
         HomeRegistSeat.routeName: (_) => HomeRegistSeat(),
@@ -35,7 +35,7 @@ class App extends StatelessWidget {
         RegistStudent.routeName: (_) => RegistStudent(),
         RegistStudents.routeName: (_) => RegistStudents(),
         EditStudent.routeName: (_) => EditStudent(),
-        EditSeat.routeName: (_) => EditSeat(),
+        EditSeat.routeName: (_) => const EditSeat(),
         ClassRoom.routeName: (_) => ClassRoom(),
       },
     );

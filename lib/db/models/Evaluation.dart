@@ -16,8 +16,8 @@ class Evaluation {
   });
 
   factory Evaluation.fromMap(Map<String, dynamic> json) => new Evaluation(
-        id: json["id"],
-        studentID: json["student_id"],
+        id: json['id'],
+        studentID: json['student_id'],
         typeID: json["type_id"],
         point: json["point"],
         createTime: json["created_at"],

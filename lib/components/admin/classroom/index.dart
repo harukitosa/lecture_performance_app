@@ -12,8 +12,8 @@ import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 
 //routerで渡される値
 class AdminClassRoomArgument {
-  final HomeRoom homeRoom;
   AdminClassRoomArgument(this.homeRoom);
+  final HomeRoom homeRoom;
 }
 
 class AdminClassRoom extends StatelessWidget {
@@ -21,12 +21,11 @@ class AdminClassRoom extends StatelessWidget {
   final config = AppStyle();
   @override
   Widget build(BuildContext context) {
-    final AdminClassRoomArgument args =
-        ModalRoute.of(context).settings.arguments;
+    final args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 管理画面",
+          '${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組 管理画面',
           style: TextStyle(
             fontSize: config.size4,
             color: config.st,
@@ -70,8 +69,8 @@ class AdminClassRoom extends StatelessWidget {
                 ),
               );
             },
-            title: "生徒追加",
-            heroName: "student",
+            title: '生徒追加',
+            heroName: 'student',
             fontSize: config.size4,
             textColor: config.st,
             backColor: config.sl,
@@ -88,8 +87,8 @@ class AdminClassRoom extends StatelessWidget {
                 ),
               );
             },
-            title: "座席位置変更",
-            heroName: "seat",
+            title: '座席位置変更',
+            heroName: 'seat',
             fontSize: config.size4,
             textColor: config.st,
             backColor: config.s,
@@ -104,8 +103,8 @@ class AdminClassRoom extends StatelessWidget {
                 ),
               );
             },
-            title: "席替え",
-            heroName: "changeSeat",
+            title: '席替え',
+            heroName: 'changeSeat',
             fontSize: config.size4,
             textColor: config.st,
             backColor: config.sd,
@@ -231,7 +230,7 @@ class StudentTable extends StatelessWidget {
                         ),
                         DataCell(
                           Text(
-                            student.lastName + " " + student.firstName,
+                            student.lastName + ' ' + student.firstName,
                             style: TextStyle(fontSize: 22),
                           ),
                           onTap: () {
