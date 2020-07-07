@@ -15,18 +15,14 @@ import 'package:stack/stack.dart' as Col;
 import 'dart:collection';
 
 class DisplayBadge {
+  DisplayBadge({this.isShow, this.text, this.color});
+
   bool isShow;
   String text;
   Color color;
-  DisplayBadge({this.isShow, this.text, this.color});
 }
 
 class Command {
-  int evaID;
-  String time;
-  int indexNum;
-  Student student;
-  int point;
   Command(
     this.evaID,
     this.time,
@@ -34,22 +30,33 @@ class Command {
     this.student,
     this.point,
   );
+  int evaID;
+  String time;
+  int indexNum;
+  Student student;
+  int point;
 }
 
 class ClassRoomProvider with ChangeNotifier {
+  ClassRoomProvider(int homeRoomID) {
+    _seatService = initSeatAPI();
+    _studentService = initStudentAPI();
+    _sweService = initStudentWithEvaluationServiceAPI();
+    _evaluationService = initEvaluationAPI();
+    getSeatData(homeRoomID);
+    getStudentData(homeRoomID);
+  }
+
   List<Seat> _mapSeat = [];
   List<Seat> get mapSeat => _mapSeat;
 
   List<Seat> _viewSeat = [];
   List<Seat> get viewSeat => _viewSeat;
-  List<DisplayBadge> _seatBadge = [];
+  final List<DisplayBadge> _seatBadge = [];
   List<DisplayBadge> get seatBadge => _seatBadge;
 
   List<Student> _studentList = [];
   List<Student> get studentList => _studentList;
-
-  var _studentVal = HashMap();
-  get studentVal => _studentVal;
 
   bool _sort = false;
   bool get sort => _sort;
@@ -69,26 +76,20 @@ class ClassRoomProvider with ChangeNotifier {
   EvaluationService _evaluationService;
   StudentWithEvaluationService _sweService;
 
-  ClassRoomProvider(int homeRoomID) {
-    _seatService = initSeatAPI();
-    _studentService = initStudentAPI();
-    _sweService = initStudentWithEvaluationServiceAPI();
-    _evaluationService = initEvaluationAPI();
-    getSeatData(homeRoomID);
-    getStudentData(homeRoomID);
-  }
-
   void sortChange() {
     _sort = !_sort;
     notifyListeners();
   }
 
-  void evaluation(int studentID, int typeID, int point, int index) async {
+  Future<void> evaluation(
+      int studentID, int typeID, int point, int index) async {
     // 一致確認
-    Command c = new Command(-1, "", -1, null, point);
+    Command c;
+    c = Command(-1, '', -1, null, point);
     if (_studentList[index].id == studentID) {
-      c.indexNum = index;
-      c.time = _studentList[index].lastTime;
+      c
+        ..indexNum = index
+        ..time = _studentList[index].lastTime;
       _studentList[index].lastTime = getNowTime();
       c.student = _studentList[index];
     }
@@ -99,16 +100,17 @@ class ClassRoomProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void undo(BuildContext context) async {
+  Future<void> undo(BuildContext context) async {
     if (sta.isNotEmpty) {
-      Command c = sta.top();
+      Command c;
+      c = sta.top();
       sta.pop();
       _studentList[c.indexNum].lastTime = c.time;
       await _evaluationService.deleteEvaluation(c.evaID);
       notifyListeners();
       Scaffold.of(context).showSnackBar(
         commonSnackBar(
-          "取り消しました",
+          '取り消しました',
           Colors.yellowAccent,
           28,
         ),
@@ -117,11 +119,11 @@ class ClassRoomProvider with ChangeNotifier {
   }
 
   /// 成績をつけた際のバッジ
-  void badgeChange(index, color, text) async {
+  Future<void> badgeChange(int index, Color color, String text) async {
     _seatBadge[index].isShow = !_seatBadge[index].isShow;
     _seatBadge[index].color = color;
     _seatBadge[index].text = text;
-    await new Future.delayed(new Duration(seconds: 2));
+    await Future<dynamic>.delayed(const Duration(seconds: 2));
     _seatBadge[index].isShow = !_seatBadge[index].isShow;
   }
 
@@ -129,10 +131,10 @@ class ClassRoomProvider with ChangeNotifier {
   void seatArrangePointer(int index) {
     print('seatArrangePointer');
     if (_seatArrange != -1) {
-      int firstID = studentList[index].id;
-      int secondID = studentList[_seatArrange].id;
+      final firstID = studentList[index].id;
+      final secondID = studentList[_seatArrange].id;
       _studentService.changePositionNum(firstID, secondID);
-      var store = studentList[index];
+      final store = studentList[index];
       studentList[index] = studentList[_seatArrange];
       studentList[_seatArrange] = store;
       _seatArrange = -1;
@@ -143,7 +145,7 @@ class ClassRoomProvider with ChangeNotifier {
     }
   }
 
-  void onSortColum(int columnIndex, bool ascending) {
+  void onSortColum(int columnIndex, {bool ascending}) {
     if (columnIndex == 0) {
       if (ascending) {
         _studentList.sort((a, b) => a.number.compareTo(b.number));
@@ -153,29 +155,29 @@ class ClassRoomProvider with ChangeNotifier {
     }
   }
 
-  void getSeatData(homeRoomID) async {
-    await _seatService.getThisRoomAllSeatData(homeRoomID).then(
+  void getSeatData(int homeRoomID) {
+    _seatService.getThisRoomAllSeatData(homeRoomID).then(
       (res) {
         // 7*7の列
         _mapSeat = res;
         // 表示するシートのみ
-        var ans = calcSeatLen(_mapSeat);
+        final ans = calcSeatLen(_mapSeat);
         _viewSeat = ans.seat;
         _viewWidth = ans.width;
-        if (_seatBadge != []) {
+        if (_seatBadge.isNotEmpty) {
           for (var i = 0; i < _viewSeat.length; i++) {
-            DisplayBadge s =
-                new DisplayBadge(isShow: false, color: Colors.red, text: "non");
+            DisplayBadge s;
+            s = DisplayBadge(isShow: false, color: Colors.red, text: 'non');
             _seatBadge.add(s);
           }
         }
+        notifyListeners();
       },
     );
-    notifyListeners();
   }
 
-  void getStudentData(homeRoomID) async {
-    print("getStudentData");
+  Future<void> getStudentData(int homeRoomID) async {
+    print('getStudentData');
     await _sweService.getRoomStudents(homeRoomID).then((res) {
       _studentList = res;
       notifyListeners();

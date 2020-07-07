@@ -199,7 +199,7 @@ class StudentTable extends StatelessWidget {
               onSort: (columnIndex, ascending) {
                 classRoomProvider
                   ..sortChange()
-                  ..onSortColum(columnIndex, ascending);
+                  ..onSortColum(columnIndex, ascending: ascending);
               },
               label: const Text(
                 '出席番号',
