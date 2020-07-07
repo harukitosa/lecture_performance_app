@@ -13,12 +13,12 @@ class Seat {
     this.updateTime,
   });
 
-  factory Seat.fromMap(Map<String, dynamic> json) => new Seat(
-        id: json["id"],
-        homeRoomID: json["homeroom_id"],
-        used: json["used"],
-        createTime: json["created_at"],
-        updateTime: json["updated_at"],
+  factory Seat.fromMap(Map<String, dynamic> json) => Seat(
+        id: json['id'] as int,
+        homeRoomID: json['homeroom_id'] as int,
+        used: json['used'] as String,
+        createTime: json['created_at'] as String,
+        updateTime: json['updated_at'] as String,
       );
 
   Map<String, dynamic> toMapNew() {

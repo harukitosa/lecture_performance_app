@@ -10,9 +10,11 @@ IEvaluationRepository newEvaluationRepository() {
 class EvaluationRepository extends IEvaluationRepository {
   EvaluationRepository();
 
+  @override
   Future<int> insertEvaluation(Evaluation evaluation) async {
-    Database db = await DBManager.instance.initDB();
-    var id = await db.insert(
+    Database db;
+    db = await DBManager.instance.initDB();
+    final id = await db.insert(
       'evaluation',
       evaluation.toMapNew(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -20,86 +22,105 @@ class EvaluationRepository extends IEvaluationRepository {
     return id;
   }
 
+  @override
   Future<Evaluation> getEvaluation(int id) async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query(
-      "evaluation",
-      where: "id = ?",
-      whereArgs: [id],
+    Database db;
+    db = await DBManager.instance.initDB();
+
+    List<Map<String, dynamic>> res;
+    final args = [id];
+    res = await db.query(
+      'evaluation',
+      where: 'id = ?',
+      whereArgs: args,
       limit: 1,
     );
-    List<Evaluation> list =
-        res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
+    List<Evaluation> list;
+    list = res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
     return list[0];
   }
 
+  @override
   Future<List<Evaluation>> getStudentSemester(int studentID) async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query(
-      "evaluation",
-      where: "student_id = ?",
-      whereArgs: [studentID],
-      orderBy: "created_at DESC",
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    final args = [studentID];
+    res = await db.query(
+      'evaluation',
+      where: 'student_id = ?',
+      whereArgs: args,
+      orderBy: 'created_at DESC',
     );
-    List<Evaluation> list =
-        res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
-    return list;
+    return res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<List<Evaluation>> getEvaluationByType(
     int typeID,
     int studentID,
   ) async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query(
-      "evaluation",
-      where: "type_id = ? AND student_id = ?",
-      whereArgs: [typeID, studentID],
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    final args = [typeID, studentID];
+    res = await db.query(
+      'evaluation',
+      where: 'type_id = ? AND student_id = ?',
+      whereArgs: args,
     );
-    List<Evaluation> list =
-        res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
-    return list;
+    return res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
   }
 
   // 最新10件の成績を返す
+  @override
   Future<List<Evaluation>> getLatestStudent(int studentID) async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query(
-      "evaluation",
-      where: "student_id = ?",
-      whereArgs: [studentID],
-      orderBy: "created_at DESC",
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    final args = [studentID];
+    res = await db.query(
+      'evaluation',
+      where: 'student_id = ?',
+      whereArgs: args,
+      orderBy: 'created_at DESC',
       limit: 10,
     );
-    List<Evaluation> list =
-        res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
-    return list;
+
+    return res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<List<Evaluation>> getAllEvaluations() async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query('evaluation');
-    List<Evaluation> list =
-        res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
-    return list;
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    res = await db.query('evaluation');
+    return res.isNotEmpty ? res.map((c) => Evaluation.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<void> deleteEvaluation(int id) async {
-    Database db = await DBManager.instance.initDB();
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [id];
     await db.delete(
       'evaluation',
-      where: "id = ?",
-      whereArgs: [id],
+      where: 'id = ?',
+      whereArgs: args,
     );
   }
 
+  @override
   Future<void> updateEvaluation(Evaluation evaluation) async {
-    Database db = await DBManager.instance.initDB();
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [evaluation.id];
     await db.update(
       'evaluation',
       evaluation.toMapNew(),
-      where: "id = ?",
-      whereArgs: [evaluation.id],
+      where: 'id = ?',
+      whereArgs: args,
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
   }

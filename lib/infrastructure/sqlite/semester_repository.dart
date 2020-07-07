@@ -4,15 +4,17 @@ import 'package:lecture_performance_app/db/models/Semester.dart';
 import 'package:lecture_performance_app/db/connect_db.dart';
 
 ISemesterRepository newSemesterRepository() {
-  return new SemesterRepository();
+  return SemesterRepository();
 }
 
 class SemesterRepository extends ISemesterRepository {
   SemesterRepository();
 
+  @override
   Future<int> insertSemester(Semester semester) async {
-        Database db = await DBManager.instance.initDB();
-    var id = await db.insert(
+    Database db;
+    db = await DBManager.instance.initDB();
+    final id = await db.insert(
       'semester',
       semester.toMapNew(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -21,39 +23,50 @@ class SemesterRepository extends ISemesterRepository {
     return id;
   }
 
+  @override
   Future<Semester> getSemester(int id) async {
-        Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res =
-        await db.query("semester", where: "id = ?", whereArgs: [id], limit: 1);
-    List<Semester> list =
-        res.isNotEmpty ? res.map((c) => Semester.fromMap(c)).toList() : [];
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [id];
+    List<Map<String, dynamic>> res;
+    res =
+        await db.query('semester', where: 'id = ?', whereArgs: args, limit: 1);
+    List<Semester> list;
+    list = res.isNotEmpty ? res.map((c) => Semester.fromMap(c)).toList() : [];
     return list[0];
   }
 
+  @override
   Future<List<Semester>> getAllSemesters() async {
-        Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query('semester');
-    List<Semester> list =
-        res.isNotEmpty ? res.map((c) => Semester.fromMap(c)).toList() : [];
-    return list;
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    res = await db.query('semester');
+    return res.isNotEmpty ? res.map((c) => Semester.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<void> deleteSemester(int id) async {
-        Database db = await DBManager.instance.initDB();
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [id];
     await db.delete(
       'semester',
-      where: "id = ?",
-      whereArgs: [id],
+      where: 'id = ?',
+      whereArgs: args,
     );
   }
 
+  @override
   Future<int> updateSemester(Semester semester) async {
-        Database db = await DBManager.instance.initDB();
-    var id = await db.update(
+    Database db;
+    var args = [semester.id];
+    db = await DBManager.instance.initDB();
+    final id = await db.update(
       'semester',
       semester.toMapNew(),
-      where: "id = ?",
-      whereArgs: [semester.id],
+      where: 'id = ?',
+      whereArgs: args,
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
     return id;

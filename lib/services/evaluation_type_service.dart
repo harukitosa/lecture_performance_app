@@ -4,36 +4,37 @@ import '../db/models/EvaluationType.dart';
 import '../utility/time.dart';
 
 class SumEvaluationType {
+  SumEvaluationType({this.id, this.title, this.point});
   final int id;
   final String title;
   final int point;
-  SumEvaluationType({this.id, this.title, this.point});
 }
 
 class EvaluationTypeService {
-  final IEvaluationTypeRepository evaluationTypeRepository;
-  final IEvaluationRepository evaluationRepository;
   EvaluationTypeService(
     this.evaluationTypeRepository,
     this.evaluationRepository,
   );
 
+  final IEvaluationTypeRepository evaluationTypeRepository;
+  final IEvaluationRepository evaluationRepository;
+
   Future<List<EvaluationType>> getAllEvaluationType() {
     return evaluationTypeRepository.getAllEvaluationTypes();
   }
 
-  Future<EvaluationType> getEvaluationType(id) {
+  Future<EvaluationType> getEvaluationType(int id) {
     return evaluationTypeRepository.getEvaluationType(id);
   }
 
   Future<int> createEvaluationType(String title) {
-    var evaluationType = new EvaluationType(title: title);
-    var id = evaluationTypeRepository.insertEvaluationType(evaluationType);
+    final evaluationType = EvaluationType(title: title);
+    final id = evaluationTypeRepository.insertEvaluationType(evaluationType);
     return id;
   }
 
   Future<void> editEvaluationType(int id, String title, String createdTime) {
-    var evaluationType = new EvaluationType(
+    final evaluationType = EvaluationType(
       id: id,
       title: title,
       createTime: createdTime,
@@ -43,15 +44,16 @@ class EvaluationTypeService {
   }
 
   Future<List<SumEvaluationType>> getEvaluationSum(int studentID) async {
-    var data = await evaluationTypeRepository.getAllEvaluationTypes();
-    List<SumEvaluationType> list = [];
+    final data = await evaluationTypeRepository.getAllEvaluationTypes();
+    List<SumEvaluationType> list = List<SumEvaluationType>();
     for (var i = 0; i < data.length; i++) {
-      var res = await evaluationRepository.getEvaluationByType(data[i].id, studentID);
+      final res =
+          await evaluationRepository.getEvaluationByType(data[i].id, studentID);
       var sum = 0;
       for (var j = 0; j < res.length; j++) {
         sum += res[j].point;
       }
-      list.add(new SumEvaluationType(
+      list.add(SumEvaluationType(
         id: data[i].id,
         point: sum,
         title: data[i].title,

@@ -6,22 +6,21 @@ import 'package:provider/provider.dart';
 
 //routerで渡される値
 class AdminStudentDetailArgument {
+  AdminStudentDetailArgument(this.homeRoom, this.studentID);
   final HomeRoom homeRoom;
   final int studentID;
-  AdminStudentDetailArgument(this.homeRoom, this.studentID);
 }
 
 class AdminStudentDetail extends StatelessWidget {
   static const routeName = '/admin/student';
   @override
   Widget build(BuildContext context) {
-    final AdminStudentDetailArgument args =
-        ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as AdminStudentDetailArgument;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 生徒情報"),
-        actions: <Widget>[],
+        title:
+            Text('${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組 生徒情報'),
       ),
       body: MultiProvider(
         providers: [
@@ -46,8 +45,8 @@ class AdminStudentDetail extends StatelessWidget {
           );
         },
         tooltip: 'Increment',
-        label: Padding(
-          padding: EdgeInsets.all(12.0),
+        label: const Padding(
+          padding: EdgeInsets.all(12),
           child: Text(
             '生徒情報変更',
             style: TextStyle(
@@ -89,10 +88,10 @@ class AdminStudentView extends StatelessWidget {
 class AdminLatestEvaluationInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AdminStudentDetailArgument args =
-        ModalRoute.of(context).settings.arguments;
-    final studentProvider = Provider.of<StudentProvider>(context);
-    studentProvider.getStudent(args.studentID);
+    final args =
+        ModalRoute.of(context).settings.arguments as AdminStudentDetailArgument;
+    final studentProvider = Provider.of<StudentProvider>(context)
+      ..getStudent(args.studentID);
     return ListView(
       children: <Widget>[
         Row(
@@ -104,9 +103,9 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
                 studentProvider.student != null
                     ? '名前:' +
                         studentProvider.student.lastName +
-                        " " +
+                        ' ' +
                         studentProvider.student.firstName
-                    : "NOT NAME",
+                    : 'NOT NAME',
                 style: TextStyle(
                   fontSize: 28,
                 ),
@@ -117,7 +116,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
               child: Text(
                 studentProvider.student != null
                     ? '出席番号:' + studentProvider.student.number.toString()
-                    : "NOT NUMBER",
+                    : 'NOT NUMBER',
                 style: TextStyle(
                   fontSize: 32,
                 ),
@@ -125,17 +124,17 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
             ),
           ],
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.all(8.0),
           child: Text(
-            "最新の評価",
+            '最新の評価',
             style: TextStyle(
               fontSize: 32,
             ),
           ),
         ),
         DataTable(
-          columns: [
+          columns: const [
             DataColumn(
               label: Text(
                 'type',
@@ -162,7 +161,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
                       cells: [
                         DataCell(
                           Text(
-                            item.title != null ? item.title : "",
+                            item.title != null ? item.title : '',
                             style: TextStyle(fontSize: 22),
                           ),
                           onTap: () {},
@@ -252,7 +251,7 @@ class AdminEvaluationInfo extends StatelessWidget {
                       cells: [
                         DataCell(
                           Text(
-                            item.id != null ? item.id.toString() : "",
+                            item.id != null ? item.id.toString() : '',
                             style: TextStyle(fontSize: 22),
                           ),
                           onTap: () {},

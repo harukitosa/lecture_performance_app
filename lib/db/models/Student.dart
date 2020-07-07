@@ -2,6 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/utility/time.dart';
 
 class Student {
+  Student({
+    this.id,
+    this.homeRoomID,
+    this.firstName,
+    this.lastName,
+    this.number,
+    this.positionNum,
+    this.createTime,
+    this.updateTime,
+  });
+  factory Student.fromMap(Map<String, dynamic> json) => Student(
+        id: json['id'] as int,
+        homeRoomID: json['homeroom_id'] as int,
+        firstName: json['first_name'] as String,
+        lastName: json['last_name'] as String,
+        number: json['number'] as int,
+        positionNum: json['position_num'] as int,
+        createTime: json['created_at'] as String,
+        updateTime: json['updated_at'] as String,
+      );
   final int id;
   final int homeRoomID;
   final String firstName;
@@ -17,17 +37,6 @@ class Student {
   /// 最後に当たった時間
   String lastTime;
 
-  Student({
-    this.id,
-    this.homeRoomID,
-    this.firstName,
-    this.lastName,
-    this.number,
-    this.positionNum,
-    this.createTime,
-    this.updateTime,
-  });
-
   set changePos(int posNum) {
     positionNum = posNum;
   }
@@ -39,12 +48,12 @@ class Student {
   /// 二時間より経過 greenAccent
   /// 二週間経過 orangeAccesnt
   Color seatColor() {
-    var _n = getNowTime();
-    DateTime _now = DateTime.parse(_n);
+    final _n = getNowTime();
+    final _now = DateTime.parse(_n);
     if (lastTime != null) {
-      var _twohoursBefore = _now.subtract(new Duration(hours: 2));
-      var _oneweekBefore = _now.subtract(new Duration(days: 7));
-      DateTime _last = DateTime.parse(lastTime);
+      final _twohoursBefore = _now.subtract(const Duration(hours: 2));
+      final _oneweekBefore = _now.subtract(const Duration(days: 7));
+      final _last = DateTime.parse(lastTime);
       if (_twohoursBefore.compareTo(_last) < 0) {
         return Colors.blueAccent;
       } else {
@@ -58,18 +67,7 @@ class Student {
     return Colors.orangeAccent;
   }
 
-  String get name => lastName + " " + firstName;
-
-  factory Student.fromMap(Map<String, dynamic> json) => new Student(
-        id: json["id"],
-        homeRoomID: json["homeroom_id"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        number: json["number"],
-        positionNum: json["position_num"],
-        createTime: json["created_at"],
-        updateTime: json["updated_at"],
-      );
+  String get name => lastName + firstName;
 
   Map<String, dynamic> toMapNew() {
     return {

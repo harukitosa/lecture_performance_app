@@ -4,22 +4,22 @@ import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 
 class EditSeatArgument {
+  EditSeatArgument(this.grade, this.lectureClass, this.homeRoomID);
   final String grade;
   final String lectureClass;
   final int homeRoomID;
-  EditSeatArgument(this.grade, this.lectureClass, this.homeRoomID);
 }
 
 class EditSeat extends StatelessWidget {
-  static const routeName = '/admin/edit/seat';
   const EditSeat({Key key}) : super(key: key);
+  static const routeName = '/admin/edit/seat';
 
   @override
   Widget build(BuildContext context) {
-    final EditSeatArgument arg = ModalRoute.of(context).settings.arguments;
+    final arg = ModalRoute.of(context).settings.arguments as EditSeatArgument;
     return Scaffold(
       appBar: AppBar(
-        title: Text(arg.grade + "年" + arg.lectureClass + "組" + " 座席表編集画面"),
+        title: Text('${arg.grade} 年 ${arg.lectureClass}組 座席表編集画面'),
       ),
       body: MultiProvider(
         providers: [
@@ -42,19 +42,18 @@ class EditSeat extends StatelessWidget {
 }
 
 class EditSeatMap extends StatelessWidget {
+  const EditSeatMap({this.grade, this.lectureClass, this.id});
   final String grade;
   final String lectureClass;
   final int id;
-  EditSeatMap({this.grade, this.lectureClass, this.id});
   @override
   Widget build(BuildContext context) {
-    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
-    homeRoomProvider.getSeatData(id);
+    Provider.of<HomeRoomProvider>(context).getSeatData(id);
     return Center(
       child: Column(
         children: <Widget>[
-          Text(
-            "使用しない座席をタップしてください",
+          const Text(
+            '使用しない座席をタップしてください',
             style: TextStyle(fontSize: 32),
           ),
           SeatMap(),
@@ -65,21 +64,21 @@ class EditSeatMap extends StatelessWidget {
 }
 
 class SeatMap extends StatelessWidget {
-  final double padding;
-  final config = new AppDataConfig();
   SeatMap({this.padding});
+  final double padding;
+  final AppDataConfig config = AppDataConfig();
   @override
   Widget build(BuildContext context) {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
     return Padding(
-      padding: EdgeInsets.all(0.0),
+      padding: const EdgeInsets.all(0),
       child: GridView.builder(
         shrinkWrap: true,
-        itemCount: homeRoomProvider.currentSeat!= null
+        itemCount: homeRoomProvider.currentSeat != null
             ? homeRoomProvider.currentSeat.length
             : 0,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 50),
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: config.seatWidth,
           mainAxisSpacing: 8,
@@ -90,9 +89,9 @@ class SeatMap extends StatelessWidget {
           return EditSeatView(
             homeRoomProvider.currentSeat != null
                 ? homeRoomProvider.currentSeat[index].used
-                : "false",
+                : 'false',
             index,
-            true,
+            changeState: true,
           );
         },
       ),
@@ -101,23 +100,24 @@ class SeatMap extends StatelessWidget {
 }
 
 class EditSeatView extends StatelessWidget {
+  const EditSeatView(this.flag, this.index, {this.changeState});
+
   final String flag;
   final int index;
   final bool changeState;
-  EditSeatView(this.flag, this.index, this.changeState);
   @override
   Widget build(BuildContext context) {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
     return InkWell(
       onTap: () {
-        if (this.changeState) {
+        if (changeState) {
           homeRoomProvider.editSeatState(index);
         }
       },
       child: Container(
-        padding: EdgeInsets.all(4.0),
-        color: flag == "true" ? Colors.blue : Colors.grey,
-        child: Text(""),
+        padding: const EdgeInsets.all(4),
+        color: flag == 'true' ? Colors.blue : Colors.grey,
+        child: const Text(''),
       ),
     );
   }

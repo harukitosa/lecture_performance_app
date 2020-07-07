@@ -15,11 +15,12 @@ class SeatService {
   }
 
   Future<void> insertSeatData(int homeRoomID, String flag) async {
-    var seat = new Seat(homeRoomID: homeRoomID, used: flag);
+    final seat = Seat(homeRoomID: homeRoomID, used: flag);
     await seatRepository.insertSeat(seat);
   }
 
-  Future<void> updateSeatData(int id, int homeRoomID, String used, String createTime) async {
+  Future<void> updateSeatData(
+      int id, int homeRoomID, String used, String createTime) async {
     var seat = new Seat(
       id: id,
       homeRoomID: homeRoomID,

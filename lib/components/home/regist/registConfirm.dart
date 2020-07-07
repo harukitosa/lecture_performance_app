@@ -3,23 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/common/seatView/editSeatView.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
+
 //routerで渡される値
 class HomeRegistConfirmArgument {
+  HomeRegistConfirmArgument(this.grade, this.lectureClass, this.seatMap);
   final String grade;
   final String lectureClass;
   final List<String> seatMap;
-  HomeRegistConfirmArgument(this.grade, this.lectureClass, this.seatMap);
 }
 
 class HomeRegistConfirm extends StatelessWidget {
   static const routeName = '/home/regist/confirm';
   @override
   Widget build(BuildContext context) {
-    final HomeRegistConfirmArgument arg =
-        ModalRoute.of(context).settings.arguments;
+    final arg =
+        ModalRoute.of(context).settings.arguments as HomeRegistConfirmArgument;
     return Scaffold(
       appBar: AppBar(
-        title: Text('登録確認画面'),
+        title: const Text('登録確認画面'),
       ),
       body: MultiProvider(
         providers: [
@@ -42,10 +43,11 @@ class HomeRegistConfirm extends StatelessWidget {
 }
 
 class RegistConfirmMap extends StatelessWidget {
+  const RegistConfirmMap({this.grade, this.lectureClass, this.seatMap});
+
   final String grade;
   final String lectureClass;
   final List<String> seatMap;
-  RegistConfirmMap({this.grade, this.lectureClass, this.seatMap});
   @override
   Widget build(BuildContext context) {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
@@ -54,13 +56,13 @@ class RegistConfirmMap extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            "以下の内容で登録しますか？",
+            '以下の内容で登録しますか？',
             style: TextStyle(fontSize: 38, fontWeight: FontWeight.w300),
           ),
           Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12),
             child: Text(
-              "クラス名",
+              'クラス名',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -68,36 +70,36 @@ class RegistConfirmMap extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12),
             child: Text(
-              grade + "年 " + lectureClass + "組",
-              style: TextStyle(fontSize: 32),
+              '$grade 年 $lectureClass 組',
+              style: const TextStyle(fontSize: 32),
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12),
             child: Text(
-              "座席表",
+              '座席表',
               style: TextStyle(
-                fontSize: 24.0,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: 200.0, left: 200),
+            padding: const EdgeInsets.only(right: 200, left: 200),
             child: SeatMap(
               seatMap: seatMap,
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 40),
+            padding: const EdgeInsets.only(top: 40),
             child: ButtonTheme(
               minWidth: 300,
               height: 50,
               child: RaisedButton(
-                child: Text(
-                  "登録する",
+                child: const Text(
+                  '登録する',
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -121,20 +123,22 @@ class RegistConfirmMap extends StatelessWidget {
   }
 }
 
+@immutable
 class SeatMap extends StatelessWidget {
-  final List<String> seatMap;
   SeatMap({this.seatMap});
-  final config = new AppDataConfig();
+
+  final List<String> seatMap;
+  final AppDataConfig config = AppDataConfig();
   @override
   Widget build(BuildContext context) {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
     return Padding(
-      padding: EdgeInsets.all(0.0),
+      padding: const EdgeInsets.all(0),
       child: GridView.builder(
         shrinkWrap: true,
         itemCount: homeRoomProvider.mapSeat.length,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 50),
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: config.seatWidth,
           mainAxisSpacing: 2,
@@ -149,18 +153,18 @@ class SeatMap extends StatelessWidget {
   }
 }
 
-Future<void> _neverSatisfied(context) async {
+Future<void> _neverSatisfied(BuildContext context) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(
+        title: const Text(
           '登録完了しました',
         ),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[
+            children: const <Widget>[
               Text(
                 'ホーム画面に戻ります。',
               ),
@@ -169,9 +173,9 @@ Future<void> _neverSatisfied(context) async {
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('確認'),
+            child: const Text('確認'),
             onPressed: () {
-                Navigator.popUntil(context, ModalRoute.withName("/home")); 
+              Navigator.popUntil(context, ModalRoute.withName('/home'));
             },
           ),
         ],

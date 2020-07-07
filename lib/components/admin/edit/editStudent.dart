@@ -3,12 +3,11 @@ import 'package:lecture_performance_app/components/admin/classroom/studentDetail
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/StudentProvider.dart';
 import 'package:lecture_performance_app/wire.dart';
-import 'package:lecture_performance_app/services/student_service.dart';
 import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
 
 class EditStudentArgument {
-  int studentID;
   EditStudentArgument({this.studentID});
+  int studentID;
 }
 
 class EditStudent extends StatelessWidget {
@@ -16,11 +15,12 @@ class EditStudent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final EditStudentArgument args = ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as EditStudentArgument;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("生徒情報編集画面"),
+        title: const Text('生徒情報編集画面'),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -56,21 +56,20 @@ Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
     context: context,
     builder: (_) {
       return AlertDialog(
-        title: Text("この生徒を削除"),
-        content: Text("この動作は一度行うと取り消すことができません。それでも削除しますか？"),
+        title: const Text('この生徒を削除'),
+        content: const Text('この動作は一度行うと取り消すことができません。それでも削除しますか？'),
         actions: <Widget>[
           // ボタン領域
           FlatButton(
-            child: Text("キャンセル"),
+            child: const Text('キャンセル'),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           FlatButton(
-            child: Text("削除する"),
+            child: const Text('削除する'),
             onPressed: () {
-              StudentService _studentServices = initStudentAPI();
-              _studentServices.deletestudent(id);
+              initStudentAPI().deletestudent(id);
               Navigator.pop(context);
               _confirmPopUp(context);
             },
@@ -81,18 +80,18 @@ Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
   );
 }
 
-Future<void> _confirmPopUp(context) async {
+Future<void> _confirmPopUp(BuildContext context) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(
+        title: const Text(
           '削除しました',
         ),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[
+            children: const <Widget>[
               Text(
                 'ホーム画面に戻ります。',
               ),
@@ -101,12 +100,12 @@ Future<void> _confirmPopUp(context) async {
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('確認'),
+            child: const Text('確認'),
             onPressed: () {
               Navigator.popUntil(
                 context,
                 // homeではない方がいいかも
-                ModalRoute.withName("/home"),
+                ModalRoute.withName('/home'),
               );
             },
           ),
@@ -124,12 +123,12 @@ class EditStudentView extends StatelessWidget {
       child: Container(
         width: 500,
         height: 600,
-        padding: EdgeInsets.all(16.0),
-        margin: EdgeInsets.all(60.0),
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(60),
         decoration: BoxDecoration(
           border: Border.all(
-            width: 1.0,
-            color: Color(0xFFFFaFaFaF),
+            width: 1,
+            color: const Color(0xFFFFaFaFaF),
           ),
           borderRadius: BorderRadius.circular(30),
         ),
@@ -140,53 +139,53 @@ class EditStudentView extends StatelessWidget {
                     child: Icon(
                       Icons.person,
                       color: Colors.black,
-                      size: 90.0,
+                      size: 90,
                     ),
                   ),
-                  Text('生徒情報編集'),
+                  const Text('生徒情報編集'),
                   Container(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16),
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: '姓'),
+                      decoration: const InputDecoration(labelText: '姓'),
                       initialValue: studentProvider.student.lastName,
                       onChanged: studentProvider.handleChangeLastName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
                       ),
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16),
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: '名前'),
+                      decoration: const InputDecoration(labelText: '名前'),
                       initialValue: studentProvider.student.firstName,
                       onChanged: studentProvider.handleChangeFirstName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
                       ),
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16),
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: '出席番号'),
+                      decoration: const InputDecoration(labelText: '出席番号'),
                       initialValue: studentProvider.student.number.toString(),
                       onChanged: studentProvider.handleChangeNum,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
                       ),
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16),
                     child: RaisedButton(
                       onPressed: () {
                         studentProvider.updateStudent();
                         confirmPopUp(context, AdminStudentDetail.routeName);
                       },
                       color: Colors.redAccent,
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
                         '保存',
                         style: TextStyle(
                           fontSize: 18,
@@ -196,7 +195,7 @@ class EditStudentView extends StatelessWidget {
                   ),
                 ],
               )
-            : Text("NO DATA"),
+            : const Text('NO DATA'),
       ),
     );
   }

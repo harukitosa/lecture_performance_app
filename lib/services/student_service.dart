@@ -3,15 +3,15 @@ import '../db/models/Student.dart';
 import '../utility/time.dart';
 
 class StudentService {
-  final IStudentRepository studentRepository;
   StudentService(this.studentRepository);
+  final IStudentRepository studentRepository;
 
   Future<List<Student>> getRoomStudents(int homeroomID) async {
-    return await studentRepository.getThisRoomStudent(homeroomID);
+    return studentRepository.getThisRoomStudent(homeroomID);
   }
 
   Future<Student> getStudent(int id) async {
-    return await studentRepository.getOneStudent(id);
+    return studentRepository.getOneStudent(id);
   }
 
   Future<int> createstudent(
@@ -20,7 +20,7 @@ class StudentService {
     String lastName,
     int number,
   ) async {
-    var students = await studentRepository.getThisRoomStudent(homeRoomID);
+    final students = await studentRepository.getThisRoomStudent(homeRoomID);
     var maxPosition = 0;
 
     for (var i = 0; i < students.length; i++) {
@@ -28,14 +28,14 @@ class StudentService {
         maxPosition = students[i].positionNum;
       }
     }
-    var student = new Student(
+    final student = Student(
       homeRoomID: homeRoomID,
       firstName: firstName,
       lastName: lastName,
       positionNum: maxPosition + 1,
       number: number,
     );
-    var id = studentRepository.insertStudent(student);
+    final id = studentRepository.insertStudent(student);
     return id;
   }
 
@@ -48,7 +48,7 @@ class StudentService {
     int number,
     String createTime,
   ) {
-    var student = new Student(
+    final student = Student(
       id: id,
       homeRoomID: homeRoomID,
       positionNum: positionNum,
@@ -68,13 +68,13 @@ class StudentService {
   /// 席替えを行う
   /// @params
   /// int firstID, secondID
-  Future<void> changePositionNum(int firstID, secondID) async {
-    var first = await studentRepository.getOneStudent(firstID);
-    var second = await studentRepository.getOneStudent(secondID);
-    var store = first.positionNum;
+  Future<void> changePositionNum(int firstID, int secondID) async {
+    final first = await studentRepository.getOneStudent(firstID);
+    final second = await studentRepository.getOneStudent(secondID);
+    final store = first.positionNum;
     first.changePos = second.positionNum;
     second.positionNum = store;
-    studentRepository.updateStudent(first);
-    studentRepository.updateStudent(second);
+    await studentRepository.updateStudent(first);
+    await studentRepository.updateStudent(second);
   }
 }

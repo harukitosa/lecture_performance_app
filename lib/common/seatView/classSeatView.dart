@@ -131,4 +131,3 @@ class ClassRoomSeatView extends StatelessWidget {
     );
   }
 }
-

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/services/homeroom_service.dart';
 import 'package:lecture_performance_app/wire.dart';
 
 class DeleteClassRoomArguments {
-  final HomeRoom homeRoom;
   DeleteClassRoomArguments(this.homeRoom);
+  final HomeRoom homeRoom;
 }
 
 class DeleteClassRoom extends StatelessWidget {
@@ -14,14 +13,14 @@ class DeleteClassRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DeleteClassRoomArguments args =
-        ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as DeleteClassRoomArguments;
     final config = AppStyle();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 管理画面",
+          '${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組 管理画面',
           style: TextStyle(
             fontSize: config.size4,
             color: config.st,
@@ -30,7 +29,7 @@ class DeleteClassRoom extends StatelessWidget {
       ),
       body: ListView(children: <Widget>[
         _menuItemDelete(
-          "このクラスの削除",
+          'このクラスの削除',
           Icon(Icons.delete),
           context,
           args.homeRoom.id,
@@ -42,15 +41,15 @@ class DeleteClassRoom extends StatelessWidget {
 
 Widget _menuItemDelete(String title, Icon icon, BuildContext context, int id) {
   return Container(
-    decoration: new BoxDecoration(
-        border: new Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+    decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
     child: ListTile(
       leading: icon,
       title: Text(
         title,
         style: TextStyle(
           color: Colors.black,
-          fontSize: 18.0,
+          fontSize: 18,
         ),
       ),
       onTap: () {
@@ -65,21 +64,20 @@ Future<void> deleteAlertPopUp(BuildContext context, int id) async {
     context: context,
     builder: (_) {
       return AlertDialog(
-        title: Text("このクラスを削除"),
-        content: Text("この動作は一度行うと取り消すことができません。それでも削除しますか？"),
+        title: const Text('このクラスを削除'),
+        content: const Text('この動作は一度行うと取り消すことができません。それでも削除しますか？'),
         actions: <Widget>[
           // ボタン領域
           FlatButton(
-            child: Text("キャンセル"),
+            child: const Text('キャンセル'),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           FlatButton(
-            child: Text("削除する"),
+            child: const Text('削除する'),
             onPressed: () {
-              HomeRoomService hs = initHomeRoomAPI();
-              hs.deleteHomeRoom(id);
+              initHomeRoomAPI().deleteHomeRoom(id);
               Navigator.pop(context);
               confirmPopUp(context);
             },
@@ -90,18 +88,18 @@ Future<void> deleteAlertPopUp(BuildContext context, int id) async {
   );
 }
 
-Future<void> confirmPopUp(context) async {
+Future<void> confirmPopUp(BuildContext context) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(
+        title: const Text(
           '削除しました',
         ),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[
+            children: const <Widget>[
               Text(
                 'ホーム画面に戻ります。',
               ),
@@ -110,11 +108,11 @@ Future<void> confirmPopUp(context) async {
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('確認'),
+            child: const Text('確認'),
             onPressed: () {
               Navigator.popUntil(
                 context,
-                ModalRoute.withName("/home"),
+                ModalRoute.withName('/home'),
               );
             },
           ),
