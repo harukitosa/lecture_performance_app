@@ -21,9 +21,9 @@ class HomeRoom {
   final String createTime;
   String updateTime;
 
-  Map<String, dynamic> toMapNew() {
+  Map<String, String> toMapNew() {
     return {
-      'id': id,
+      'id': id as String,
       'grade': grade,
       'lectureClass': lectureClass,
       'created_at': createTime,

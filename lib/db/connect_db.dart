@@ -5,35 +5,32 @@ import 'package:lecture_performance_app/config/DataConfig.dart';
 
 class DBManager {
   static Database _database;
-  static final DBManager _dbManager = new DBManager._internal();
+  static final DBManager _dbManager = DBManager._internal();
   DBManager._internal();
   static DBManager get instance => _dbManager;
-  
+
   Future<Database> initDB() async {
-    if (_database != null)
-      return _database;
-    else {
-      final database = openDatabase(
-        join(await getDatabasesPath(), 'database.db'),
-        version: 1,
-        onConfigure: _onConfigure,
-        onCreate: _onCreate,
-      );
-      _database = await database;
-      return _database;
-    }
+    if (_database != null) return _database;
+    final database = openDatabase(
+      join(await getDatabasesPath(), 'database.db'),
+      version: 1,
+      onConfigure: _onConfigure,
+      onCreate: _onCreate,
+    );
+
+    return _database = await database;
   }
 }
 
-_onConfigure(Database db) async {
-  await db.execute("PRAGMA foreign_keys = ON");
+Future<void> _onConfigure(Database db) async {
+  await db.execute('PRAGMA foreign_keys = ON');
 }
 
-_onCreate(Database db, int version) async {
+Future<void> _onCreate(Database db, int version) async {
   await _createTransaction(db);
 }
 
-_createTransaction(Database db) async {
+Future<void> _createTransaction(Database db) async {
   await db.transaction((txn) async {
     // CREATE USER
     await db.execute('''
@@ -113,15 +110,15 @@ _createTransaction(Database db) async {
   });
 }
 
-_insertSeatTransaction(Database db) async {
-  var config = new AppDataConfig();
+Future<void> _insertSeatTransaction(Database db) async {
+  final config = AppDataConfig();
   await db.transaction((txn) async {
-    var id = await txn.rawInsert('''
-        INSERT INTO homeroom(grade, lectureClass) VALUES("1", "1")
+    final id = await txn.rawInsert('''
+        INSERT INTO homeroom(grade, lectureClass) VALUES('1', '1')
       ''');
     for (var i = 0; i < config.seatNum; i++) {
       await txn.rawInsert('''
-          INSERT INTO seat(homeroom_id, used) VALUES($id, "true")
+          INSERT INTO seat(homeroom_id, used) VALUES($id, 'true')
         ''');
     }
     for (var i = 0; i < config.seatNum; i++) {
