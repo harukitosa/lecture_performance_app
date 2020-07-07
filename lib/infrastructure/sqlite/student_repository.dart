@@ -4,15 +4,17 @@ import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:lecture_performance_app/db/connect_db.dart';
 
 IStudentRepository newStudentRepository() {
-  return new StudentRepository();
+  return StudentRepository();
 }
 
 class StudentRepository extends IStudentRepository {
   StudentRepository();
 
+  @override
   Future<int> insertStudent(Student student) async {
-    Database db = await DBManager.instance.initDB();
-    var id = await db.insert(
+    Database db;
+    db = await DBManager.instance.initDB();
+    final id = await db.insert(
       'student',
       student.toMapNew(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -20,55 +22,68 @@ class StudentRepository extends IStudentRepository {
     return id;
   }
 
+  @override
   Future<List<Student>> getThisRoomStudent(int homeroomID) async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query(
-      "student",
-      where: "homeroom_id = ?",
-      whereArgs: [homeroomID],
-      orderBy: "number DESC",
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    final args = [homeroomID];
+    res = await db.query(
+      'student',
+      where: 'homeroom_id = ?',
+      whereArgs: args,
+      orderBy: 'number DESC',
     );
-    List<Student> list =
-        res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
-    return list;
+    return res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<Student> getOneStudent(int id) async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query(
-      "student",
-      where: "id = ?",
-      whereArgs: [id],
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [id];
+    List<Map<String, dynamic>> res;
+    res = await db.query(
+      'student',
+      where: 'id = ?',
+      whereArgs: args,
     );
-    List<Student> list =
-        res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
+    List<Student> list;
+    list = res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
     return list[0];
   }
 
+  @override
   Future<List<Student>> getAllStudents() async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query('student');
-    List<Student> list =
-        res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
-    return list;
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    res = await db.query('student');
+    return res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<void> deleteStudent(int id) async {
-    Database db = await DBManager.instance.initDB();
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [id];
     await db.delete(
       'student',
-      where: "id = ?",
-      whereArgs: [id],
+      where: 'id = ?',
+      whereArgs: args,
     );
   }
 
+  @override
   Future<void> updateStudent(Student student) async {
-    Database db = await DBManager.instance.initDB();
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [student.id];
     await db.update(
       'student',
       student.toMapNew(),
-      where: "id = ?",
-      whereArgs: [student.id],
+      where: 'id = ?',
+      whereArgs: args,
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
   }

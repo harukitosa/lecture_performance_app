@@ -4,32 +4,38 @@ import 'package:sqflite/sqflite.dart';
 import 'package:lecture_performance_app/db/connect_db.dart';
 
 ISeatRepository newSeatRepository() {
-  return new SeatRepository();
+  return SeatRepository();
 }
 
 class SeatRepository extends ISeatRepository {
   SeatRepository();
 
+  @override
   Future<Seat> getseat(int id) async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res =
-        await db.query("seat", where: "id = ?", whereArgs: [id], limit: 1);
-    List<Seat> list =
-        res.isNotEmpty ? res.map((c) => Seat.fromMap(c)).toList() : [];
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    final args = [id];
+    res = await db.query('seat', where: 'id = ?', whereArgs: args, limit: 1);
+    List<Seat> list;
+    list = res.isNotEmpty ? res.map((c) => Seat.fromMap(c)).toList() : [];
     return list[0];
   }
 
+  @override
   Future<List<Seat>> getAllseats() async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query('seat');
-    List<Seat> list =
-        res.isNotEmpty ? res.map((c) => Seat.fromMap(c)).toList() : [];
-    return list;
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    res = await db.query('seat');
+    return res.isNotEmpty ? res.map((c) => Seat.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<int> insertSeat(Seat seat) async {
-    Database db = await DBManager.instance.initDB();
-    var id = await db.insert(
+    Database db;
+    db = await DBManager.instance.initDB();
+    final id = await db.insert(
       'seat',
       seat.toMapNew(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -38,22 +44,27 @@ class SeatRepository extends ISeatRepository {
     return id;
   }
 
+  @override
   Future<List<Seat>> getThisRoomSeats(int homeRoomID) async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query("seat",
-        where: "homeroom_id = ?", whereArgs: [homeRoomID], limit: 64);
-    List<Seat> list =
-        res.isNotEmpty ? res.map((c) => Seat.fromMap(c)).toList() : [];
-    return list;
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [homeRoomID];
+    List<Map<String, dynamic>> res;
+    res = await db.query('seat',
+        where: 'homeroom_id = ?', whereArgs: args, limit: 64);
+    return res.isNotEmpty ? res.map((c) => Seat.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<void> updateseat(Seat seat) async {
-    Database db = await DBManager.instance.initDB();
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [seat.id];
     await db.update(
       'seat',
       seat.toMapNew(),
-      where: "id = ?",
-      whereArgs: [seat.id],
+      where: 'id = ?',
+      whereArgs: args,
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
   }

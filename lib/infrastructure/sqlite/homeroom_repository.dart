@@ -4,15 +4,17 @@ import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/db/connect_db.dart';
 
 IHomeRoomRepository newHomeRoomRepository() {
-  return new HomeRoomRepository();
+  return HomeRoomRepository();
 }
 
 class HomeRoomRepository extends IHomeRoomRepository {
   HomeRoomRepository();
 
+  @override
   Future<int> insertHomeRoom(HomeRoom homeRoom) async {
-    Database db = await DBManager.instance.initDB();
-    var id = await db.insert(
+    Database db;
+    db = await DBManager.instance.initDB();
+    final id = await db.insert(
       'homeroom',
       homeRoom.toMapNew(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -20,30 +22,37 @@ class HomeRoomRepository extends IHomeRoomRepository {
     return id;
   }
 
+  @override
   Future<List<HomeRoom>> getHomeRooms() async {
-    Database db = await DBManager.instance.initDB();
-    final List<Map<String, dynamic>> res = await db.query("homeroom");
-    List<HomeRoom> list =
-        res.isNotEmpty ? res.map((c) => HomeRoom.fromMap(c)).toList() : [];
-    return list;
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    res = await db.query('homeroom');
+    return res.isNotEmpty ? res.map((c) => HomeRoom.fromMap(c)).toList() : [];
   }
 
+  @override
   Future<void> deleteHomeRoom(int id) async {
-    Database db = await DBManager.instance.initDB();
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [id];
     await db.delete(
       'homeroom',
-      where: "id = ?",
-      whereArgs: [id],
+      where: 'id = ?',
+      whereArgs: args,
     );
   }
 
+  @override
   Future<void> updateHomeRoom(HomeRoom homeRoom) async {
-    Database db = await DBManager.instance.initDB();
+    Database db;
+    db = await DBManager.instance.initDB();
+    final args = [homeRoom.id];
     await db.update(
       'homeroom',
       homeRoom.toMapNew(),
-      where: "id = ?",
-      whereArgs: [homeRoom.id],
+      where: 'id = ?',
+      whereArgs: args,
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
   }
