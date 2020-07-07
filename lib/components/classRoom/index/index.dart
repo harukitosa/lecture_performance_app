@@ -9,16 +9,17 @@ import 'package:lecture_performance_app/common/seatView/classSeatView.dart';
 
 //routerで渡される値
 class ClassRoomArgument {
-  final HomeRoom homeRoom;
   ClassRoomArgument(this.homeRoom);
+  final HomeRoom homeRoom;
 }
 
+@immutable
 class ClassRoom extends StatelessWidget {
   static const routeName = '/class';
-  final config = AppStyle();
+  final AppStyle config = AppStyle();
   @override
   Widget build(BuildContext context) {
-    final ClassRoomArgument args = ModalRoute.of(context).settings.arguments;
+    final args = ModalRoute.of(context).settings.arguments as ClassRoomArgument;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -34,7 +35,7 @@ class ClassRoom extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text(
-                args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組",
+                '${args.homeRoom.grade} 年 ${args.homeRoom.lectureClass} 組',
               ),
             ),
             body: Column(
@@ -44,7 +45,7 @@ class ClassRoom extends StatelessWidget {
                 ),
               ],
             ),
-            floatingActionButton: new Builder(
+            floatingActionButton: Builder(
               builder: (BuildContext context) {
                 return FloatingActionButton.extended(
                   onPressed: () {
@@ -52,7 +53,7 @@ class ClassRoom extends StatelessWidget {
                   },
                   tooltip: 'Increment',
                   label: Padding(
-                    padding: EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(12),
                     child: Text(
                       'Undo',
                       style: TextStyle(
@@ -72,16 +73,19 @@ class ClassRoom extends StatelessWidget {
   }
 }
 
+@immutable
 class RegistSeatMap extends StatelessWidget {
+  RegistSeatMap({this.grade, this.lectureClass, this.homeRoomID});
   final String grade;
   final String lectureClass;
   final int homeRoomID;
-  final config = AppStyle();
-  RegistSeatMap({this.grade, this.lectureClass, this.homeRoomID});
+  final AppStyle config = AppStyle();
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    final ClassRoomArgument args = ModalRoute.of(context).settings.arguments;
+    final args = ModalRoute.of(context).settings.arguments as ClassRoomArgument;
+    final lastName = classRoomProvider.sta.top().student.lastName;
+    final point = classRoomProvider.sta.top().point.toString();
     return Column(
       children: <Widget>[
         Row(
@@ -96,10 +100,8 @@ class RegistSeatMap extends StatelessWidget {
                 child: Center(
                   child: Text(
                     classRoomProvider.sta.isNotEmpty
-                        ? classRoomProvider.sta.top().student.lastName +
-                            ":" +
-                            classRoomProvider.sta.top().point.toString()
-                        : "NOACTION",
+                        ? '$lastName:$point'
+                        : 'NOACTION',
                     style: TextStyle(
                       fontSize: config.size4,
                       color: config.st,
@@ -109,8 +111,8 @@ class RegistSeatMap extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(100.0),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(100),
                   ),
                   color: config.s,
                 ),
@@ -128,7 +130,7 @@ class RegistSeatMap extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      "管理画面",
+                      '管理画面',
                       style: TextStyle(
                         fontSize: config.size4,
                         color: config.st,
@@ -140,7 +142,7 @@ class RegistSeatMap extends StatelessWidget {
             ]),
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: 800.0,
+            maxHeight: 800,
             maxWidth: classRoomProvider.viewWidth == null
                 ? 700.0
                 : (classRoomProvider.viewWidth * 170).toDouble(),
@@ -152,14 +154,14 @@ class RegistSeatMap extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 20.0),
+          padding: const EdgeInsets.only(top: 20),
           child: Container(
             width: 200,
             height: 50,
             color: Colors.brown,
             child: Center(
               child: Text(
-                "教卓",
+                '教卓',
                 style: TextStyle(
                   fontSize: 32,
                   color: Colors.white,
@@ -174,28 +176,28 @@ class RegistSeatMap extends StatelessWidget {
 }
 
 class SeatMap extends StatelessWidget {
+  const SeatMap({this.homeRoomID});
   final int homeRoomID;
-  SeatMap({this.homeRoomID});
   @override
   Widget build(BuildContext context) {
     // crp: classRoomProvider
-    final crp = Provider.of<ClassRoomProvider>(context);
-    crp.getSeatData(homeRoomID);
+    final crp = Provider.of<ClassRoomProvider>(context)
+      ..getSeatData(homeRoomID);
 
-    String _name = "";
-    int _studentID = 0;
-    int _indexCount = 0;
-    int _positionNum = 0;
-    String _viewSeat = "false";
+    var _name = '';
+    var _studentID = 0;
+    var _indexCount = 0;
+    var _positionNum = 0;
+    var _viewSeat = 'false';
     Color _seatColor = Colors.green;
 
     return Padding(
-      padding: EdgeInsets.only(top: 40.0),
+      padding: const EdgeInsets.only(top: 40),
       child: GridView.builder(
         shrinkWrap: true,
         itemCount: crp.viewSeat == null ? 0 : crp.viewSeat.length,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 50),
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crp.viewWidth == null ? 7 : crp.viewWidth,
           mainAxisSpacing: 8,
@@ -203,7 +205,7 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2,
         ),
         itemBuilder: (context, index) {
-          if (crp.viewSeat[index].used == "true" &&
+          if (crp.viewSeat[index].used == 'true' &&
               crp.studentList.length > index - _indexCount) {
             _name = crp.studentList[index - _indexCount].lastName;
             _studentID = crp.studentList[index - _indexCount].id;
@@ -212,10 +214,10 @@ class SeatMap extends StatelessWidget {
             _viewSeat = crp.viewSeat[index].used;
           } else {
             _indexCount++;
-            _name = "";
+            _name = '';
             _positionNum = -1;
             _studentID = -1;
-            _viewSeat = "false";
+            _viewSeat = 'false';
             _seatColor = Colors.blueAccent;
           }
           return ClassRoomSeatView(

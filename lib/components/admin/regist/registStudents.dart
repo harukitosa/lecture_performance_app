@@ -19,14 +19,13 @@ class RegistStudents extends StatelessWidget {
   static const routeName = '/admin/regist/students';
   @override
   Widget build(BuildContext context) {
-    final RegistStudentsArgument args =
-        ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as RegistStudentsArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 まとめて登録",
+          '${args.homeRoom.grade}年 ${args.homeRoom.lectureClass} 組 まとめて登録',
         ),
-        actions: <Widget>[],
       ),
       body: MultiProvider(
         providers: [
@@ -52,40 +51,43 @@ class _InputForm extends StatefulWidget {
 }
 
 class _InputFormState extends State<_InputForm> {
-  String display = "";
-  String fileText = "";
+  String display = '';
+  String fileText = '';
   File file;
   int id;
-  var config = AppStyle();
+  AppStyle config = AppStyle();
 
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    final RegistStudentsArgument args =
-        ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as RegistStudentsArgument;
 
     /// csvファイルでデータの登録を行っている
     /// [num][lastName][firstName]の順番に登録していく。
     _storeButton() async {
-      List data = fileText.replaceAll('\n', ',').split(',');
+      List<String> data;
+      data = fileText.replaceAll('\n', ',').split(',');
       print(data);
       for (var i = 0; i < data.length; i += 3) {
-        print("num" + data[i]);
-        print("lastName" + data[i + 1]);
-        print("firstName" + data[i + 2]);
+        print('num ${data[i]}');
+        print('lastName ${data[i + 1]}');
+        print('firstName ${data[i + 2]}');
         try {
-          var num = int.parse(data[i]);
+          final num = int.parse(data[i]);
           await classRoomProvider.registStudentData(
             args.homeRoom.id,
             num,
             data[i + 2],
             data[i + 1],
           );
-        } catch (exception) {}
+        } on Exception catch (exception) {
+          print(exception);
+        }
       }
-      confirmPopUp(context, AdminClassRoom.routeName);
+      await confirmPopUp(context, AdminClassRoom.routeName);
       setState(() {
-        display = "";
+        display = '';
       });
     }
 
@@ -124,15 +126,15 @@ class _InputFormState extends State<_InputForm> {
           FlatButton(
             color: config.sd,
             textColor: Colors.white,
-            child: Text("ファイル選択・取り込み"),
-            shape: StadiumBorder(),
+            child: const Text('ファイル選択・取り込み'),
+            shape: const StadiumBorder(),
             onPressed: _uploadFile,
           ),
           Text(display),
           FlatButton(
             color: Colors.blue,
             textColor: Colors.white,
-            child: Text("保存"),
+            child: const Text('保存'),
             onPressed: _storeButton,
           ),
         ]);

@@ -8,22 +8,21 @@ import 'package:lecture_performance_app/components/admin/regist/registStudents.d
 
 //routerで渡される値
 class RegistStudentArgument {
-  final HomeRoom homeRoom;
   RegistStudentArgument(this.homeRoom);
+  final HomeRoom homeRoom;
 }
 
 class RegistStudent extends StatelessWidget {
   static const routeName = '/admin/regist/student';
   @override
   Widget build(BuildContext context) {
-    final RegistStudentArgument args =
-        ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as RegistStudentArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          args.homeRoom.grade + "年" + args.homeRoom.lectureClass + "組 新規生徒登録",
+          '${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組 新規生徒登録',
         ),
-        actions: <Widget>[],
       ),
       body: MultiProvider(
         providers: [
@@ -50,8 +49,8 @@ class RegistStudent extends StatelessWidget {
           );
         },
         tooltip: 'Increment',
-        label: Padding(
-          padding: EdgeInsets.all(12.0),
+        label: const Padding(
+          padding: EdgeInsets.all(12),
           child: Text(
             'まとめて追加',
             style: TextStyle(
@@ -66,7 +65,7 @@ class RegistStudent extends StatelessWidget {
 }
 
 class RegistStudentForm extends StatefulWidget {
-  RegistStudentForm({Key key}) : super(key: key);
+  const RegistStudentForm({Key key}) : super(key: key);
 
   @override
   _RegistStudentFormState createState() => _RegistStudentFormState();
@@ -109,20 +108,20 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    final RegistStudentArgument args =
-        ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as RegistStudentArgument;
     return Container(
       child: Container(
         child: Center(
           child: Container(
             width: 500,
             height: 600,
-            padding: EdgeInsets.all(16.0),
-            margin: EdgeInsets.all(60.0),
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(60),
             decoration: BoxDecoration(
               border: Border.all(
-                width: 1.0,
-                color: Color(0xFFFFaFaFaF),
+                width: 1,
+                color: const Color(0xFFFFaFaFaF),
               ),
               borderRadius: BorderRadius.circular(30),
             ),
@@ -135,32 +134,32 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
                     size: 90.0,
                   ),
                 ),
-                Text('生徒登録'),
+                const Text('生徒登録'),
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: TextFormField(
-                    decoration: InputDecoration(labelText: '姓'),
-                    style: TextStyle(
+                    decoration: const InputDecoration(labelText: '姓'),
+                    style: const TextStyle(
                       fontSize: 24,
                     ),
                     onChanged: _handleLastName,
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: TextFormField(
-                    decoration: InputDecoration(labelText: '名'),
-                    style: TextStyle(
+                    decoration: const InputDecoration(labelText: '名'),
+                    style: const TextStyle(
                       fontSize: 24,
                     ),
                     onChanged: _handleFirstName,
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: TextFormField(
-                    decoration: InputDecoration(labelText: '出席番号'),
-                    style: TextStyle(
+                    decoration: const InputDecoration(labelText: '出席番号'),
+                    style: const TextStyle(
                       fontSize: 24,
                     ),
                     onChanged: _handleNumber,
@@ -173,9 +172,9 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
                           color: Colors.redAccent,
                         ),
                       )
-                    : Text(''),
+                    : const Text(''),
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: RaisedButton(
                     onPressed: () async {
                       if (_firstName == "" ||
@@ -185,18 +184,18 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
                           _validation = true;
                         });
                       } else {
-                        classRoomProvider.registStudentData(
+                        await classRoomProvider.registStudentData(
                           args.homeRoom.id,
                           int.parse(_number),
                           _firstName,
                           _lastName,
                         );
-                        confirmPopUp(context, AdminClassRoom.routeName);
+                        await confirmPopUp(context, AdminClassRoom.routeName);
                       }
                     },
                     color: Colors.redAccent,
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
+                    padding: const EdgeInsets.all(10),
+                    child: const Text(
                       '保存',
                       style: TextStyle(
                         fontSize: 18,
@@ -212,131 +211,3 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
     );
   }
 }
-
-// class _InputForm extends StatefulWidget {
-//   @override
-//   _InputFormState createState() => _InputFormState();
-// }
-
-// class _InputFormState extends State<_InputForm> {
-
-//   @override
-//   Widget build(BuildContext context) {
-
-//     return Center(
-//       child: Container(
-//         height: 450,
-//         width: 500,
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: <Widget>[
-//             Text(
-//               "生徒情報を入力してください。",
-//               style: TextStyle(
-//                   color: Colors.black87,
-//                   fontSize: 25.0,
-//                   fontWeight: FontWeight.w700),
-//             ),
-//             Row(
-//               mainAxisSize: MainAxisSize.min,
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: <Widget>[
-//                 Expanded(
-//                   child: Text(
-//                     "名前",
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 40.0,
-//                       fontWeight: FontWeight.w500,
-//                     ),
-//                   ),
-//                 ),
-//                 Expanded(
-//                   child: new TextField(
-//                     enabled: true,
-//                     maxLength: 10,
-//                     maxLengthEnforced: false,
-//                     style: TextStyle(color: Colors.black, fontSize: 40),
-//                     obscureText: false,
-//                     maxLines: 1,
-//                     textAlign: TextAlign.center,
-//                     onChanged: _handleName,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             Row(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: <Widget>[
-//                 Expanded(
-//                   child: Text(
-//                     "出席��号",
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 40.0,
-//                       fontWeight: FontWeight.w500,
-//                     ),
-//                   ),
-//                 ),
-//                 Expanded(
-//                   child: new TextField(
-//                     enabled: true,
-//                     maxLength: 10,
-//                     maxLengthEnforced: false,
-//                     inputFormatters: <TextInputFormatter>[
-//                       WhitelistingTextInputFormatter.digitsOnly
-//                     ],
-//                     keyboardType: TextInputType.number,
-//                     style: TextStyle(color: Colors.black, fontSize: 40),
-//                     obscureText: false,
-//                     maxLines: 1,
-//                     textAlign: TextAlign.center,
-//                     onChanged: _handleNumber,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             _validation == true
-//                 ? Text('記入してください。',
-//                     style: TextStyle(
-//                       color: Colors.red,
-//                       fontSize: 18,
-//                     ))
-//                 : Text(''),
-//             Padding(
-//               padding: EdgeInsets.only(top: 50.0),
-//               child: ButtonTheme(
-//                 minWidth: 300,
-//                 height: 50,
-//                 child: RaisedButton(
-//                   child: Text(
-//                     "保存する",
-//                     style: TextStyle(
-//                       fontSize: 18,
-//                     ),
-//                   ),
-//                   color: Colors.red,
-//                   textColor: Colors.white,
-//                   onPressed: () async {
-//                     if (_name == "" || _number == "") {
-//                       setState(() {
-//                         _validation = true;
-//                       });
-//                     } else {
-//                       classRoomProvider.registStudentData(
-//                         args.homeRoom.id,
-//                         int.parse(_number),
-//                         _name,
-//                       );
-//                       confirmPopUp(context, AdminClassRoom.routeName);
-//                     }
-//                   },
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
