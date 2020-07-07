@@ -21,10 +21,10 @@ class Seat {
         updateTime: json['updated_at'] as String,
       );
 
-  Map<String, String> toMapNew() {
+  Map<String, dynamic> toMapNew() {
     return {
-      'id': id as String,
-      'homeroom_id': homeRoomID as String,
+      'id': id,
+      'homeroom_id': homeRoomID,
       'used': used,
       'created_at': createTime,
       'updated_at': updateTime,

@@ -41,6 +41,8 @@ class ClassRoom extends StatelessWidget {
             body: Column(
               children: <Widget>[
                 RegistSeatMap(
+                  grade: args.homeRoom.grade,
+                  lectureClass: args.homeRoom.lectureClass,
                   homeRoomID: args.homeRoom != null ? args.homeRoom.id : -1,
                 ),
               ],
@@ -84,8 +86,12 @@ class RegistSeatMap extends StatelessWidget {
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     final args = ModalRoute.of(context).settings.arguments as ClassRoomArgument;
-    final lastName = classRoomProvider.sta.top().student.lastName;
-    final point = classRoomProvider.sta.top().point.toString();
+    final lastName = classRoomProvider.sta.isNotEmpty
+        ? classRoomProvider.sta.top().student.lastName
+        : '';
+    final point = classRoomProvider.sta.isNotEmpty
+        ? classRoomProvider.sta.top().point.toString()
+        : '';
     return Column(
       children: <Widget>[
         Row(

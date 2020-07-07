@@ -18,9 +18,9 @@ class EvaluationType {
   final String createTime;
   String updateTime;
 
-  Map<String, String> toMapNew() {
+  Map<String, dynamic> toMapNew() {
     return {
-      'id': id as String,
+      'id': id,
       'title': title,
       'created_at': createTime,
       'updated_at': updateTime,

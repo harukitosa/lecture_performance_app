@@ -177,9 +177,9 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
                   padding: const EdgeInsets.all(16.0),
                   child: RaisedButton(
                     onPressed: () async {
-                      if (_firstName == "" ||
-                          _number == "" ||
-                          _lastName == "") {
+                      if (_firstName == '' ||
+                          _number == '' ||
+                          _lastName == '') {
                         setState(() {
                           _validation = true;
                         });

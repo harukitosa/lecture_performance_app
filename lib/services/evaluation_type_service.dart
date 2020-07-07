@@ -45,7 +45,7 @@ class EvaluationTypeService {
 
   Future<List<SumEvaluationType>> getEvaluationSum(int studentID) async {
     final data = await evaluationTypeRepository.getAllEvaluationTypes();
-    List<SumEvaluationType> list;
+    List<SumEvaluationType> list = List<SumEvaluationType>();
     for (var i = 0; i < data.length; i++) {
       final res =
           await evaluationRepository.getEvaluationByType(data[i].id, studentID);

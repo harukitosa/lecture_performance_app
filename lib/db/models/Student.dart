@@ -69,14 +69,14 @@ class Student {
 
   String get name => lastName + firstName;
 
-  Map<String, String> toMapNew() {
+  Map<String, dynamic> toMapNew() {
     return {
-      'id': id as String,
+      'id': id,
       'first_name': firstName,
       'last_name': lastName,
-      'number': number as String,
-      'position_num': positionNum as String,
-      'homeroom_id': homeRoomID as String,
+      'number': number,
+      'position_num': positionNum,
+      'homeroom_id': homeRoomID,
       'created_at': createTime,
       'updated_at': updateTime,
     };

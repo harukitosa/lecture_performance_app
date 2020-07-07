@@ -20,11 +20,11 @@ class Semester {
         updateTime: json['updated_at'] as String,
       );
 
-  Map<String, String> toMapNew() {
+  Map<String, dynamic> toMapNew() {
     return {
-      'id': id as String,
+      'id': id,
       'title': title,
-      'homeroom_id': homeRoomID as String,
+      'homeroom_id': homeRoomID,
       'created_at': createTime,
       'updated_at': updateTime,
     };

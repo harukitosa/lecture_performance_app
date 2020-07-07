@@ -12,7 +12,6 @@ import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/utility/seatFunc.dart';
 import 'dart:async';
 import 'package:stack/stack.dart' as Col;
-import 'dart:collection';
 
 class DisplayBadge {
   DisplayBadge({this.isShow, this.text, this.color});
@@ -155,8 +154,8 @@ class ClassRoomProvider with ChangeNotifier {
     }
   }
 
-  void getSeatData(int homeRoomID) {
-    _seatService.getThisRoomAllSeatData(homeRoomID).then(
+  Future<void> getSeatData(int homeRoomID) async {
+    await _seatService.getThisRoomAllSeatData(homeRoomID).then(
       (res) {
         // 7*7の列
         _mapSeat = res;
@@ -164,16 +163,16 @@ class ClassRoomProvider with ChangeNotifier {
         final ans = calcSeatLen(_mapSeat);
         _viewSeat = ans.seat;
         _viewWidth = ans.width;
-        if (_seatBadge.isNotEmpty) {
+        if (_seatBadge.isEmpty) {
           for (var i = 0; i < _viewSeat.length; i++) {
-            DisplayBadge s;
-            s = DisplayBadge(isShow: false, color: Colors.red, text: 'non');
+            final s =
+                DisplayBadge(isShow: false, color: Colors.red, text: 'non');
             _seatBadge.add(s);
           }
         }
-        notifyListeners();
       },
     );
+    notifyListeners();
   }
 
   Future<void> getStudentData(int homeRoomID) async {

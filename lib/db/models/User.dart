@@ -22,7 +22,7 @@ class User {
   final String createTime;
   String updateTime;
 
-  Map<String, String> toMapNew() {
+  Map<String, dynamic> toMapNew() {
     return {
       'name': name,
       'password': password,

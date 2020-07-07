@@ -4,7 +4,6 @@ import '../db/models/Evaluation.dart';
 import '../utility/time.dart';
 
 class EvaluationService {
-
   final IEvaluationRepository evaluationRepository;
   final IEvaluationTypeRepository evaluationTypeRepository;
 
@@ -47,12 +46,12 @@ class EvaluationService {
   }
 
   Future<int> createEvaluation(int studentID, int typeID, int point) {
-    var evaluation = new Evaluation(
+    final evaluation = Evaluation(
       studentID: studentID,
       typeID: typeID,
       point: point,
     );
-    var id = evaluationRepository.insertEvaluation(evaluation);
+    final id = evaluationRepository.insertEvaluation(evaluation);
     return id;
   }
 
