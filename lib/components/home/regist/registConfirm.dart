@@ -123,16 +123,17 @@ class RegistConfirmMap extends StatelessWidget {
   }
 }
 
+@immutable
 class SeatMap extends StatelessWidget {
   SeatMap({this.seatMap});
 
   final List<String> seatMap;
-  AppDataConfig config = AppDataConfig();
+  final AppDataConfig config = AppDataConfig();
   @override
   Widget build(BuildContext context) {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
     return Padding(
-      padding: const EdgeInsets.all(0.0),
+      padding: const EdgeInsets.all(0),
       child: GridView.builder(
         shrinkWrap: true,
         itemCount: homeRoomProvider.mapSeat.length,

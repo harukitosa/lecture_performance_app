@@ -7,20 +7,20 @@ import 'package:lecture_performance_app/config/DataConfig.dart';
 
 //routerで渡される値
 class HomeRegistSeatArgument {
+  HomeRegistSeatArgument(this.grade, this.lectureClass);
   final String grade;
   final String lectureClass;
-  HomeRegistSeatArgument(this.grade, this.lectureClass);
 }
 
 class HomeRegistSeat extends StatelessWidget {
   static const routeName = '/home/regist/seat';
   @override
   Widget build(BuildContext context) {
-    final HomeRegistSeatArgument arg =
-        ModalRoute.of(context).settings.arguments;
+    final arg =
+        ModalRoute.of(context).settings.arguments as HomeRegistSeatArgument;
     return Scaffold(
       appBar: AppBar(
-        title: Text(arg.grade + "年" + arg.lectureClass + "組"),
+        title: Text('${arg.grade}年 ${arg.lectureClass}組'),
       ),
       body: MultiProvider(
         providers: [
@@ -42,9 +42,9 @@ class HomeRegistSeat extends StatelessWidget {
 }
 
 class RegistSeatMap extends StatelessWidget {
+  const RegistSeatMap({this.grade, this.lectureClass});
   final String grade;
   final String lectureClass;
-  RegistSeatMap({this.grade, this.lectureClass});
   @override
   Widget build(BuildContext context) {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
@@ -52,23 +52,23 @@ class RegistSeatMap extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
-          Text(
-            "使用しない座席をタップしてください",
+          const Text(
+            '使用しない座席をタップしてください',
             style: TextStyle(fontSize: 32),
           ),
-          Text(
-            "*あとでも変更できます",
+          const Text(
+            '*あとでも変更できます',
             style: TextStyle(fontSize: 18),
           ),
           SeatMap(),
           Padding(
-            padding: EdgeInsets.only(top: 6),
+            padding: const EdgeInsets.only(top: 6),
             child: ButtonTheme(
               minWidth: 300,
               height: 50,
               child: RaisedButton(
-                child: Text(
-                  "次へ",
+                child: const Text(
+                  '次へ',
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -95,20 +95,21 @@ class RegistSeatMap extends StatelessWidget {
   }
 }
 
+@immutable
 class SeatMap extends StatelessWidget {
-  final double padding;
-  final config = new AppDataConfig();
   SeatMap({this.padding});
+  final double padding;
+  final AppDataConfig config = AppDataConfig();
   @override
   Widget build(BuildContext context) {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
     return Padding(
-      padding: EdgeInsets.all(0.0),
+      padding: const EdgeInsets.all(0),
       child: GridView.builder(
         shrinkWrap: true,
         itemCount: homeRoomProvider.mapSeat.length,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 50),
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: config.seatWidth,
           mainAxisSpacing: 8,
