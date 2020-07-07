@@ -15,7 +15,8 @@ class SeatArrange extends StatelessWidget {
   static const routeName = '/admin/class/seat';
   @override
   Widget build(BuildContext context) {
-    final SeatArrangeArgument args = ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as SeatArrangeArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text('${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組'),

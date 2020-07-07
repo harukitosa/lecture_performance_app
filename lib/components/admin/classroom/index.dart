@@ -18,10 +18,11 @@ class AdminClassRoomArgument {
 
 class AdminClassRoom extends StatelessWidget {
   static const routeName = '/admin/homeroom';
-  final config = AppStyle();
+  final AppStyle config = AppStyle();
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as AdminClassRoomArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -116,12 +117,6 @@ class AdminClassRoom extends StatelessWidget {
 }
 
 class _FloatingButton extends StatelessWidget {
-  final VoidCallback route;
-  final String title;
-  final String heroName;
-  final double fontSize;
-  final Color textColor;
-  final Color backColor;
   const _FloatingButton({
     Key key,
     @required this.route,
@@ -132,16 +127,23 @@ class _FloatingButton extends StatelessWidget {
     @required this.backColor,
   }) : super(key: key);
 
+  final VoidCallback route;
+  final String title;
+  final String heroName;
+  final double fontSize;
+  final Color textColor;
+  final Color backColor;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(4),
       width: 200,
       child: FloatingActionButton.extended(
         tooltip: title,
         heroTag: heroName,
         label: Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12),
           child: Text(
             title,
             style: TextStyle(
@@ -178,14 +180,14 @@ class AdminStudentListView extends StatelessWidget {
 }
 
 class StudentTable extends StatelessWidget {
-  final List<Student> studentList;
+  const StudentTable({this.studentList});
 
-  StudentTable({this.studentList});
+  final List<Student> studentList;
 
   @override
   Widget build(BuildContext context) {
-    final AdminClassRoomArgument args =
-        ModalRoute.of(context).settings.arguments;
+    final args =
+        ModalRoute.of(context).settings.arguments as AdminClassRoomArgument;
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     return ListView(
       children: <Widget>[
@@ -195,21 +197,22 @@ class StudentTable extends StatelessWidget {
           columns: [
             DataColumn(
               onSort: (columnIndex, ascending) {
-                classRoomProvider.sortChange();
-                classRoomProvider.onSortColum(columnIndex, ascending);
+                classRoomProvider
+                  ..sortChange()
+                  ..onSortColum(columnIndex, ascending);
               },
-              label: Text(
+              label: const Text(
                 '出席番号',
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            DataColumn(
+            const DataColumn(
               label: Text(
                 '名前',
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            DataColumn(
+            const DataColumn(
               label: Text(
                 'POINTS',
                 style: TextStyle(fontSize: 24),
@@ -224,14 +227,14 @@ class StudentTable extends StatelessWidget {
                         DataCell(
                           Text(
                             student.number.toString(),
-                            style: TextStyle(fontSize: 22),
+                            style: const TextStyle(fontSize: 22),
                           ),
                           onTap: () {},
                         ),
                         DataCell(
                           Text(
-                            student.lastName + ' ' + student.firstName,
-                            style: TextStyle(fontSize: 22),
+                            '${student.lastName} ${student.firstName}',
+                            style: const TextStyle(fontSize: 22),
                           ),
                           onTap: () {
                             Navigator.pushNamed(
@@ -247,7 +250,7 @@ class StudentTable extends StatelessWidget {
                         DataCell(
                           Text(
                             student.evaluationSum.toString(),
-                            style: TextStyle(fontSize: 22),
+                            style: const TextStyle(fontSize: 22),
                           ),
                         ),
                       ],
@@ -255,7 +258,7 @@ class StudentTable extends StatelessWidget {
                   )
                   .toList()
               : [
-                  DataRow(
+                  const DataRow(
                     cells: [
                       DataCell(
                         Text('NO DATA'),
@@ -268,7 +271,7 @@ class StudentTable extends StatelessWidget {
                       )
                     ],
                   ),
-                  DataRow(
+                  const DataRow(
                     cells: [
                       DataCell(
                         Text('NO DATA'),

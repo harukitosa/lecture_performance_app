@@ -139,7 +139,7 @@ class EditStudentView extends StatelessWidget {
                     child: Icon(
                       Icons.person,
                       color: Colors.black,
-                      size: 90.0,
+                      size: 90,
                     ),
                   ),
                   const Text('生徒情報編集'),

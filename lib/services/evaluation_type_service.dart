@@ -46,7 +46,8 @@ class EvaluationTypeService {
     var data = await evaluationTypeRepository.getAllEvaluationTypes();
     List<SumEvaluationType> list = [];
     for (var i = 0; i < data.length; i++) {
-      var res = await evaluationRepository.getEvaluationByType(data[i].id, studentID);
+      var res =
+          await evaluationRepository.getEvaluationByType(data[i].id, studentID);
       var sum = 0;
       for (var j = 0; j < res.length; j++) {
         sum += res[j].point;
