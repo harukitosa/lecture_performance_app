@@ -18,7 +18,7 @@ class EditSeatView extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(4),
         child: Container(
           color: flag == 'true' ? Colors.blue : Colors.grey,
           child: const Text(''),
