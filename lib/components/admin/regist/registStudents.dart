@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
 import 'package:lecture_performance_app/components/admin/classroom/index.dart';
@@ -6,13 +7,12 @@ import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:file_picker/file_picker.dart';
-import 'dart:io';
 import 'package:path/path.dart';
 
 //routerで渡される値
 class RegistStudentsArgument {
-  final HomeRoom homeRoom;
   RegistStudentsArgument(this.homeRoom);
+  final HomeRoom homeRoom;
 }
 
 class RegistStudents extends StatelessWidget {

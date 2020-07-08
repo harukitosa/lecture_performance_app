@@ -36,18 +36,11 @@ class StudentProvider with ChangeNotifier {
   List<SumEvaluationType> get sumList => _sumList;
 
 // 生徒編集用の変数
-  String _firstName = "";
-  String get firstName => _firstName;
-  set setFirstName(String firstName) => _firstName = firstName;
+  var _firstName = '';
 // 生徒編集用の変数
-  String _lastName = "";
-  String get lastName => _lastName;
-  set setLastName(String lastName) => _lastName = lastName;
+  var _lastName = '';
 // 生徒編集用の変数
-  String _number = "";
-  String get number => _number;
-  set setNumber(String number) => _number = number;
-
+  var _number = '';
 
 // 入力用の関数
   void handleChangeFirstName(String e) {
@@ -65,13 +58,14 @@ class StudentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateStudent() async {
+  Future<void> updateStudent() async {
     int _n;
-    bool err = false;
+    var err = false;
     try {
-      _n = int.parse(number.toString());
-    } catch (exception) {
+      _n = int.parse(_number.toString());
+    } on Exception catch (exception) {
       _n = 0;
+      print(exception);
       err = true;
     }
     if (!err) {
@@ -88,44 +82,44 @@ class StudentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void getAllEvaluationType() async {
+  Future<void> getAllEvaluationType() async {
     await _evaluationTypeService
         .getAllEvaluationType()
-        .then((res) => (_evaluationSelect = res));
+        .then((res) => _evaluationSelect = res);
     notifyListeners();
   }
 
-  void evaluation(int studentID, int typeID, int point) async {
+  Future<void> evaluation(int studentID, int typeID, int point) async {
     await _evaluationService.createEvaluation(studentID, typeID, point);
     notifyListeners();
   }
 
-  void getStudent(int studentID) async {
-    await _studentService.getStudent(studentID).then((res) => (_student = res));
-    setFirstName = _student.firstName;
-    setLastName = _student.lastName;
-    setNumber = _student.number.toString();
+  Future<void> getStudent(int studentID) async {
+    await _studentService.getStudent(studentID).then((res) => _student = res);
+    _firstName = _student.firstName;
+    _lastName = _student.lastName;
+    _number = _student.number.toString();
     notifyListeners();
   }
 
-  void getLatest(int studentID) async {
+  Future<void> getLatest(int studentID) async {
     await _evaluationService
         .getLatestStudent(studentID)
-        .then((res) => (_latest = res));
+        .then((res) => _latest = res);
     notifyListeners();
   }
 
-  void getStudentEvaluation(int studentID) async {
+  Future<void> getStudentEvaluation(int studentID) async {
     await _evaluationService
         .getStudentSemester(studentID)
-        .then((res) => (_eval = res));
+        .then((res) => _eval = res);
     notifyListeners();
   }
 
-  void getEvaluationSum(int studentID) async {
+  Future<void> getEvaluationSum(int studentID) async {
     await _evaluationTypeService
         .getEvaluationSum(studentID)
-        .then((res) => (_sumList = res));
+        .then((res) => _sumList = res);
     notifyListeners();
   }
 }

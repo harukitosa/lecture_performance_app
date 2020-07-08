@@ -81,7 +81,7 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
   void _handleFirstName(String e) {
     setState(() {
       _firstName = e;
-      if (_firstName != "" && _number != "") {
+      if (_firstName != '' && _number != '') {
         _validation = false;
       }
     });
@@ -90,7 +90,7 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
   void _handleLastName(String e) {
     setState(() {
       _lastName = e;
-      if (_lastName != "" && _number != "" && _firstName != "") {
+      if (_lastName != '' && _number != '' && _firstName != '') {
         _validation = false;
       }
     });
@@ -99,7 +99,7 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
   void _handleNumber(String e) {
     setState(() {
       _number = e;
-      if (_firstName != "" && _number != "" && _lastName != "") {
+      if (_firstName != '' && _number != '' && _lastName != '') {
         _validation = false;
       }
     });

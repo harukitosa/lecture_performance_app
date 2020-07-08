@@ -12,15 +12,15 @@ class FormatResultSeat {
 
 // 列、行、共に空白の欄を取り除いて出力
 FormatResultSeat calcSeatLen(List<Seat> dataSeat) {
-  int width = new AppDataConfig().seatWidth;
-  int resWidth = width;
-  List<int> widthEmpty = [];
-  List<Seat> resSeat = [];
-  List<Seat> ansSeat = [];
+  final width = AppDataConfig().seatWidth;
+  var resWidth = width;
+  final widthEmpty = <int>[];
+  final resSeat = <Seat>[];
+  final ansSeat = <Seat>[];
   for (var i = 0; i < width; i++) {
-    bool flag = false;
+    var flag = false;
     for (var j = 0; j < dataSeat.length / width; j++) {
-      if (dataSeat[i + j * width].used == "true") {
+      if (dataSeat[i + j * width].used == 'true') {
         flag = true;
       }
     }
@@ -31,7 +31,7 @@ FormatResultSeat calcSeatLen(List<Seat> dataSeat) {
   }
 
   for (var i = 0; i < dataSeat.length; i++) {
-    bool flag = false;
+    var flag = false;
     for (var j = 0; j < widthEmpty.length; j++) {
       if ((i - widthEmpty[j]) % width == 0) {
         flag = true;
@@ -51,9 +51,9 @@ FormatResultSeat calcSeatLen(List<Seat> dataSeat) {
   }
 
   for (var i = 0; i < resSeat.length / resWidth; i++) {
-    bool flag = false;
+    var flag = false;
     for (var j = i * resWidth; j < i * resWidth + resWidth; j++) {
-      if (resSeat[j].used == "true") {
+      if (resSeat[j].used == 'true') {
         flag = true;
       }
     }

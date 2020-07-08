@@ -4,43 +4,42 @@ import '../db/models/Evaluation.dart';
 import '../utility/time.dart';
 
 class EvaluationService {
-  final IEvaluationRepository evaluationRepository;
-  final IEvaluationTypeRepository evaluationTypeRepository;
-
   EvaluationService(
     this.evaluationRepository,
     this.evaluationTypeRepository,
   );
+  final IEvaluationRepository evaluationRepository;
+  final IEvaluationTypeRepository evaluationTypeRepository;
 
   Future<List<Evaluation>> getAllEvaluation() {
     return evaluationRepository.getAllEvaluations();
   }
 
   Future<List<Evaluation>> getStudentSemester(int studentID) async {
-    var res = await evaluationRepository.getStudentSemester(studentID);
+    final res = await evaluationRepository.getStudentSemester(studentID);
     for (var i = 0; i < res.length; i++) {
-      var ans = await evaluationTypeRepository.getEvaluationType(res[i].typeID);
-      res[i].title = ans.title;
+      final a = await evaluationTypeRepository.getEvaluationType(res[i].typeID);
+      res[i].title = a.title;
     }
     return res;
   }
 
   Future<List<Evaluation>> getLatestStudent(int studentID) async {
-    var res = await evaluationRepository.getLatestStudent(studentID);
+    final res = await evaluationRepository.getLatestStudent(studentID);
     for (var i = 0; i < res.length; i++) {
-      var ans = await evaluationTypeRepository.getEvaluationType(res[i].typeID);
-      res[i].title = ans.title;
+      final a = await evaluationTypeRepository.getEvaluationType(res[i].typeID);
+      res[i].title = a.title;
     }
     return res;
   }
 
   Future<int> getStudentSum(int studentID) async {
-    var res = await evaluationRepository.getStudentSemester(studentID);
-    int sum = 0;
+    final res = await evaluationRepository.getStudentSemester(studentID);
+    var sum = 0;
     if (res.isNotEmpty) {
-      res.forEach((Evaluation item) {
+      for (final item in res) {
         sum += item.point;
-      });
+      }
     }
     return sum;
   }
@@ -57,7 +56,7 @@ class EvaluationService {
 
   Future<void> editEvaluation(
       int id, int studentID, int typeID, int point, String createdTime) {
-    var evaluation = new Evaluation(
+    final evaluation = Evaluation(
       id: id,
       studentID: studentID,
       typeID: typeID,

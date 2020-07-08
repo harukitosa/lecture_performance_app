@@ -230,11 +230,11 @@ class SeatMap extends StatelessWidget {
             _viewSeat,
             index,
             _name,
-            true,
             _studentID,
             _positionNum,
             _seatColor,
             index - _indexCount,
+            changeState: true,
           );
         },
       ),

@@ -1,28 +1,28 @@
 import 'package:lecture_performance_app/repositories/homeroom_repository.dart';
 import '../db/models/HomeRoom.dart';
 import '../utility/time.dart';
+
 class HomeRoomService {
+  HomeRoomService(this.homeRoomRepository);
 
   final IHomeRoomRepository homeRoomRepository;
-  HomeRoomService(
-    this.homeRoomRepository
-  );
 
   Future<List<HomeRoom>> getAllHomeRoom() {
     return homeRoomRepository.getHomeRooms();
   }
 
   Future<int> createHomeRoom(String grade, String lectureClass) {
-    var homeRoom = new HomeRoom(grade: grade, lectureClass: lectureClass);
-    var id = homeRoomRepository.insertHomeRoom(homeRoom);
+    final homeRoom = HomeRoom(grade: grade, lectureClass: lectureClass);
+    final id = homeRoomRepository.insertHomeRoom(homeRoom);
     return id;
   }
 
-  Future<void> editHomeRoom(int id, String grade, String lectureClass, String createdTime) {
-    var homeRoom = new HomeRoom(
-      id: id, 
-      grade: grade, 
-      lectureClass: lectureClass, 
+  Future<void> editHomeRoom(
+      int id, String grade, String lectureClass, String createdTime) {
+    final homeRoom = HomeRoom(
+      id: id,
+      grade: grade,
+      lectureClass: lectureClass,
       createTime: createdTime,
       updateTime: getNowTime(),
     );

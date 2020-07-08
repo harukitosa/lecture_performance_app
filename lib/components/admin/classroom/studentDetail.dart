@@ -92,32 +92,31 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
         ModalRoute.of(context).settings.arguments as AdminStudentDetailArgument;
     final studentProvider = Provider.of<StudentProvider>(context)
       ..getStudent(args.studentID);
+    final lastName = studentProvider.student.lastName;
+    final firstName = studentProvider.student.firstName;
     return ListView(
       children: <Widget>[
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: Text(
                 studentProvider.student != null
-                    ? '名前:' +
-                        studentProvider.student.lastName +
-                        ' ' +
-                        studentProvider.student.firstName
+                    ? '名前:$lastName $firstName'
                     : 'NOT NAME',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 28,
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: Text(
                 studentProvider.student != null
-                    ? '出席番号:' + studentProvider.student.number.toString()
+                    ? '出席番号: ${studentProvider.student.number}'
                     : 'NOT NUMBER',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32,
                 ),
               ),
@@ -125,7 +124,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
           ],
         ),
         const Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8),
           child: Text(
             '最新の評価',
             style: TextStyle(
@@ -162,21 +161,21 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
                         DataCell(
                           Text(
                             item.title != null ? item.title : '',
-                            style: TextStyle(fontSize: 22),
+                            style: const TextStyle(fontSize: 22),
                           ),
                           onTap: () {},
                         ),
                         DataCell(
                           Text(
                             item.point.toString(),
-                            style: TextStyle(fontSize: 22),
+                            style: const TextStyle(fontSize: 22),
                           ),
                           onTap: () {},
                         ),
                         DataCell(
                           Text(
                             item.createTime,
-                            style: TextStyle(fontSize: 22),
+                            style: const TextStyle(fontSize: 22),
                           ),
                         ),
                       ],
@@ -184,7 +183,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
                   )
                   .toList()
               : [
-                  DataRow(
+                  const DataRow(
                     cells: [
                       DataCell(
                         Text('NO DATA'),
@@ -197,7 +196,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
                       )
                     ],
                   ),
-                  DataRow(
+                  const DataRow(
                     cells: [
                       DataCell(
                         Text('NO DATA'),
@@ -224,7 +223,7 @@ class AdminEvaluationInfo extends StatelessWidget {
     return ListView(
       children: <Widget>[
         DataTable(
-          columns: [
+          columns: const [
             DataColumn(
               label: Text(
                 'type',
@@ -252,28 +251,28 @@ class AdminEvaluationInfo extends StatelessWidget {
                         DataCell(
                           Text(
                             item.id != null ? item.id.toString() : '',
-                            style: TextStyle(fontSize: 22),
+                            style: const TextStyle(fontSize: 22),
                           ),
                           onTap: () {},
                         ),
                         DataCell(
                           Text(
                             item.title,
-                            style: TextStyle(fontSize: 22),
+                            style: const TextStyle(fontSize: 22),
                           ),
                           onTap: () {},
                         ),
                         DataCell(
                           Text(
                             item.point.toString(),
-                            style: TextStyle(fontSize: 22),
+                            style: const TextStyle(fontSize: 22),
                           ),
                         ),
                       ],
                     ),
                   )
                   .toList()
-              : [
+              : const [
                   DataRow(
                     cells: [
                       DataCell(

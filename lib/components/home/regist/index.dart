@@ -6,7 +6,7 @@ class HomeRegist extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("新規クラス登録"),
+        title: const Text('新規クラス登録'),
       ),
       body: HomeRegistView(),
     );
@@ -16,12 +16,12 @@ class HomeRegist extends StatelessWidget {
 class HomeRegistView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeForm();
+    return const ChangeForm();
   }
 }
 
 class ChangeForm extends StatefulWidget {
-  ChangeForm({Key key}) : super(key: key);
+  const ChangeForm({Key key}) : super(key: key);
 
   @override
   _ChangeFormState createState() => _ChangeFormState();
@@ -36,7 +36,7 @@ class _ChangeFormState extends State<ChangeForm> {
   void _handleGrade(String e) {
     setState(() {
       _grade = e;
-      if (_grade != "" && _lectureClass != "") {
+      if (_grade != '' && _lectureClass != '') {
         validation = false;
       }
     });
@@ -45,7 +45,7 @@ class _ChangeFormState extends State<ChangeForm> {
   void _handleLectureClass(String e) {
     setState(() {
       _lectureClass = e;
-      if (_grade != "" && _lectureClass != "") {
+      if (_grade != '' && _lectureClass != '') {
         validation = false;
       }
     });
@@ -58,12 +58,12 @@ class _ChangeFormState extends State<ChangeForm> {
         child: Container(
           width: 500,
           height: 600,
-          padding: EdgeInsets.all(16.0),
-          margin: EdgeInsets.all(60.0),
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(60),
           decoration: BoxDecoration(
             border: Border.all(
-              width: 1.0,
-              color: Color(0xFFFFaFaFaF),
+              width: 1,
+              color: const Color(0xFFFFaFaFaF),
             ),
             borderRadius: BorderRadius.circular(30),
           ),
@@ -73,26 +73,26 @@ class _ChangeFormState extends State<ChangeForm> {
                 child: Icon(
                   Icons.home,
                   color: Colors.black,
-                  size: 90.0,
+                  size: 90,
                 ),
               ),
-              Text('教室登録'),
+              const Text('教室登録'),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: '学年'),
+                  decoration: const InputDecoration(labelText: '学年'),
                   onChanged: _handleGrade,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24,
                   ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: '組'),
+                  decoration: const InputDecoration(labelText: '組'),
                   onChanged: _handleLectureClass,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24,
                   ),
                 ),
@@ -104,9 +104,9 @@ class _ChangeFormState extends State<ChangeForm> {
                         color: Colors.redAccent,
                       ),
                     )
-                  : Text(''),
+                  : const Text(''),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: RaisedButton(
                   onPressed: () async {
                     if (_grade.isEmpty || _lectureClass.isEmpty) {
@@ -114,7 +114,7 @@ class _ChangeFormState extends State<ChangeForm> {
                         validation = true;
                       });
                     } else {
-                      Navigator.pushNamed(
+                      await Navigator.pushNamed(
                         context,
                         HomeRegistSeat.routeName,
                         arguments:
@@ -123,8 +123,8 @@ class _ChangeFormState extends State<ChangeForm> {
                     }
                   },
                   color: Colors.redAccent,
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
                     '保存',
                     style: TextStyle(
                       fontSize: 18,

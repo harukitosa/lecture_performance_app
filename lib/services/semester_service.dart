@@ -1,26 +1,26 @@
 import 'package:lecture_performance_app/infrastructure/sqlite/semester_repository.dart';
 import '../db/models/Semester.dart';
 import '../utility/time.dart';
+
 class SemesterService {
+  SemesterService(this.semesterRepository);
 
   final SemesterRepository semesterRepository;
-  SemesterService(
-    this.semesterRepository
-  );
 
   Future<List<Semester>> getAllsemester() {
     return semesterRepository.getAllSemesters();
   }
 
   Future<int> createsemester(String title, int homeroomID) {
-    var semester = new Semester(title: title, homeRoomID: homeroomID);
-    var id = semesterRepository.insertSemester(semester);
+    final semester = Semester(title: title, homeRoomID: homeroomID);
+    final id = semesterRepository.insertSemester(semester);
     return id;
   }
 
-  Future<void> editsemester(int id, int homeroomID, String title, String createdTime) {
-    var semester = new Semester(
-      id: id, 
+  Future<void> editsemester(
+      int id, int homeroomID, String title, String createdTime) {
+    final semester = Semester(
+      id: id,
       homeRoomID: homeroomID,
       title: title,
       createTime: createdTime,

@@ -12,42 +12,43 @@ import 'package:lecture_performance_app/services/student_service.dart';
 
 /// 依存性の注入を行っている
 HomeRoomService initHomeRoomAPI() {
-  var _homeRoomRepository = new HomeRoomRepository();
-  var _homeRoomService = new HomeRoomService(_homeRoomRepository);
+  final _homeRoomRepository = HomeRoomRepository();
+  final _homeRoomService = HomeRoomService(_homeRoomRepository);
   return _homeRoomService;
 }
 
 SeatService initSeatAPI() {
-  var _seatRepository = new SeatRepository();
-  var _seatService = new SeatService(_seatRepository);
+  final _seatRepository = SeatRepository();
+  final _seatService = SeatService(_seatRepository);
   return _seatService;
 }
 
 StudentService initStudentAPI() {
-  var _studentRepository = new StudentRepository();
-  var _studentService = new StudentService(_studentRepository);
+  final _studentRepository = StudentRepository();
+  final _studentService = StudentService(_studentRepository);
   return _studentService;
 }
 
 EvaluationService initEvaluationAPI() {
-  var _evaluationRepository = new EvaluationRepository();
-  var _evaluationTypeRepository = new EvaluationTypeRepository();
-  var _evaluationService =
-      new EvaluationService(_evaluationRepository, _evaluationTypeRepository);
+  final _evaluationRepository = EvaluationRepository();
+  final _evaluationTypeRepository = EvaluationTypeRepository();
+  final _evaluationService =
+      EvaluationService(_evaluationRepository, _evaluationTypeRepository);
   return _evaluationService;
 }
 
 EvaluationTypeService initEvaluationTypeAPI() {
-  var _evaluationTypeRepository = new EvaluationTypeRepository();
-  var _evaluationRepository = new EvaluationRepository();
-  var _evaluationService = new EvaluationTypeService(
-      _evaluationTypeRepository, _evaluationRepository);
+  final _evaluationTypeRepository = EvaluationTypeRepository();
+  final _evaluationRepository = EvaluationRepository();
+  final _evaluationService =
+      EvaluationTypeService(_evaluationTypeRepository, _evaluationRepository);
   return _evaluationService;
 }
 
 StudentWithEvaluationService initStudentWithEvaluationServiceAPI() {
-  var _evaluationRepository = new EvaluationRepository();
-  var _studentRepository = new StudentRepository();
-  var _sweService = new StudentWithEvaluationService(_studentRepository, _evaluationRepository);
+  final _evaluationRepository = EvaluationRepository();
+  final _studentRepository = StudentRepository();
+  final _sweService =
+      StudentWithEvaluationService(_studentRepository, _evaluationRepository);
   return _sweService;
 }

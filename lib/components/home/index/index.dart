@@ -12,7 +12,7 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("クラス一覧"),
+        title: const Text('クラス一覧'),
       ),
       body: MultiProvider(
         providers: [
@@ -29,8 +29,8 @@ class Home extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        label: Padding(
-          padding: EdgeInsets.all(12.0),
+        label: const Padding(
+          padding: EdgeInsets.all(12),
           child: Text(
             'クラス登録',
             style: TextStyle(
@@ -47,10 +47,12 @@ class Home extends StatelessWidget {
 class HomeRoomList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
-    homeRoomProvider.getAllHomeRoom();
+    final homeRoomProvider = Provider.of<HomeRoomProvider>(context)
+      ..getAllHomeRoom();
     return ListView.builder(
       itemBuilder: (context, int index) {
+        final grade = homeRoomProvider.homeRoom[index].grade;
+        final lectureClass = homeRoomProvider.homeRoom[index].lectureClass;
         return Center(
           child: Container(
             width: 800,
@@ -67,21 +69,18 @@ class HomeRoomList extends StatelessWidget {
                 },
                 child: Card(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8),
                     child: ListTile(
                       leading: Icon(
                         Icons.edit,
                         color: Colors.blue,
-                        size: 40.0,
+                        size: 40,
                         semanticLabel:
                             'Text to announce in accessibility modes',
                       ),
                       title: Text(
-                        homeRoomProvider.homeRoom[index].grade +
-                            "年" +
-                            homeRoomProvider.homeRoom[index].lectureClass +
-                            "組",
-                        style: TextStyle(
+                        '$grade 年 $lectureClass 組',
+                        style: const TextStyle(
                           fontSize: 24,
                         ),
                       ),

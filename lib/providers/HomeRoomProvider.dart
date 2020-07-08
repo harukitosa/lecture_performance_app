@@ -8,49 +8,49 @@ import 'package:lecture_performance_app/wire.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 
 class HomeRoomProvider with ChangeNotifier {
-  List<HomeRoom> _homeRoom = [];
-  List<String> _mapSeat = [];
-  List<Seat> _currentSeat = [];
-  HomeRoomService _homeRoomService;
-
-  SeatService _seatService;
-  var config = AppDataConfig();
-
-  List<HomeRoom> get homeRoom => _homeRoom;
-  List<String> get mapSeat => _mapSeat;
-  List<Seat> get currentSeat => _currentSeat;
-
   HomeRoomProvider() {
     _homeRoomService = initHomeRoomAPI();
     _seatService = initSeatAPI();
 
     getAllHomeRoom();
     for (var i = 0; i < config.seatNum; i++) {
-      _mapSeat.add("true");
+      _mapSeat.add('true');
     }
     notifyListeners();
   }
+  List<HomeRoom> _homeRoom = [];
+  final List<String> _mapSeat = [];
+  List<Seat> _currentSeat = [];
+  HomeRoomService _homeRoomService;
 
-  void getAllHomeRoom() async {
-    await _homeRoomService.getAllHomeRoom().then((res) => (_homeRoom = res));
+  SeatService _seatService;
+  AppDataConfig config = AppDataConfig();
+
+  List<HomeRoom> get homeRoom => _homeRoom;
+  List<String> get mapSeat => _mapSeat;
+  List<Seat> get currentSeat => _currentSeat;
+
+  Future<void> getAllHomeRoom() async {
+    await _homeRoomService.getAllHomeRoom().then((res) => _homeRoom = res);
     notifyListeners();
   }
 
-  void getSeatData(int id) async {
+  Future<void> getSeatData(int id) async {
     await _seatService
         .getThisRoomAllSeatData(id)
-        .then((res) => (_currentSeat = res));
+        .then((res) => _currentSeat = res);
     notifyListeners();
   }
 
   /// HomeRoomの登録
   /// todo: service層に処理を移す
-  void registHomeRoom(
+  Future<void> registHomeRoom(
     String grade,
     String lectureClass,
     List<String> seatData,
   ) async {
-    var homeroomID = await _homeRoomService.createHomeRoom(grade, lectureClass);
+    final homeroomID =
+        await _homeRoomService.createHomeRoom(grade, lectureClass);
     for (var i = 0; i < config.seatNum; i++) {
       await _seatService.insertSeatData(homeroomID, seatData[i]);
     }
@@ -59,25 +59,25 @@ class HomeRoomProvider with ChangeNotifier {
 
   /// 新規登録の際に使用する
   void changeSeatState(int id) {
-    var value = _mapSeat[id];
-    if (value == "true") {
-      _mapSeat[id] = "false";
+    final value = _mapSeat[id];
+    if (value == 'true') {
+      _mapSeat[id] = 'false';
     } else {
-      _mapSeat[id] = "true";
+      _mapSeat[id] = 'true';
     }
     notifyListeners();
   }
 
   /// 座席の数編集
   void editSeatState(int index) {
-    var cs = currentSeat[index];
-    String flag = "false";
-    if (cs.used == "true") {
-      flag = "false";
+    final cs = currentSeat[index];
+    var flag = 'false';
+    if (cs.used == 'true') {
+      flag = 'false';
     } else {
-      flag = "true";
+      flag = 'true';
     }
-    var seat = new Seat(
+    final seat = Seat(
       id: cs.id,
       homeRoomID: cs.homeRoomID,
       used: flag,

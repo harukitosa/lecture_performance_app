@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class AppDataConfig {
   AppDataConfig();
   static const _seatNum = 49;
-  int get seatNum => (_seatNum);
+  int get seatNum => _seatNum;
   static const _seatWidth = 7;
-  int get seatWidth => (_seatWidth);
+  int get seatWidth => _seatWidth;
 }
 
 /// AppStyle

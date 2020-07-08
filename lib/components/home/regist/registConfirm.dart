@@ -146,7 +146,7 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2,
         ),
         itemBuilder: (context, index) {
-          return EditSeatView(seatMap[index], index, false);
+          return EditSeatView(seatMap[index], index, changeState: false);
         },
       ),
     );
