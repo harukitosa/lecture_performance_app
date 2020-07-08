@@ -84,7 +84,7 @@ class RegistSeatMap extends StatelessWidget {
         Expanded(
           flex: 3,
           child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 20),
             child: Container(
               width: 200,
               height: 50,
@@ -139,20 +139,17 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2.4,
         ),
         itemBuilder: (context, index) {
+          final studentList = classRoomProvider.studentList;
           if (classRoomProvider.viewSeat[index].used == 'true' &&
-              classRoomProvider.studentList != null) {
-            _name = classRoomProvider.studentList.length > index - _indexCount
-                ? classRoomProvider.studentList[index - _indexCount].lastName
+              studentList != null) {
+            _name = studentList.length > index - _indexCount
+                ? studentList[index - _indexCount].lastName
                 : '';
-
-            _studentID =
-                classRoomProvider.studentList.length > index - _indexCount
-                    ? classRoomProvider.studentList[index - _indexCount].id
-                    : -1;
-
-            _positionNum = classRoomProvider.studentList.length >
-                    index - _indexCount
-                ? classRoomProvider.studentList[index - _indexCount].positionNum
+            _studentID = studentList.length > index - _indexCount
+                ? studentList[index - _indexCount].id
+                : -1;
+            _positionNum = studentList.length > index - _indexCount
+                ? studentList[index - _indexCount].positionNum
                 : -1;
           } else {
             _indexCount++;
