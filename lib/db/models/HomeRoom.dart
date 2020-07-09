@@ -22,6 +22,7 @@ class HomeRoom {
   String updateTime;
 
   Map<String, dynamic> toMapNew() {
+    // ignore: implicit_dynamic_map_literal
     return {
       'id': id,
       'grade': grade,

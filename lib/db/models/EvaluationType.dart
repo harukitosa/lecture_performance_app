@@ -1,3 +1,4 @@
+// ignore: file_names
 class EvaluationType {
   EvaluationType({
     this.id,
@@ -19,6 +20,7 @@ class EvaluationType {
   String updateTime;
 
   Map<String, dynamic> toMapNew() {
+    // ignore: implicit_dynamic_map_literal
     return {
       'id': id,
       'title': title,

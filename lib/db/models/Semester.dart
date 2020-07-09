@@ -6,12 +6,6 @@ class Semester {
     this.createTime,
     this.updateTime,
   });
-  final int id;
-  final int homeRoomID;
-  final String title;
-  final String createTime;
-  String updateTime;
-
   factory Semester.fromMap(Map<String, dynamic> json) => Semester(
         id: json['id'] as int,
         title: json['title'] as String,
@@ -20,7 +14,14 @@ class Semester {
         updateTime: json['updated_at'] as String,
       );
 
+  final int id;
+  final int homeRoomID;
+  final String title;
+  final String createTime;
+  String updateTime;
+
   Map<String, dynamic> toMapNew() {
+    // ignore: implicit_dynamic_map_literal
     return {
       'id': id,
       'title': title,

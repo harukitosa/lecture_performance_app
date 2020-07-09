@@ -23,6 +23,7 @@ class User {
   String updateTime;
 
   Map<String, dynamic> toMapNew() {
+    // ignore: implicit_dynamic_map_literal
     return {
       'name': name,
       'password': password,

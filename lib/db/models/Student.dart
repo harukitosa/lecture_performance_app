@@ -70,6 +70,7 @@ class Student {
   String get name => lastName + firstName;
 
   Map<String, dynamic> toMapNew() {
+    // ignore: implicit_dynamic_map_literal
     return {
       'id': id,
       'first_name': firstName,

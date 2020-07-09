@@ -24,8 +24,8 @@ class Evaluation {
   final String createTime;
   String updateTime;
   String title;
-  // implicit_dynamic_map_literal
   Map<String, dynamic> toMapNew() {
+    // ignore: implicit_dynamic_map_literal
     return {
       'id': id,
       'student_id': studentID,

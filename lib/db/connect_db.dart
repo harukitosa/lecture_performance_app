@@ -4,13 +4,16 @@ import 'package:sqflite/sqflite.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 
 class DBManager {
+  DBManager._internal();
+
   static Database _database;
   static final DBManager _dbManager = DBManager._internal();
-  DBManager._internal();
   static DBManager get instance => _dbManager;
 
   Future<Database> initDB() async {
-    if (_database != null) return _database;
+    if (_database != null) {
+      return _database;
+    }
     final database = openDatabase(
       join(await getDatabasesPath(), 'database.db'),
       version: 1,
