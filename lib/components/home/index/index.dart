@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/classRoom/index/index.dart';
 import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -31,7 +32,7 @@ class Home extends StatelessWidget {
         tooltip: 'Increment',
         label: const Padding(
           padding: EdgeInsets.all(12),
-          child: Text(
+          child: const Text(
             'クラス登録',
             style: TextStyle(
               fontSize: 22,
@@ -47,53 +48,60 @@ class Home extends StatelessWidget {
 class HomeRoomList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final homeRoomProvider = Provider.of<HomeRoomProvider>(context)
-      ..getAllHomeRoom();
+    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
     return ListView.builder(
       itemBuilder: (context, int index) {
-        final grade = homeRoomProvider.homeRoom[index].grade;
-        final lectureClass = homeRoomProvider.homeRoom[index].lectureClass;
         return Center(
           child: Container(
             width: 800,
             child: Center(
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    ClassRoom.routeName,
-                    arguments: ClassRoomArgument(
-                      homeRoomProvider.homeRoom[index],
-                    ),
-                  );
-                },
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.edit,
-                        color: Colors.blue,
-                        size: 40,
-                        semanticLabel:
-                            'Text to announce in accessibility modes',
-                      ),
-                      title: Text(
-                        '$grade 年 $lectureClass 組',
-                        style: const TextStyle(
-                          fontSize: 24,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              child: _listCard(homeRoomProvider.homeRoom[index])
             ),
           ),
         );
       },
       itemCount:
           homeRoomProvider == null ? 0 : homeRoomProvider.homeRoom.length,
+    );
+  }
+}
+
+@immutable
+class _listCard extends StatelessWidget {
+  _listCard(this.homeroom);
+  final HomeRoom homeroom;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          ClassRoom.routeName,
+          arguments: ClassRoomArgument(
+            homeroom,
+          ),
+        );
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: ListTile(
+            leading: Icon(
+              Icons.edit,
+              color: Colors.blue,
+              size: 40,
+              semanticLabel:
+              'Text to announce in accessibility modes',
+            ),
+            title: Text(
+              '${homeroom.grade}年${homeroom.lectureClass}組',
+              style: const TextStyle(
+                fontSize: 24,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

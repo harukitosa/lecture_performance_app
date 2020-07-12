@@ -1,23 +1,22 @@
 import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/common/seatView/editSeatView.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 
 //routerで渡される値
-class HomeRegistConfirmArgument {
-  HomeRegistConfirmArgument(this.grade, this.lectureClass, this.seatMap);
+class HomeStoreConfirmArgument {
+  HomeStoreConfirmArgument(this.grade, this.lectureClass, this.seatMap);
   final String grade;
   final String lectureClass;
   final List<String> seatMap;
 }
 
-class HomeRegistConfirm extends StatelessWidget {
-  static const routeName = '/home/regist/confirm';
+class HomeStoreConfirm extends StatelessWidget {
+  static const routeName = '/home/store/confirm';
   @override
   Widget build(BuildContext context) {
     final arg =
-        ModalRoute.of(context).settings.arguments as HomeRegistConfirmArgument;
+        ModalRoute.of(context).settings.arguments as HomeStoreConfirmArgument;
     return Scaffold(
       appBar: AppBar(
         title: const Text('登録確認画面'),
@@ -29,7 +28,7 @@ class HomeRegistConfirm extends StatelessWidget {
         child: Consumer<HomeRoomProvider>(
           builder: (context, counter, _) {
             return Center(
-              child: RegistConfirmMap(
+              child: StoreConfirmMap(
                 grade: arg.grade,
                 lectureClass: arg.lectureClass,
                 seatMap: arg.seatMap,
@@ -42,8 +41,8 @@ class HomeRegistConfirm extends StatelessWidget {
   }
 }
 
-class RegistConfirmMap extends StatelessWidget {
-  const RegistConfirmMap({this.grade, this.lectureClass, this.seatMap});
+class StoreConfirmMap extends StatelessWidget {
+  const StoreConfirmMap({this.grade, this.lectureClass, this.seatMap});
 
   final String grade;
   final String lectureClass;
@@ -107,12 +106,12 @@ class RegistConfirmMap extends StatelessWidget {
                 color: Colors.orange,
                 textColor: Colors.white,
                 onPressed: () {
-                  homeRoomProvider.registHomeRoom(
+                  homeRoomProvider.storeHomeRoom(
                     grade,
                     lectureClass,
                     seatMap,
                   );
-                  _neverSatisfied(context);
+                  _resultPopup(context);
                 },
               ),
             ),
@@ -146,14 +145,14 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2,
         ),
         itemBuilder: (context, index) {
-          return EditSeatView(seatMap[index], index, changeState: false);
+          return _editSeatView(seatMap[index], index);
         },
       ),
     );
   }
 }
 
-Future<void> _neverSatisfied(BuildContext context) async {
+Future<void> _resultPopup(BuildContext context) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -182,4 +181,27 @@ Future<void> _neverSatisfied(BuildContext context) async {
       );
     },
   );
+}
+
+class _editSeatView extends StatelessWidget {
+  const _editSeatView(this.flag, this.index);
+
+  final String flag;
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+    return InkWell(
+      onTap: () {
+          homeRoomProvider.changeSeatState(index);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Container(
+          color: flag == 'true' ? Colors.blue : Colors.grey,
+          child: const Text(''),
+        ),
+      ),
+    );
+  }
 }

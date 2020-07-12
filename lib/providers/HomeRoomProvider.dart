@@ -44,7 +44,7 @@ class HomeRoomProvider with ChangeNotifier {
 
   /// HomeRoomの登録
   /// todo: service層に処理を移す
-  Future<void> registHomeRoom(
+  Future<void> storeHomeRoom(
     String grade,
     String lectureClass,
     List<String> seatData,

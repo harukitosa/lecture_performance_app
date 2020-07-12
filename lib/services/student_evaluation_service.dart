@@ -1,4 +1,3 @@
-import 'package:lecture_performance_app/db/models/Evaluation.dart';
 import 'package:lecture_performance_app/repositories/evaluation_repository.dart';
 import 'package:lecture_performance_app/repositories/student_repository.dart';
 import '../db/models/Student.dart';

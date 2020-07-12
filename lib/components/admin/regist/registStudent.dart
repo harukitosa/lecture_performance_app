@@ -33,7 +33,7 @@ class RegistStudent extends StatelessWidget {
         child: Consumer<ClassRoomProvider>(
           builder: (context, counter, _) {
             return Center(
-              child: RegistStudentForm(),
+              child: StoreStudentForm(),
             );
           },
         ),
@@ -42,8 +42,8 @@ class RegistStudent extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(
             context,
-            RegistStudents.routeName,
-            arguments: RegistStudentsArgument(
+            StoreStudents.routeName,
+            arguments: StoreStudentsArgument(
               args.homeRoom,
             ),
           );
@@ -64,14 +64,14 @@ class RegistStudent extends StatelessWidget {
   }
 }
 
-class RegistStudentForm extends StatefulWidget {
-  const RegistStudentForm({Key key}) : super(key: key);
+class StoreStudentForm extends StatefulWidget {
+  const StoreStudentForm({Key key}) : super(key: key);
 
   @override
-  _RegistStudentFormState createState() => _RegistStudentFormState();
+  _StoreStudentFormState createState() => _StoreStudentFormState();
 }
 
-class _RegistStudentFormState extends State<RegistStudentForm> {
+class _StoreStudentFormState extends State<StoreStudentForm> {
   String _firstName = '';
   String _lastName = '';
   String _number = '';
@@ -131,7 +131,7 @@ class _RegistStudentFormState extends State<RegistStudentForm> {
                   child: Icon(
                     Icons.person,
                     color: Colors.black,
-                    size: 90.0,
+                    size: 90,
                   ),
                 ),
                 const Text('生徒登録'),

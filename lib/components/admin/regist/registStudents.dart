@@ -10,17 +10,17 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 
 //routerで渡される値
-class RegistStudentsArgument {
-  RegistStudentsArgument(this.homeRoom);
+class StoreStudentsArgument {
+  StoreStudentsArgument(this.homeRoom);
   final HomeRoom homeRoom;
 }
 
-class RegistStudents extends StatelessWidget {
+class StoreStudents extends StatelessWidget {
   static const routeName = '/admin/regist/students';
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as RegistStudentsArgument;
+        ModalRoute.of(context).settings.arguments as StoreStudentsArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -61,7 +61,7 @@ class _InputFormState extends State<_InputForm> {
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     final args =
-        ModalRoute.of(context).settings.arguments as RegistStudentsArgument;
+        ModalRoute.of(context).settings.arguments as StoreStudentsArgument;
 
     /// csvファイルでデータの登録を行っている
     /// [num][lastName][firstName]の順番に登録していく。
@@ -137,6 +137,7 @@ class _InputFormState extends State<_InputForm> {
             child: const Text('保存'),
             onPressed: _storeButton,
           ),
-        ]);
+        ],
+    );
   }
 }

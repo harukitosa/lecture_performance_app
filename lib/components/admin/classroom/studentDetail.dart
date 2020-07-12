@@ -90,10 +90,12 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as AdminStudentDetailArgument;
-    final studentProvider = Provider.of<StudentProvider>(context)
-      ..getStudent(args.studentID);
-    final lastName = studentProvider.student.lastName;
-    final firstName = studentProvider.student.firstName;
+    final studentProvider = Provider.of<StudentProvider>(context);
+    final lastName =
+        studentProvider.student != null ? studentProvider.student.lastName : '';
+    final firstName = studentProvider.student != null
+        ? studentProvider.student.firstName
+        : '';
     return ListView(
       children: <Widget>[
         Row(

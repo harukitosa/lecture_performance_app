@@ -26,7 +26,7 @@ class ClassRoomSeatView extends StatelessWidget {
   final int positionNum;
   final Color seatColor;
   final int stuIndex;
-
+  
   @override
   Widget build(BuildContext context) {
     final valuationProvider = Provider.of<EvaluationProvider>(context);

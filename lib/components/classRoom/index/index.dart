@@ -85,6 +85,7 @@ class RegistSeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+//    final args = ModalRoute.of(context).settings.arguments as ClassRoomArgument;
     final args = ModalRoute.of(context).settings.arguments as ClassRoomArgument;
     final lastName = classRoomProvider.sta.isNotEmpty
         ? classRoomProvider.sta.top().student.lastName
@@ -187,8 +188,7 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // crp: classRoomProvider
-    final crp = Provider.of<ClassRoomProvider>(context)
-      ..getSeatData(homeRoomID);
+    final crp = Provider.of<ClassRoomProvider>(context);
 
     var _name = '';
     var _studentID = 0;

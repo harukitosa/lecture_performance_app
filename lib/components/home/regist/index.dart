@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/home/regist/registSeat.dart';
 
-class HomeRegist extends StatelessWidget {
+class HomeStore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('新規クラス登録'),
       ),
-      body: HomeRegistView(),
+      body: HomeStoreView(),
     );
   }
 }
 
-class HomeRegistView extends StatelessWidget {
+class HomeStoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ChangeForm();
@@ -116,9 +116,9 @@ class _ChangeFormState extends State<ChangeForm> {
                     } else {
                       await Navigator.pushNamed(
                         context,
-                        HomeRegistSeat.routeName,
+                        HomeStoreSeat.routeName,
                         arguments:
-                            HomeRegistSeatArgument(_grade, _lectureClass),
+                            HomeStoreSeatArgument(_grade, _lectureClass),
                       );
                     }
                   },
