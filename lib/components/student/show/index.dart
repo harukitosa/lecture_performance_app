@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/edit/editStudent.dart';
+import 'package:lecture_performance_app/components/student/update/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/StudentProvider.dart';
 import 'package:provider/provider.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
+import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
+import 'package:provider/provider.dart';
 
 class EditSeatArgument {
   EditSeatArgument(this.grade, this.lectureClass, this.homeRoomID);

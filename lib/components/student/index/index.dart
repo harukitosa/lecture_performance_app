@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
 import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
-import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
+import 'package:lecture_performance_app/components/seat/update/update_position.dart';
+import 'package:lecture_performance_app/components/seat/update/update_used.dart';
 import 'package:lecture_performance_app/components/student/create/index.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';

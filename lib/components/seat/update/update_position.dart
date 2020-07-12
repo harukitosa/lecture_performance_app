@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/common/seatView/SeatArrangeView.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:lecture_performance_app/providers/ValuationProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/common/seatView/SeatArrangeView.dart';
 
 //routerで渡される値
 class SeatArrangeArgument {

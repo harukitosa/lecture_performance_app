@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
 import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
-import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
-import 'package:lecture_performance_app/components/admin/edit/editStudent.dart';
-import 'package:lecture_performance_app/components/admin/regist/registStudents.dart';
 import 'package:lecture_performance_app/components/homeroom/create/create_confirm.dart';
 import 'package:lecture_performance_app/components/homeroom/create/create_seat.dart';
 import 'package:lecture_performance_app/components/homeroom/create/index.dart';
 import 'package:lecture_performance_app/components/homeroom/index/index.dart';
 import 'package:lecture_performance_app/components/homeroom/show/index.dart';
+import 'package:lecture_performance_app/components/seat/update/update_position.dart';
+import 'package:lecture_performance_app/components/seat/update/update_used.dart';
+import 'package:lecture_performance_app/components/student/create/create_many_student.dart';
 import 'package:lecture_performance_app/components/student/create/index.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
+import 'package:lecture_performance_app/components/student/update/index.dart';
 
 class App extends StatelessWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
-import 'package:lecture_performance_app/components/admin/regist/registStudents.dart';
+import 'package:lecture_performance_app/components/student/create/create_many_student.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
