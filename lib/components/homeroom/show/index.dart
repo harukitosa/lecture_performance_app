@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/common/seatView/classSeatView.dart';
 import 'package:lecture_performance_app/components/admin/classroom/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:lecture_performance_app/providers/ValuationProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/common/seatView/classSeatView.dart';
 
 //routerで渡される値
-class ClassRoomArgument {
-  ClassRoomArgument(this.homeRoom);
+class HomeroomShowArgument {
+  HomeroomShowArgument(this.homeRoom);
   final HomeRoom homeRoom;
 }
 
 @immutable
-class ClassRoom extends StatelessWidget {
+class HomeroomShow extends StatelessWidget {
   static const routeName = '/class';
   final AppStyle config = AppStyle();
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments as ClassRoomArgument;
+    final args =
+        ModalRoute.of(context).settings.arguments as HomeroomShowArgument;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -85,8 +86,9 @@ class RegistSeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-//    final args = ModalRoute.of(context).settings.arguments as ClassRoomArgument;
-    final args = ModalRoute.of(context).settings.arguments as ClassRoomArgument;
+
+    final args =
+        ModalRoute.of(context).settings.arguments as HomeroomShowArgument;
     final lastName = classRoomProvider.sta.isNotEmpty
         ? classRoomProvider.sta.top().student.lastName
         : '';

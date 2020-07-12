@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/classRoom/index/index.dart';
+import 'package:lecture_performance_app/components/homeroom/show/index.dart';
+import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 
-class Home extends StatelessWidget {
+class HomeroomIndex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _incrementCounter() {
@@ -54,9 +54,7 @@ class HomeRoomList extends StatelessWidget {
         return Center(
           child: Container(
             width: 800,
-            child: Center(
-              child: _listCard(homeRoomProvider.homeRoom[index])
-            ),
+            child: Center(child: _listCard(homeRoomProvider.homeRoom[index])),
           ),
         );
       },
@@ -76,8 +74,8 @@ class _listCard extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(
           context,
-          ClassRoom.routeName,
-          arguments: ClassRoomArgument(
+          HomeroomShow.routeName,
+          arguments: HomeroomShowArgument(
             homeroom,
           ),
         );
@@ -90,8 +88,7 @@ class _listCard extends StatelessWidget {
               Icons.edit,
               color: Colors.blue,
               size: 40,
-              semanticLabel:
-              'Text to announce in accessibility modes',
+              semanticLabel: 'Text to announce in accessibility modes',
             ),
             title: Text(
               '${homeroom.grade}年${homeroom.lectureClass}組',

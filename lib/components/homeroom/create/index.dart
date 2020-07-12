@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/home/regist/registSeat.dart';
+import 'package:lecture_performance_app/components/homeroom/create/create_seat.dart';
 
-class HomeStore extends StatelessWidget {
+class HomeroomCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,8 +117,7 @@ class _ChangeFormState extends State<ChangeForm> {
                       await Navigator.pushNamed(
                         context,
                         HomeStoreSeat.routeName,
-                        arguments:
-                            HomeStoreSeatArgument(_grade, _lectureClass),
+                        arguments: HomeStoreSeatArgument(_grade, _lectureClass),
                       );
                     }
                   },
