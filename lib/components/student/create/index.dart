@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
+import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/create/create_many_student.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
+import 'package:lecture_performance_app/providers/classroom_provider.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -32,7 +32,7 @@ class StudentCreate extends StatelessWidget {
         ],
         child: Consumer<ClassRoomProvider>(
           builder: (context, counter, _) {
-            return Center(
+            return const Center(
               child: StoreStudentForm(),
             );
           },
@@ -42,8 +42,8 @@ class StudentCreate extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(
             context,
-            StoreStudents.routeName,
-            arguments: StoreStudentsArgument(
+            StudentCreate.routeName,
+            arguments: StudentsCreateArgument(
               args.homeRoom,
             ),
           );

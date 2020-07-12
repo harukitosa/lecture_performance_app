@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/student/update/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/StudentProvider.dart';
+import 'package:lecture_performance_app/providers/student_provider.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -40,8 +40,8 @@ class StudentShow extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(
             context,
-            EditStudent.routeName,
-            arguments: EditStudentArgument(studentID: args.studentID),
+            StudentUpdate.routeName,
+            arguments: StudentUpdateArgument(studentID: args.studentID),
           );
         },
         tooltip: 'Increment',

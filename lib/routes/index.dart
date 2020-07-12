@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
 import 'package:lecture_performance_app/components/homeroom/create/create_confirm.dart';
 import 'package:lecture_performance_app/components/homeroom/create/create_seat.dart';
 import 'package:lecture_performance_app/components/homeroom/create/index.dart';
+import 'package:lecture_performance_app/components/homeroom/delete/index.dart';
 import 'package:lecture_performance_app/components/homeroom/index/index.dart';
 import 'package:lecture_performance_app/components/homeroom/show/index.dart';
 import 'package:lecture_performance_app/components/seat/update/update_position.dart';
@@ -31,11 +31,11 @@ class App extends StatelessWidget {
         HomeStoreConfirm.routeName: (_) => HomeStoreConfirm(),
         StudentIndex.routeName: (_) => StudentIndex(),
         StudentShow.routeName: (_) => StudentShow(),
-        SeatArrange.routeName: (_) => SeatArrange(),
+        SeatUpdatePosition.routeName: (_) => SeatUpdatePosition(),
         StudentCreate.routeName: (_) => StudentCreate(),
-        StoreStudents.routeName: (_) => StoreStudents(),
-        EditStudent.routeName: (_) => EditStudent(),
-        EditSeat.routeName: (_) => const EditSeat(),
+        StudentsCreate.routeName: (_) => StudentCreate(),
+        StudentUpdate.routeName: (_) => StudentUpdate(),
+        SeatUpdateUsed.routeName: (_) => const SeatUpdateUsed(),
         HomeroomShow.routeName: (_) => HomeroomShow(),
       },
     );

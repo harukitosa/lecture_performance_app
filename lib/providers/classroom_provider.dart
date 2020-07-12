@@ -1,16 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/common/snackBar/common_snack_bar.dart';
 import 'package:lecture_performance_app/db/models/Seat.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
 import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
 import 'package:lecture_performance_app/services/student_evaluation_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
-import 'package:lecture_performance_app/common/snackBar/commonSnackBar.dart';
+import 'package:lecture_performance_app/utility/seatFunc.dart';
 import 'package:lecture_performance_app/utility/time.dart';
 import 'package:lecture_performance_app/wire.dart';
-import 'package:lecture_performance_app/utility/seatFunc.dart';
-import 'dart:async';
 import 'package:stack/stack.dart' as Col;
 
 class DisplayBadge {
@@ -176,7 +177,6 @@ class ClassRoomProvider with ChangeNotifier {
   }
 
   Future<void> getStudentData(int homeRoomID) async {
-    print('getStudentData');
     await _sweService.getRoomStudents(homeRoomID).then((res) {
       _studentList = res;
       notifyListeners();

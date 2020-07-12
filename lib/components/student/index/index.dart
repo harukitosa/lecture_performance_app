@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
+import 'package:lecture_performance_app/components/homeroom/delete/index.dart';
 import 'package:lecture_performance_app/components/seat/update/update_position.dart';
 import 'package:lecture_performance_app/components/seat/update/update_used.dart';
 import 'package:lecture_performance_app/components/student/create/index.dart';
@@ -7,7 +7,7 @@ import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
+import 'package:lecture_performance_app/providers/classroom_provider.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -80,8 +80,8 @@ class StudentIndex extends StatelessWidget {
             route: () {
               Navigator.pushNamed(
                 context,
-                EditSeat.routeName,
-                arguments: EditSeatArgument(
+                SeatUpdateUsed.routeName,
+                arguments: SeatUpdateUsedArgument(
                   args.homeRoom.grade,
                   args.homeRoom.lectureClass,
                   args.homeRoom.id,
@@ -98,8 +98,8 @@ class StudentIndex extends StatelessWidget {
             route: () {
               Navigator.pushNamed(
                 context,
-                SeatArrange.routeName,
-                arguments: SeatArrangeArgument(
+                SeatUpdatePosition.routeName,
+                arguments: SeatUpdatePositionArgument(
                   args.homeRoom,
                 ),
               );

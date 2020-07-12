@@ -2,26 +2,26 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
+import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
+import 'package:lecture_performance_app/providers/classroom_provider.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
-class StoreStudentsArgument {
-  StoreStudentsArgument(this.homeRoom);
+class StudentsCreateArgument {
+  StudentsCreateArgument(this.homeRoom);
   final HomeRoom homeRoom;
 }
 
-class StoreStudents extends StatelessWidget {
+class StudentsCreate extends StatelessWidget {
   static const routeName = '/admin/regist/students';
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as StoreStudentsArgument;
+        ModalRoute.of(context).settings.arguments as StudentsCreateArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -62,7 +62,7 @@ class _InputFormState extends State<_InputForm> {
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     final args =
-        ModalRoute.of(context).settings.arguments as StoreStudentsArgument;
+        ModalRoute.of(context).settings.arguments as StudentsCreateArgument;
 
     /// csvファイルでデータの登録を行っている
     /// [num][lastName][firstName]の順番に登録していく。

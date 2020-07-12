@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/common/snackBar/commonSnackBar.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
-import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/providers/ValuationProvider.dart';
 import 'dart:core';
+
 import 'package:badges/badges.dart';
+import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/common/snackBar/common_snack_bar.dart';
+import 'package:lecture_performance_app/providers/classroom_provider.dart';
+import 'package:lecture_performance_app/providers/valuation_provider.dart';
+import 'package:provider/provider.dart';
 
 class ClassRoomSeatView extends StatelessWidget {
   const ClassRoomSeatView(
@@ -26,7 +27,7 @@ class ClassRoomSeatView extends StatelessWidget {
   final int positionNum;
   final Color seatColor;
   final int stuIndex;
-  
+
   @override
   Widget build(BuildContext context) {
     final valuationProvider = Provider.of<EvaluationProvider>(context);
@@ -111,7 +112,7 @@ class ClassRoomSeatView extends StatelessWidget {
             child: Text(
               // 五文字以上なら先頭五文字のみ出力
               name.length > 7 ? name.substring(0, 7) : name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 22,
               ),
             ),

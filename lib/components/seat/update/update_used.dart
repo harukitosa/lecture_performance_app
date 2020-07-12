@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
+import 'package:lecture_performance_app/providers/homeroom_provider.dart';
 import 'package:provider/provider.dart';
 
-class EditSeatArgument {
-  EditSeatArgument(this.grade, this.lectureClass, this.homeRoomID);
+class SeatUpdateUsedArgument {
+  SeatUpdateUsedArgument(this.grade, this.lectureClass, this.homeRoomID);
   final String grade;
   final String lectureClass;
   final int homeRoomID;
 }
 
-class EditSeat extends StatelessWidget {
-  const EditSeat({Key key}) : super(key: key);
+class SeatUpdateUsed extends StatelessWidget {
+  const SeatUpdateUsed({Key key}) : super(key: key);
   static const routeName = '/admin/edit/seat';
 
   @override
   Widget build(BuildContext context) {
-    final arg = ModalRoute.of(context).settings.arguments as EditSeatArgument;
+    final arg =
+        ModalRoute.of(context).settings.arguments as SeatUpdateUsedArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text('${arg.grade} 年 ${arg.lectureClass}組 座席表編集画面'),

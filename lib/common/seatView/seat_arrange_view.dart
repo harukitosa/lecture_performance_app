@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'dart:core';
+
+import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/providers/classroom_provider.dart';
+import 'package:provider/provider.dart';
 
 class SeatArrangeView extends StatelessWidget {
   const SeatArrangeView({

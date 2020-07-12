@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/common/seatView/classSeatView.dart';
+import 'package:lecture_performance_app/common/seatView/class_seat_view.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
-import 'package:lecture_performance_app/providers/ValuationProvider.dart';
+import 'package:lecture_performance_app/providers/classroom_provider.dart';
+import 'package:lecture_performance_app/providers/valuation_provider.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値

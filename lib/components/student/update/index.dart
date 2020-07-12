@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
+import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
-import 'package:lecture_performance_app/providers/StudentProvider.dart';
+import 'package:lecture_performance_app/providers/student_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
-class EditStudentArgument {
-  EditStudentArgument({this.studentID});
+class StudentUpdateArgument {
+  StudentUpdateArgument({this.studentID});
   int studentID;
 }
 
-class EditStudent extends StatelessWidget {
+class StudentUpdate extends StatelessWidget {
   static const routeName = '/admin/edit/student';
 
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as EditStudentArgument;
+        ModalRoute.of(context).settings.arguments as StudentUpdateArgument;
 
     return Scaffold(
       appBar: AppBar(

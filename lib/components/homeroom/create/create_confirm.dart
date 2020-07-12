@@ -1,7 +1,7 @@
-import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
+import 'package:lecture_performance_app/providers/homeroom_provider.dart';
+import 'package:provider/provider.dart';
 
 //routerで渡される値
 class HomeStoreConfirmArgument {
@@ -193,7 +193,7 @@ class _editSeatView extends StatelessWidget {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
     return InkWell(
       onTap: () {
-          homeRoomProvider.changeSeatState(index);
+        homeRoomProvider.changeSeatState(index);
       },
       child: Padding(
         padding: const EdgeInsets.all(4),

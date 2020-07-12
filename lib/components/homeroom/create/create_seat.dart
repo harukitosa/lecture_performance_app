@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/homeroom/create/create_confirm.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
+import 'package:lecture_performance_app/providers/homeroom_provider.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値

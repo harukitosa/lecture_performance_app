@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/seatView/SeatArrangeView.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
-import 'package:lecture_performance_app/providers/ValuationProvider.dart';
+import 'package:lecture_performance_app/providers/classroom_provider.dart';
+import 'package:lecture_performance_app/providers/valuation_provider.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
-class SeatArrangeArgument {
-  SeatArrangeArgument(this.homeRoom);
+class SeatUpdatePositionArgument {
+  SeatUpdatePositionArgument(this.homeRoom);
   final HomeRoom homeRoom;
 }
 
-class SeatArrange extends StatelessWidget {
+class SeatUpdatePosition extends StatelessWidget {
   static const routeName = '/admin/class/seat';
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as SeatArrangeArgument;
+        ModalRoute.of(context).settings.arguments as SeatUpdatePositionArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text('${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組'),

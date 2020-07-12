@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/homeroom/show/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/HomeRoomProvider.dart';
+import 'package:lecture_performance_app/providers/homeroom_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeroomIndex extends StatelessWidget {
@@ -32,7 +32,7 @@ class HomeroomIndex extends StatelessWidget {
         tooltip: 'Increment',
         label: const Padding(
           padding: EdgeInsets.all(12),
-          child: const Text(
+          child: Text(
             'クラス登録',
             style: TextStyle(
               fontSize: 22,
@@ -54,7 +54,7 @@ class HomeRoomList extends StatelessWidget {
         return Center(
           child: Container(
             width: 800,
-            child: Center(child: _listCard(homeRoomProvider.homeRoom[index])),
+            child: Center(child: _ListCard(homeRoomProvider.homeRoom[index])),
           ),
         );
       },
@@ -65,8 +65,8 @@ class HomeRoomList extends StatelessWidget {
 }
 
 @immutable
-class _listCard extends StatelessWidget {
-  _listCard(this.homeroom);
+class _ListCard extends StatelessWidget {
+  const _ListCard(this.homeroom);
   final HomeRoom homeroom;
   @override
   Widget build(BuildContext context) {
