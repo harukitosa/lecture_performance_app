@@ -1,13 +1,14 @@
 import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
-import 'package:lecture_performance_app/components/admin/classroom/index.dart';
+import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 //routerで渡される値
 class StoreStudentsArgument {
@@ -85,7 +86,7 @@ class _InputFormState extends State<_InputForm> {
           print(exception);
         }
       }
-      await confirmPopUp(context, AdminClassRoom.routeName);
+      await confirmPopUp(context, StudentIndex.routeName);
       setState(() {
         display = '';
       });
@@ -107,37 +108,37 @@ class _InputFormState extends State<_InputForm> {
     }
 
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  '.csv形式のファイルを選択してください。',
-                  style: TextStyle(fontSize: config.size3),
-                ),
-                Text(
-                  '一行目に出席番号、二行目に姓、三行目に名前を書き込んでください。',
-                  style: TextStyle(fontSize: config.size4),
-                ),
-              ],
-            ),
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          child: Column(
+            children: <Widget>[
+              Text(
+                '.csv形式のファイルを選択してください。',
+                style: TextStyle(fontSize: config.size3),
+              ),
+              Text(
+                '一行目に出席番号、二行目に姓、三行目に名前を書き込んでください。',
+                style: TextStyle(fontSize: config.size4),
+              ),
+            ],
           ),
-          FlatButton(
-            color: config.sd,
-            textColor: Colors.white,
-            child: const Text('ファイル選択・取り込み'),
-            shape: const StadiumBorder(),
-            onPressed: _uploadFile,
-          ),
-          Text(display),
-          FlatButton(
-            color: Colors.blue,
-            textColor: Colors.white,
-            child: const Text('保存'),
-            onPressed: _storeButton,
-          ),
-        ],
+        ),
+        FlatButton(
+          color: config.sd,
+          textColor: Colors.white,
+          child: const Text('ファイル選択・取り込み'),
+          shape: const StadiumBorder(),
+          onPressed: _uploadFile,
+        ),
+        Text(display),
+        FlatButton(
+          color: Colors.blue,
+          textColor: Colors.white,
+          child: const Text('保存'),
+          onPressed: _storeButton,
+        ),
+      ],
     );
   }
 }

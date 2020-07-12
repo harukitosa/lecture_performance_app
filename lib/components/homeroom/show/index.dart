@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/seatView/classSeatView.dart';
-import 'package:lecture_performance_app/components/admin/classroom/index.dart';
+import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
@@ -132,8 +132,8 @@ class RegistSeatMap extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
-                        AdminClassRoom.routeName,
-                        arguments: AdminClassRoomArgument(
+                        StudentIndex.routeName,
+                        arguments: StudentIndexArgument(
                           args.homeRoom,
                         ),
                       );

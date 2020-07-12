@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
-import 'package:lecture_performance_app/components/admin/classroom/index.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudents.dart';
+import 'package:lecture_performance_app/components/student/index/index.dart';
+import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
+import 'package:provider/provider.dart';
 
 //routerで渡される値
-class RegistStudentArgument {
-  RegistStudentArgument(this.homeRoom);
+class StudentCreateArgument {
+  StudentCreateArgument(this.homeRoom);
   final HomeRoom homeRoom;
 }
 
-class RegistStudent extends StatelessWidget {
+class StudentCreate extends StatelessWidget {
   static const routeName = '/admin/regist/student';
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as RegistStudentArgument;
+        ModalRoute.of(context).settings.arguments as StudentCreateArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -109,7 +109,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     final args =
-        ModalRoute.of(context).settings.arguments as RegistStudentArgument;
+        ModalRoute.of(context).settings.arguments as StudentCreateArgument;
     return Container(
       child: Container(
         child: Center(
@@ -190,7 +190,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
                           _firstName,
                           _lastName,
                         );
-                        await confirmPopUp(context, AdminClassRoom.routeName);
+                        await confirmPopUp(context, StudentIndex.routeName);
                       }
                     },
                     color: Colors.redAccent,

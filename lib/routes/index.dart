@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
-import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
+import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
 import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
 import 'package:lecture_performance_app/components/admin/edit/editStudent.dart';
-import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
 import 'package:lecture_performance_app/components/admin/regist/registStudents.dart';
-import 'package:lecture_performance_app/components/home/index/index.dart';
-import 'package:lecture_performance_app/components/classRoom/index/index.dart';
-import 'package:lecture_performance_app/components/home/regist/index.dart';
-import 'package:lecture_performance_app/components/home/regist/registConfirm.dart';
-import 'package:lecture_performance_app/components/home/regist/registSeat.dart';
-import 'package:lecture_performance_app/components/admin/classroom/index.dart';
-import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
+import 'package:lecture_performance_app/components/homeroom/create/create_confirm.dart';
+import 'package:lecture_performance_app/components/homeroom/create/create_seat.dart';
+import 'package:lecture_performance_app/components/homeroom/create/index.dart';
+import 'package:lecture_performance_app/components/homeroom/index/index.dart';
+import 'package:lecture_performance_app/components/homeroom/show/index.dart';
+import 'package:lecture_performance_app/components/student/create/index.dart';
+import 'package:lecture_performance_app/components/student/index/index.dart';
+import 'package:lecture_performance_app/components/student/show/index.dart';
 
 class App extends StatelessWidget {
   @override
@@ -24,19 +24,19 @@ class App extends StatelessWidget {
       ),
       initialRoute: '/home',
       routes: {
-        '/home': (context) => Home(),
-        '/home/regist': (context) => HomeStore(),
+        '/home': (context) => HomeroomIndex(),
+        '/home/regist': (context) => HomeroomCreate(),
         DeleteClassRoom.routeName: (_) => DeleteClassRoom(),
         HomeStoreSeat.routeName: (_) => HomeStoreSeat(),
         HomeStoreConfirm.routeName: (_) => HomeStoreConfirm(),
-        AdminClassRoom.routeName: (_) => AdminClassRoom(),
-        AdminStudentDetail.routeName: (_) => AdminStudentDetail(),
+        StudentIndex.routeName: (_) => StudentIndex(),
+        StudentShow.routeName: (_) => StudentShow(),
         SeatArrange.routeName: (_) => SeatArrange(),
-        RegistStudent.routeName: (_) => RegistStudent(),
+        StudentCreate.routeName: (_) => StudentCreate(),
         StoreStudents.routeName: (_) => StoreStudents(),
         EditStudent.routeName: (_) => EditStudent(),
         EditSeat.routeName: (_) => const EditSeat(),
-        ClassRoom.routeName: (_) => ClassRoom(),
+        HomeroomShow.routeName: (_) => HomeroomShow(),
       },
     );
   }

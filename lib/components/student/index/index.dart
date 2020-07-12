@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
-import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
-import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
 import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
-import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
+import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
+import 'package:lecture_performance_app/components/student/create/index.dart';
+import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/db/models/Student.dart';
-import 'package:provider/provider.dart';
 import 'package:lecture_performance_app/providers/ClassRoomProvider.dart';
+import 'package:provider/provider.dart';
 
 //routerで渡される値
-class AdminClassRoomArgument {
-  AdminClassRoomArgument(this.homeRoom);
+class StudentIndexArgument {
+  StudentIndexArgument(this.homeRoom);
   final HomeRoom homeRoom;
 }
 
-class AdminClassRoom extends StatelessWidget {
+class StudentIndex extends StatelessWidget {
   static const routeName = '/admin/homeroom';
   final AppStyle config = AppStyle();
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as AdminClassRoomArgument;
+        ModalRoute.of(context).settings.arguments as StudentIndexArgument;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -64,8 +64,8 @@ class AdminClassRoom extends StatelessWidget {
             route: () {
               Navigator.pushNamed(
                 context,
-                RegistStudent.routeName,
-                arguments: RegistStudentArgument(
+                StudentCreate.routeName,
+                arguments: StudentCreateArgument(
                   args.homeRoom,
                 ),
               );
@@ -187,7 +187,7 @@ class StudentTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as AdminClassRoomArgument;
+        ModalRoute.of(context).settings.arguments as StudentIndexArgument;
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     return ListView(
       children: <Widget>[
@@ -239,8 +239,8 @@ class StudentTable extends StatelessWidget {
                           onTap: () {
                             Navigator.pushNamed(
                               context,
-                              AdminStudentDetail.routeName,
-                              arguments: AdminStudentDetailArgument(
+                              StudentShow.routeName,
+                              arguments: StudentShowArgument(
                                 args.homeRoom,
                                 student.id,
                               ),

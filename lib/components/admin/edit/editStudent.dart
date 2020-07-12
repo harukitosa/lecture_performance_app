@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
-import 'package:provider/provider.dart';
+import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
+import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/providers/StudentProvider.dart';
 import 'package:lecture_performance_app/wire.dart';
-import 'package:lecture_performance_app/common/popup/comfirmPopup.dart';
+import 'package:provider/provider.dart';
 
 class EditStudentArgument {
   EditStudentArgument({this.studentID});
@@ -181,7 +181,7 @@ class EditStudentView extends StatelessWidget {
                     child: RaisedButton(
                       onPressed: () {
                         studentProvider.updateStudent();
-                        confirmPopUp(context, AdminStudentDetail.routeName);
+                        confirmPopUp(context, StudentShow.routeName);
                       },
                       color: Colors.redAccent,
                       padding: const EdgeInsets.all(10),

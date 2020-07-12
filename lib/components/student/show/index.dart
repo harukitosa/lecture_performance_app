@@ -5,18 +5,18 @@ import 'package:lecture_performance_app/providers/StudentProvider.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
-class AdminStudentDetailArgument {
-  AdminStudentDetailArgument(this.homeRoom, this.studentID);
+class StudentShowArgument {
+  StudentShowArgument(this.homeRoom, this.studentID);
   final HomeRoom homeRoom;
   final int studentID;
 }
 
-class AdminStudentDetail extends StatelessWidget {
+class StudentShow extends StatelessWidget {
   static const routeName = '/admin/student';
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as AdminStudentDetailArgument;
+        ModalRoute.of(context).settings.arguments as StudentShowArgument;
     return Scaffold(
       appBar: AppBar(
         title:
@@ -89,7 +89,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context).settings.arguments as AdminStudentDetailArgument;
+        ModalRoute.of(context).settings.arguments as StudentShowArgument;
     final studentProvider = Provider.of<StudentProvider>(context);
     final lastName =
         studentProvider.student != null ? studentProvider.student.lastName : '';
