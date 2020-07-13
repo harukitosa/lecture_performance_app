@@ -88,7 +88,7 @@ class _ChangeFormState extends State<ChangeForm> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: TextFormField(
                   decoration: const InputDecoration(labelText: '組'),
                   onChanged: _handleLectureClass,

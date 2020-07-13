@@ -7,40 +7,49 @@ import 'package:provider/provider.dart';
 class HomeroomIndex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    void _incrementCounter() {
-      Navigator.pushNamed(context, '/home/regist');
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('クラス一覧'),
       ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(value: HomeRoomProvider()),
-        ],
-        child: Consumer<HomeRoomProvider>(
-          builder: (context, counter, _) {
-            return Center(
-              child: HomeRoomList(),
-            );
-          },
-        ),
+      body: Consumer<HomeRoomProvider>(
+        builder: (context, counter, _) {
+          return Center(
+            child: HomeRoomList(),
+          );
+        },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        label: const Padding(
-          padding: EdgeInsets.all(12),
-          child: Text(
-            'クラス登録',
-            style: TextStyle(
-              fontSize: 22,
-            ),
+      floatingActionButton: _FloatingActionButton(context),
+    );
+  }
+}
+
+class _FloatingActionButton extends StatelessWidget {
+  const _FloatingActionButton(
+    this.context, {
+    Key key,
+  }) : super(key: key);
+
+  final BuildContext context;
+
+  void _routing() {
+    Navigator.pushNamed(context, '/home/regist');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      onPressed: _routing,
+      tooltip: 'Increment',
+      label: const Padding(
+        padding: EdgeInsets.all(12),
+        child: Text(
+          'クラス登録',
+          style: TextStyle(
+            fontSize: 22,
           ),
         ),
-        backgroundColor: Colors.blueAccent,
       ),
+      backgroundColor: Colors.blueAccent,
     );
   }
 }
@@ -54,12 +63,11 @@ class HomeRoomList extends StatelessWidget {
         return Center(
           child: Container(
             width: 800,
-            child: Center(child: _ListCard(homeRoomProvider.homeRoom[index])),
+            child: Center(child: _ListCard(homeRoomProvider.list[index])),
           ),
         );
       },
-      itemCount:
-          homeRoomProvider == null ? 0 : homeRoomProvider.homeRoom.length,
+      itemCount: homeRoomProvider == null ? 0 : homeRoomProvider.list.length,
     );
   }
 }

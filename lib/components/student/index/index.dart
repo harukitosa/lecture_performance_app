@@ -6,8 +6,8 @@ import 'package:lecture_performance_app/components/student/create/index.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/db/models/Student.dart';
-import 'package:lecture_performance_app/providers/classroom_provider.dart';
+import 'package:lecture_performance_app/providers/student_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -19,6 +19,9 @@ class StudentIndexArgument {
 class StudentIndex extends StatelessWidget {
   static const routeName = '/admin/homeroom';
   final AppStyle config = AppStyle();
+  final _student = initStudentAPI();
+  final _evaluation = initEvaluationAPI();
+
   @override
   Widget build(BuildContext context) {
     final args =
@@ -48,91 +51,86 @@ class StudentIndex extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
-            value: ClassRoomProvider(args.homeRoom.id),
+            value: StudentProvider(
+                homeroomID: args.homeRoom.id,
+                student: _student,
+                evaluation: _evaluation),
           ),
         ],
-        child: Consumer<ClassRoomProvider>(
+        child: Consumer<StudentProvider>(
           builder: (context, counter, _) {
             return AdminStudentListView();
           },
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          _FloatingButton(
-            route: () {
-              Navigator.pushNamed(
-                context,
-                StudentCreate.routeName,
-                arguments: StudentCreateArgument(
-                  args.homeRoom,
-                ),
-              );
-            },
-            title: '生徒追加',
-            heroName: 'student',
-            fontSize: config.size4,
-            textColor: config.st,
-            backColor: config.sl,
-          ),
-          _FloatingButton(
-            route: () {
-              Navigator.pushNamed(
-                context,
-                SeatUpdateUsed.routeName,
-                arguments: SeatUpdateUsedArgument(
-                  args.homeRoom.grade,
-                  args.homeRoom.lectureClass,
-                  args.homeRoom.id,
-                ),
-              );
-            },
-            title: '座席位置変更',
-            heroName: 'seat',
-            fontSize: config.size4,
-            textColor: config.st,
-            backColor: config.s,
-          ),
-          _FloatingButton(
-            route: () {
-              Navigator.pushNamed(
-                context,
-                SeatUpdatePosition.routeName,
-                arguments: SeatUpdatePositionArgument(
-                  args.homeRoom,
-                ),
-              );
-            },
-            title: '席替え',
-            heroName: 'changeSeat',
-            fontSize: config.size4,
-            textColor: config.st,
-            backColor: config.sd,
-          )
-        ],
-      ),
+      floatingActionButton: BtnColumn(config: config, args: args),
     );
   }
 }
 
-class _FloatingButton extends StatelessWidget {
-  const _FloatingButton({
+class BtnColumn extends StatelessWidget {
+  const BtnColumn({
     Key key,
-    @required this.route,
-    @required this.title,
-    @required this.heroName,
-    @required this.fontSize,
-    @required this.textColor,
-    @required this.backColor,
+    @required this.config,
+    @required this.args,
   }) : super(key: key);
 
-  final VoidCallback route;
+  final AppStyle config;
+  final StudentIndexArgument args;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        _FloatBtn(
+          config: config,
+          routeName: StudentCreate.routeName,
+          argument: StudentCreateArgument(
+            args.homeRoom,
+          ),
+          title: '生徒追加',
+          color: config.sl,
+          heroName: 'studentCreate',
+        ),
+        _FloatBtn(
+          config: config,
+          routeName: SeatUpdateUsed.routeName,
+          argument: SeatUpdateUsedArgument(args.homeRoom),
+          title: '座席位置変更',
+          heroName: 'updateSeatPosition',
+          color: config.s,
+        ),
+        _FloatBtn(
+          config: config,
+          routeName: SeatUpdatePosition.routeName,
+          argument: SeatUpdatePositionArgument(args.homeRoom),
+          title: '席替え',
+          color: config.sd,
+          heroName: 'seatUpdate',
+        )
+      ],
+    );
+  }
+}
+
+class _FloatBtn extends StatelessWidget {
+  const _FloatBtn({
+    Key key,
+    @required this.config,
+    @required this.routeName,
+    @required this.argument,
+    @required this.title,
+    @required this.color,
+    @required this.heroName,
+  }) : super(key: key);
+
+  final AppStyle config;
+  final String routeName;
+  final dynamic argument;
   final String title;
+  final Color color;
   final String heroName;
-  final double fontSize;
-  final Color textColor;
-  final Color backColor;
 
   @override
   Widget build(BuildContext context) {
@@ -147,31 +145,33 @@ class _FloatingButton extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              fontSize: fontSize,
-              color: textColor,
+              fontSize: config.size4,
+              color: config.st,
             ),
           ),
         ),
-        backgroundColor: backColor,
-        onPressed: route,
+        backgroundColor: color,
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            routeName,
+            arguments: argument,
+          );
+        },
       ),
     );
   }
 }
 
 class AdminStudentListView extends StatelessWidget {
-  // final AdminClassRoomArgument args =
-  //     ModalRoute.of(context).settings.arguments;
-  // classRoomProvider.getStudentData(args.homeRoom.id);
   @override
   Widget build(BuildContext context) {
-    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     return Row(
-      children: <Widget>[
+      children: const <Widget>[
         Expanded(
           flex: 2,
           child: Center(
-            child: StudentTable(studentList: classRoomProvider.studentList),
+            child: StudentTable(),
           ),
         ),
       ],
@@ -180,111 +180,75 @@ class AdminStudentListView extends StatelessWidget {
 }
 
 class StudentTable extends StatelessWidget {
-  const StudentTable({this.studentList});
-
-  final List<Student> studentList;
+  const StudentTable();
 
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentIndexArgument;
-    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+    final list = Provider.of<StudentProvider>(context).list;
     return ListView(
       children: <Widget>[
         DataTable(
-          sortAscending: classRoomProvider.sort,
           sortColumnIndex: 0,
-          columns: [
+          columns: const [
             DataColumn(
-              onSort: (columnIndex, ascending) {
-                classRoomProvider
-                  ..sortChange()
-                  ..onSortColum(columnIndex, ascending: ascending);
-              },
-              label: const Text(
+              label: Text(
                 '出席番号',
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            const DataColumn(
+            DataColumn(
               label: Text(
                 '名前',
                 style: TextStyle(fontSize: 24),
               ),
             ),
-            const DataColumn(
+            DataColumn(
               label: Text(
                 'POINTS',
                 style: TextStyle(fontSize: 24),
               ),
             ),
           ],
-          rows: (studentList != null)
-              ? studentList
-                  .map(
-                    (student) => DataRow(
-                      cells: [
-                        DataCell(
-                          Text(
-                            student.number.toString(),
-                            style: const TextStyle(fontSize: 22),
-                          ),
-                          onTap: () {},
-                        ),
-                        DataCell(
-                          Text(
-                            '${student.lastName} ${student.firstName}',
-                            style: const TextStyle(fontSize: 22),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              StudentShow.routeName,
-                              arguments: StudentShowArgument(
-                                args.homeRoom,
-                                student.id,
-                              ),
-                            );
-                          },
-                        ),
-                        DataCell(
-                          Text(
-                            student.evaluationSum.toString(),
-                            style: const TextStyle(fontSize: 22),
-                          ),
-                        ),
-                      ],
+          rows: list
+              .map(
+                (item) => DataRow(
+                  cells: [
+                    DataCell(
+                      Text(
+                        item.student.number.toString(),
+                        style: const TextStyle(fontSize: 22),
+                      ),
+                      onTap: () {},
                     ),
-                  )
-                  .toList()
-              : [
-                  const DataRow(
-                    cells: [
-                      DataCell(
-                        Text('NO DATA'),
+                    DataCell(
+                      Text(
+                        '${item.student.lastName} '
+                        '${item.student.firstName}',
+                        style: const TextStyle(fontSize: 22),
                       ),
-                      DataCell(
-                        Text('NO DATA'),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          StudentShow.routeName,
+                          arguments: StudentShowArgument(
+                            args.homeRoom,
+                            item.student.id,
+                          ),
+                        );
+                      },
+                    ),
+                    DataCell(
+                      Text(
+                        item.score.toString(),
+                        style: const TextStyle(fontSize: 22),
                       ),
-                      DataCell(
-                        Text('NO DATA'),
-                      )
-                    ],
-                  ),
-                  const DataRow(
-                    cells: [
-                      DataCell(
-                        Text('NO DATA'),
-                      ),
-                      DataCell(
-                        Text('NO DATA'),
-                      ),
-                      DataCell(
-                        Text('NO DATA'),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
         ),
       ],
     );

@@ -12,8 +12,32 @@ import 'package:lecture_performance_app/components/student/create/index.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/components/student/update/index.dart';
+import 'package:lecture_performance_app/providers/homeroom_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
+import 'package:provider/provider.dart';
 
+// Providerの導入
 class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final homeroom = initHomeRoomAPI();
+    final seat = initSeatAPI();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: HomeRoomProvider(homeroom: homeroom, seat: seat),
+        ),
+      ],
+      child: const _Routing(),
+    );
+  }
+}
+
+class _Routing extends StatelessWidget {
+  const _Routing({
+    Key key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

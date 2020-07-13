@@ -17,24 +17,20 @@ class HomeStoreSeat extends StatelessWidget {
   Widget build(BuildContext context) {
     final arg =
         ModalRoute.of(context).settings.arguments as HomeStoreSeatArgument;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${arg.grade}年 ${arg.lectureClass}組'),
       ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(value: HomeRoomProvider()),
-        ],
-        child: Consumer<HomeRoomProvider>(
-          builder: (context, counter, _) {
-            return Center(
-              child: StoreSeatMap(
-                grade: arg.grade,
-                lectureClass: arg.lectureClass,
-              ),
-            );
-          },
-        ),
+      body: Consumer<HomeRoomProvider>(
+        builder: (context, counter, _) {
+          return Center(
+            child: StoreSeatMap(
+              grade: arg.grade,
+              lectureClass: arg.lectureClass,
+            ),
+          );
+        },
       ),
     );
   }
@@ -46,8 +42,6 @@ class StoreSeatMap extends StatelessWidget {
   final String lectureClass;
   @override
   Widget build(BuildContext context) {
-    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
-
     return Center(
       child: Column(
         children: <Widget>[
@@ -60,35 +54,55 @@ class StoreSeatMap extends StatelessWidget {
             style: TextStyle(fontSize: 18),
           ),
           SeatMap(),
-          Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: ButtonTheme(
-              minWidth: 300,
-              height: 50,
-              child: RaisedButton(
-                child: const Text(
-                  '次へ',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                color: Colors.red,
-                textColor: Colors.white,
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    HomeStoreConfirm.routeName,
-                    arguments: HomeStoreConfirmArgument(
-                      grade,
-                      lectureClass,
-                      homeRoomProvider.mapSeat,
-                    ),
-                  );
-                },
-              ),
-            ),
+          _NextButton(
+            grade: grade,
+            lectureClass: lectureClass,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _NextButton extends StatelessWidget {
+  const _NextButton({
+    Key key,
+    @required this.grade,
+    @required this.lectureClass,
+  }) : super(key: key);
+
+  final String grade;
+  final String lectureClass;
+
+  @override
+  Widget build(BuildContext context) {
+    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: ButtonTheme(
+        minWidth: 300,
+        height: 50,
+        child: RaisedButton(
+          child: const Text(
+            '次へ',
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+          color: Colors.red,
+          textColor: Colors.white,
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              HomeStoreConfirm.routeName,
+              arguments: HomeStoreConfirmArgument(
+                grade,
+                lectureClass,
+                homeRoomProvider.newHomeRoomSeat,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -106,7 +120,7 @@ class SeatMap extends StatelessWidget {
       padding: const EdgeInsets.all(0),
       child: GridView.builder(
         shrinkWrap: true,
-        itemCount: homeRoomProvider.mapSeat.length,
+        itemCount: homeRoomProvider.newHomeRoomSeat.length,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -116,15 +130,15 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2.2,
         ),
         itemBuilder: (context, index) {
-          return _editSeatView(homeRoomProvider.mapSeat[index], index);
+          return _EditSeatView(homeRoomProvider.newHomeRoomSeat[index], index);
         },
       ),
     );
   }
 }
 
-class _editSeatView extends StatelessWidget {
-  const _editSeatView(this.flag, this.index);
+class _EditSeatView extends StatelessWidget {
+  const _EditSeatView(this.flag, this.index);
 
   final String flag;
   final int index;

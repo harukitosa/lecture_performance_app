@@ -21,21 +21,16 @@ class HomeStoreConfirm extends StatelessWidget {
       appBar: AppBar(
         title: const Text('登録確認画面'),
       ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(value: HomeRoomProvider()),
-        ],
-        child: Consumer<HomeRoomProvider>(
-          builder: (context, counter, _) {
-            return Center(
-              child: StoreConfirmMap(
-                grade: arg.grade,
-                lectureClass: arg.lectureClass,
-                seatMap: arg.seatMap,
-              ),
-            );
-          },
-        ),
+      body: Consumer<HomeRoomProvider>(
+        builder: (context, counter, _) {
+          return Center(
+            child: StoreConfirmMap(
+              grade: arg.grade,
+              lectureClass: arg.lectureClass,
+              seatMap: arg.seatMap,
+            ),
+          );
+        },
       ),
     );
   }
@@ -50,7 +45,6 @@ class StoreConfirmMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
-
     return Center(
       child: Column(
         children: <Widget>[
@@ -106,10 +100,9 @@ class StoreConfirmMap extends StatelessWidget {
                 color: Colors.orange,
                 textColor: Colors.white,
                 onPressed: () {
-                  homeRoomProvider.storeHomeRoom(
+                  homeRoomProvider.saveHomeRoom(
                     grade,
                     lectureClass,
-                    seatMap,
                   );
                   _resultPopup(context);
                 },
@@ -135,7 +128,7 @@ class SeatMap extends StatelessWidget {
       padding: const EdgeInsets.all(0),
       child: GridView.builder(
         shrinkWrap: true,
-        itemCount: homeRoomProvider.mapSeat.length,
+        itemCount: homeRoomProvider.newHomeRoomSeat.length,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -145,7 +138,7 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2,
         ),
         itemBuilder: (context, index) {
-          return _editSeatView(seatMap[index], index);
+          return _ConfirmSeatView(seatMap[index], index);
         },
       ),
     );
@@ -183,8 +176,8 @@ Future<void> _resultPopup(BuildContext context) async {
   );
 }
 
-class _editSeatView extends StatelessWidget {
-  const _editSeatView(this.flag, this.index);
+class _ConfirmSeatView extends StatelessWidget {
+  const _ConfirmSeatView(this.flag, this.index);
 
   final String flag;
   final int index;

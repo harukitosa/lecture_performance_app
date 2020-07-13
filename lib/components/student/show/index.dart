@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/student/update/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/student_provider.dart';
+import 'package:lecture_performance_app/providers/student_before_provider.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -25,10 +25,10 @@ class StudentShow extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
-            value: StudentProvider(args.studentID),
+            value: StudentBeforeProvider(args.studentID),
           ),
         ],
-        child: Consumer<StudentProvider>(
+        child: Consumer<StudentBeforeProvider>(
           builder: (context, counter, _) {
             return Center(
               child: AdminStudentView(),
@@ -90,7 +90,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentShowArgument;
-    final studentProvider = Provider.of<StudentProvider>(context);
+    final studentProvider = Provider.of<StudentBeforeProvider>(context);
     final lastName =
         studentProvider.student != null ? studentProvider.student.lastName : '';
     final firstName = studentProvider.student != null
@@ -221,7 +221,7 @@ class AdminLatestEvaluationInfo extends StatelessWidget {
 class AdminEvaluationInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final studentProvider = Provider.of<StudentProvider>(context);
+    final studentProvider = Provider.of<StudentBeforeProvider>(context);
     return ListView(
       children: <Widget>[
         DataTable(

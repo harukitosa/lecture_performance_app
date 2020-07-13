@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/providers/homeroom_provider.dart';
+import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/providers/homeroom_before_provider.dart';
 import 'package:provider/provider.dart';
 
 class SeatUpdateUsedArgument {
-  SeatUpdateUsedArgument(this.grade, this.lectureClass, this.homeRoomID);
-  final String grade;
-  final String lectureClass;
-  final int homeRoomID;
+  SeatUpdateUsedArgument(this.homeroom);
+  final HomeRoom homeroom;
 }
 
 class SeatUpdateUsed extends StatelessWidget {
@@ -20,19 +19,20 @@ class SeatUpdateUsed extends StatelessWidget {
         ModalRoute.of(context).settings.arguments as SeatUpdateUsedArgument;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${arg.grade} 年 ${arg.lectureClass}組 座席表編集画面'),
+        title: Text(
+            '${arg.homeroom.grade} 年 ${arg.homeroom.lectureClass}組 座席表編集画面'),
       ),
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider.value(value: HomeRoomProvider()),
+          ChangeNotifierProvider.value(value: HomeRoomBeforeProvider()),
         ],
-        child: Consumer<HomeRoomProvider>(
+        child: Consumer<HomeRoomBeforeProvider>(
           builder: (context, counter, _) {
             return Center(
               child: EditSeatMap(
-                grade: arg.grade,
-                lectureClass: arg.lectureClass,
-                id: arg.homeRoomID,
+                grade: arg.homeroom.grade,
+                lectureClass: arg.homeroom.lectureClass,
+                id: arg.homeroom.id,
               ),
             );
           },
@@ -49,7 +49,7 @@ class EditSeatMap extends StatelessWidget {
   final int id;
   @override
   Widget build(BuildContext context) {
-    Provider.of<HomeRoomProvider>(context).getSeatData(id);
+    Provider.of<HomeRoomBeforeProvider>(context).getSeatData(id);
     return Center(
       child: Column(
         children: <Widget>[
@@ -70,7 +70,7 @@ class SeatMap extends StatelessWidget {
   final AppDataConfig config = AppDataConfig();
   @override
   Widget build(BuildContext context) {
-    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+    final homeRoomProvider = Provider.of<HomeRoomBeforeProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(0),
       child: GridView.builder(
@@ -108,7 +108,7 @@ class EditSeatView extends StatelessWidget {
   final bool changeState;
   @override
   Widget build(BuildContext context) {
-    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+    final homeRoomProvider = Provider.of<HomeRoomBeforeProvider>(context);
     return InkWell(
       onTap: () {
         if (changeState) {

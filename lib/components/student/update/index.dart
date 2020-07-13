@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
-import 'package:lecture_performance_app/providers/student_provider.dart';
+import 'package:lecture_performance_app/providers/student_before_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
@@ -36,10 +36,10 @@ class StudentUpdate extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
-            value: StudentProvider(args.studentID),
+            value: StudentBeforeProvider(args.studentID),
           ),
         ],
-        child: Consumer<StudentProvider>(
+        child: Consumer<StudentBeforeProvider>(
           builder: (context, counter, _) {
             return Center(
               child: EditStudentView(),
@@ -118,7 +118,7 @@ Future<void> _confirmPopUp(BuildContext context) async {
 class EditStudentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final studentProvider = Provider.of<StudentProvider>(context);
+    final studentProvider = Provider.of<StudentBeforeProvider>(context);
     return Center(
       child: Container(
         width: 500,

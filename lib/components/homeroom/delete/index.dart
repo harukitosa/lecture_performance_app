@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/wire.dart';
+import 'package:lecture_performance_app/providers/homeroom_provider.dart';
+import 'package:provider/provider.dart';
 
 class DeleteClassRoomArguments {
   DeleteClassRoomArguments(this.homeRoom);
@@ -40,26 +41,52 @@ class DeleteClassRoom extends StatelessWidget {
 }
 
 Widget _menuItemDelete(String title, Icon icon, BuildContext context, int id) {
-  return Container(
-    decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
-    child: ListTile(
-      leading: icon,
-      title: Text(
-        title,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 18,
-        ),
-      ),
-      onTap: () {
-        deleteAlertPopUp(context, id);
-      },
-    ),
-  );
+  return Consumer<HomeRoomProvider>(builder: (context, counter, _) {
+    return _MenuContainer(
+      icon: icon,
+      id: id,
+      title: title,
+    );
+  });
 }
 
-Future<void> deleteAlertPopUp(BuildContext context, int id) async {
+class _MenuContainer extends StatelessWidget {
+  const _MenuContainer({
+    Key key,
+    this.icon,
+    this.title,
+    this.id,
+  }) : super(key: key);
+
+  final Icon icon;
+  final String title;
+  final int id;
+  @override
+  Widget build(BuildContext context) {
+    final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+
+    return Container(
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+      child: ListTile(
+        leading: icon,
+        title: Text(
+          title,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+          ),
+        ),
+        onTap: () {
+          deleteAlertPopUp(context, id, homeRoomProvider);
+        },
+      ),
+    );
+  }
+}
+
+Future<void> deleteAlertPopUp(
+    BuildContext context, int id, HomeRoomProvider homeroom) async {
   return showDialog(
     context: context,
     builder: (_) {
@@ -77,7 +104,7 @@ Future<void> deleteAlertPopUp(BuildContext context, int id) async {
           FlatButton(
             child: const Text('削除する'),
             onPressed: () {
-              initHomeRoomAPI().deleteHomeRoom(id);
+              homeroom.deleteHomeRoom(id);
               Navigator.pop(context);
               confirmPopUp(context);
             },
