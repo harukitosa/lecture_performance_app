@@ -52,9 +52,10 @@ class StudentIndex extends StatelessWidget {
         providers: [
           ChangeNotifierProvider.value(
             value: StudentProvider(
-                homeroomID: args.homeRoom.id,
-                student: _student,
-                evaluation: _evaluation),
+              homeroomID: args.homeRoom.id,
+              student: _student,
+              evaluation: _evaluation,
+            ),
           ),
         ],
         child: Consumer<StudentProvider>(
