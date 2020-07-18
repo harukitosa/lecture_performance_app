@@ -1,7 +1,7 @@
+import 'package:lecture_performance_app/db/connect_db.dart';
+import 'package:lecture_performance_app/db/models/evaluation_type.dart';
 import 'package:lecture_performance_app/repositories/evaluation_type_repository.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:lecture_performance_app/db/models/EvaluationType.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 
 IEvaluationTypeRepository newEvaluationTypeRepository() {
   return EvaluationTypeRepository();

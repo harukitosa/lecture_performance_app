@@ -109,7 +109,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     final args =
-        ModalRoute.of(context).settings.arguments as StudentCreateArgument;
+        ModalRoute.of(context).settings.arguments as StudentsCreateArgument;
     return Container(
       child: Container(
         child: Center(
@@ -174,7 +174,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
                       )
                     : const Text(''),
                 Container(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: RaisedButton(
                     onPressed: () async {
                       if (_firstName == '' ||

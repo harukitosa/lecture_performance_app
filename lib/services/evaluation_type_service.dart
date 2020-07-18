@@ -1,6 +1,7 @@
 import 'package:lecture_performance_app/repositories/evaluation_repository.dart';
 import 'package:lecture_performance_app/repositories/evaluation_type_repository.dart';
-import '../db/models/EvaluationType.dart';
+
+import '../db/models/evaluation_type.dart';
 import '../utility/time.dart';
 
 class SumEvaluationType {

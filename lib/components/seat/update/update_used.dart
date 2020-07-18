@@ -17,6 +17,7 @@ class SeatUpdateUsed extends StatelessWidget {
   Widget build(BuildContext context) {
     final arg =
         ModalRoute.of(context).settings.arguments as SeatUpdateUsedArgument;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -28,12 +29,8 @@ class SeatUpdateUsed extends StatelessWidget {
         ],
         child: Consumer<HomeRoomBeforeProvider>(
           builder: (context, counter, _) {
-            return Center(
-              child: EditSeatMap(
-                grade: arg.homeroom.grade,
-                lectureClass: arg.homeroom.lectureClass,
-                id: arg.homeroom.id,
-              ),
+            return const Center(
+              child: EditSeatMap(),
             );
           },
         ),
@@ -43,13 +40,9 @@ class SeatUpdateUsed extends StatelessWidget {
 }
 
 class EditSeatMap extends StatelessWidget {
-  const EditSeatMap({this.grade, this.lectureClass, this.id});
-  final String grade;
-  final String lectureClass;
-  final int id;
+  const EditSeatMap();
   @override
   Widget build(BuildContext context) {
-    Provider.of<HomeRoomBeforeProvider>(context).getSeatData(id);
     return Center(
       child: Column(
         children: <Widget>[
