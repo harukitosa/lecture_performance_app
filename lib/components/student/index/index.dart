@@ -48,21 +48,10 @@ class StudentIndex extends StatelessWidget {
           ),
         ],
       ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(
-            value: StudentProvider(
-              homeroomID: args.homeRoom.id,
-              student: _student,
-              evaluation: _evaluation,
-            ),
-          ),
-        ],
-        child: Consumer<StudentProvider>(
-          builder: (context, counter, _) {
-            return AdminStudentListView();
-          },
-        ),
+      body: Consumer<StudentProvider>(
+        builder: (context, counter, _) {
+          return AdminStudentListView();
+        },
       ),
       floatingActionButton: BtnColumn(config: config, args: args),
     );
@@ -187,7 +176,8 @@ class StudentTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentIndexArgument;
-    final list = Provider.of<StudentProvider>(context).list;
+    final list =
+        Provider.of<StudentProvider>(context).getList(args.homeRoom.id);
     return ListView(
       children: <Widget>[
         DataTable(

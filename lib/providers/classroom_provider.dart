@@ -190,7 +190,7 @@ class ClassRoomProvider with ChangeNotifier {
     String firstName,
     String lastName,
   ) async {
-    await _studentService.createstudent(
+    await _studentService.createStudent(
       homeRoomID,
       firstName,
       lastName,

@@ -13,6 +13,7 @@ import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/components/student/update/index.dart';
 import 'package:lecture_performance_app/providers/homeroom_provider.dart';
+import 'package:lecture_performance_app/providers/student_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
@@ -22,10 +23,18 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeroom = initHomeRoomAPI();
     final seat = initSeatAPI();
+    final student = initStudentAPI();
+    final evaluation = initEvaluationAPI();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
           value: HomeRoomProvider(homeroom: homeroom, seat: seat),
+        ),
+        ChangeNotifierProvider.value(
+          value: StudentProvider(
+            evaluation: evaluation,
+            student: student,
+          ),
         ),
       ],
       child: const _Routing(),

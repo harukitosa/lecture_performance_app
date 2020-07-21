@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
-import 'package:lecture_performance_app/providers/student_before_provider.dart';
+import 'package:lecture_performance_app/providers/student_edit_provider.dart';
+import 'package:lecture_performance_app/providers/student_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
@@ -33,19 +34,12 @@ class StudentUpdate extends StatelessWidget {
           ),
         ],
       ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(
-            value: StudentBeforeProvider(args.studentID),
-          ),
-        ],
-        child: Consumer<StudentBeforeProvider>(
-          builder: (context, counter, _) {
-            return Center(
-              child: EditStudentView(),
-            );
-          },
-        ),
+      body: Consumer<StudentProvider>(
+        builder: (context, counter, _) {
+          return Center(
+            child: EditStudentView(),
+          );
+        },
       ),
     );
   }
@@ -69,7 +63,7 @@ Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
           FlatButton(
             child: const Text('削除する'),
             onPressed: () {
-              initStudentAPI().deletestudent(id);
+              initStudentAPI().deleteStudent(id);
               Navigator.pop(context);
               _confirmPopUp(context);
             },
@@ -118,85 +112,130 @@ Future<void> _confirmPopUp(BuildContext context) async {
 class EditStudentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final studentProvider = Provider.of<StudentBeforeProvider>(context);
-    return Center(
-      child: Container(
-        width: 500,
-        height: 600,
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.all(60),
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1,
-            color: const Color(0xFFFFaFaFaF),
+    final args =
+        ModalRoute.of(context).settings.arguments as StudentUpdateArgument;
+    final studentProvider = Provider.of<StudentProvider>(context);
+    final item = studentProvider.getStudent(args.studentID);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: StudentEditProvider(
+            firstName: item.student.firstName,
+            lastName: item.student.lastName,
+            number: item.student.number.toString(),
           ),
-          borderRadius: BorderRadius.circular(30),
         ),
-        child: studentProvider.student != null
-            ? Column(
-                children: <Widget>[
-                  Container(
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.black,
-                      size: 90,
-                    ),
-                  ),
-                  const Text('生徒情報編集'),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    child: TextFormField(
-                      decoration: const InputDecoration(labelText: '姓'),
-                      initialValue: studentProvider.student.lastName,
-                      onChanged: studentProvider.handleChangeLastName,
-                      style: const TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    child: TextFormField(
-                      decoration: const InputDecoration(labelText: '名前'),
-                      initialValue: studentProvider.student.firstName,
-                      onChanged: studentProvider.handleChangeFirstName,
-                      style: const TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    child: TextFormField(
-                      decoration: const InputDecoration(labelText: '出席番号'),
-                      initialValue: studentProvider.student.number.toString(),
-                      onChanged: studentProvider.handleChangeNum,
-                      style: const TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    child: RaisedButton(
-                      onPressed: () {
-                        studentProvider.updateStudent();
-                        confirmPopUp(context, StudentShow.routeName);
-                      },
-                      color: Colors.redAccent,
-                      padding: const EdgeInsets.all(10),
-                      child: const Text(
-                        '保存',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : const Text('NO DATA'),
+      ],
+      child: Consumer<StudentEditProvider>(
+        builder: (context, counter, _) {
+          return Center(
+            child: EditForm(
+              item: item,
+              studentProvider: studentProvider,
+            ),
+          );
+        },
       ),
+    );
+  }
+}
+
+class EditForm extends StatelessWidget {
+  const EditForm({
+    Key key,
+    @required this.item,
+    @required this.studentProvider,
+  }) : super(key: key);
+
+  final StudentDto item;
+  final StudentProvider studentProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = Provider.of<StudentEditProvider>(context);
+
+    return Container(
+      width: 500,
+      height: 600,
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(60),
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: const Color(0xFFFFaFaFaF),
+        ),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: item.student != null
+          ? Column(
+              children: <Widget>[
+                Container(
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.black,
+                    size: 90,
+                  ),
+                ),
+                const Text('生徒情報編集'),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: '姓'),
+                    initialValue: item.student.lastName,
+                    onChanged: s.handleChangeLastName,
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: '名前'),
+                    initialValue: item.student.firstName,
+                    onChanged: s.handleChangeFirstName,
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: '出席番号'),
+                    initialValue: item.student.number.toString(),
+                    onChanged: s.handleChangeNum,
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: RaisedButton(
+                    onPressed: () {
+                      // todo: int.parseのエラーハンドリングをStudentEditProviderに移す
+                      studentProvider.updateStudent(
+                        item.student.id,
+                        s.lastName,
+                        s.firstName,
+                        int.parse(s.number),
+                      );
+                      confirmPopUp(context, StudentShow.routeName);
+                    },
+                    color: Colors.redAccent,
+                    padding: const EdgeInsets.all(10),
+                    child: const Text(
+                      '保存',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : const Text('NO DATA'),
     );
   }
 }
