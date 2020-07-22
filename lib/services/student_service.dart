@@ -1,6 +1,6 @@
+import 'package:lecture_performance_app/db/models/student.dart';
 import 'package:lecture_performance_app/repositories/student_repository.dart';
 
-import '../db/models/Student.dart';
 import '../utility/time.dart';
 
 class StudentService {

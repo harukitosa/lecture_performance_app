@@ -12,6 +12,7 @@ import 'package:lecture_performance_app/components/student/create/index.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/components/student/update/index.dart';
+import 'package:lecture_performance_app/providers/evaluation_provider.dart';
 import 'package:lecture_performance_app/providers/homeroom_provider.dart';
 import 'package:lecture_performance_app/providers/student_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
@@ -35,6 +36,9 @@ class App extends StatelessWidget {
             evaluation: evaluation,
             student: student,
           ),
+        ),
+        ChangeNotifierProvider.value(
+          value: EvaluationProvider(evaluation: evaluation),
         ),
       ],
       child: const _Routing(),

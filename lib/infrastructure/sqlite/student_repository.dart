@@ -1,5 +1,5 @@
 import 'package:lecture_performance_app/db/connect_db.dart';
-import 'package:lecture_performance_app/db/models/Student.dart';
+import 'package:lecture_performance_app/db/models/student.dart';
 import 'package:lecture_performance_app/repositories/student_repository.dart';
 import 'package:sqflite/sqflite.dart';
 

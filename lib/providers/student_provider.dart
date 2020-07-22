@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/db/models/Student.dart';
+import 'package:lecture_performance_app/db/models/student.dart';
 import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
 
@@ -22,7 +22,7 @@ class StudentProvider with ChangeNotifier {
   final StudentService _student;
   final EvaluationService _evaluation;
 
-  final List<StudentDto> _list = [];
+  List<StudentDto> _list = [];
 //  List<StudentDto> get list => _list == null ? [] : List.unmodifiable(_list);
 
   List<StudentDto> getList(int homeroomId) {
@@ -36,7 +36,17 @@ class StudentProvider with ChangeNotifier {
   }
 
   StudentDto getStudent(int studentId) {
-    return _list.where((item) => item.student.id == studentId).toList()[0];
+    for (final item in _list) {
+      if (item.student.id == studentId) {
+        return item;
+      }
+    }
+  }
+
+  void deleteStudent(int id) {
+    _student.deleteStudent(id).then((res) {
+      _updateList();
+    });
   }
 
   void updateStudent(
@@ -45,17 +55,16 @@ class StudentProvider with ChangeNotifier {
     String firstName,
     int number,
   ) {
-    final data =
-        _list.where((item) => item.student.id == studentId).toList()[0];
+    final data = _list.where((item) => item.student.id == studentId).toList();
     _student
         .editstudent(
       studentId,
-      data.student.homeRoomID,
-      data.student.positionNum,
+      data[0].student.homeRoomID,
+      data[0].student.positionNum,
       firstName,
       lastName,
       number,
-      data.student.createTime,
+      data[0].student.createTime,
     )
         .then(
       (res) {
@@ -68,6 +77,7 @@ class StudentProvider with ChangeNotifier {
   void _updateList() {
     _student.getAllStudent().then((value) {
       final list = value;
+      _list = [];
       for (final item in list) {
         _evaluation.getStudentSum(item.id).then((value) {
           _list.add(StudentDto(item, value));

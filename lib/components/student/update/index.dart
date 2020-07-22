@@ -3,7 +3,6 @@ import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/providers/student_edit_provider.dart';
 import 'package:lecture_performance_app/providers/student_provider.dart';
-import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
 class StudentUpdateArgument {
@@ -46,6 +45,7 @@ class StudentUpdate extends StatelessWidget {
 }
 
 Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
+  final studentProvider = Provider.of<StudentProvider>(context);
   return showDialog(
     context: context,
     builder: (_) {
@@ -63,7 +63,7 @@ Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
           FlatButton(
             child: const Text('削除する'),
             onPressed: () {
-              initStudentAPI().deleteStudent(id);
+              studentProvider.deleteStudent(id);
               Navigator.pop(context);
               _confirmPopUp(context);
             },
@@ -120,19 +120,21 @@ class EditStudentView extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: StudentEditProvider(
-            firstName: item.student.firstName,
-            lastName: item.student.lastName,
-            number: item.student.number.toString(),
+            firstName: item?.student?.firstName ?? '',
+            lastName: item?.student?.lastName ?? '',
+            number: item?.student?.number.toString() ?? '',
           ),
         ),
       ],
       child: Consumer<StudentEditProvider>(
         builder: (context, counter, _) {
           return Center(
-            child: EditForm(
-              item: item,
-              studentProvider: studentProvider,
-            ),
+            child: item != null
+                ? EditForm(
+                    item: item,
+                    studentProvider: studentProvider,
+                  )
+                : const Text('NOW LOADING'),
           );
         },
       ),
@@ -181,7 +183,7 @@ class EditForm extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
                     decoration: const InputDecoration(labelText: '姓'),
-                    initialValue: item.student.lastName,
+                    initialValue: item?.student?.lastName ?? '',
                     onChanged: s.handleChangeLastName,
                     style: const TextStyle(
                       fontSize: 24,
@@ -192,7 +194,7 @@ class EditForm extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
                     decoration: const InputDecoration(labelText: '名前'),
-                    initialValue: item.student.firstName,
+                    initialValue: item?.student?.firstName ?? '',
                     onChanged: s.handleChangeFirstName,
                     style: const TextStyle(
                       fontSize: 24,
@@ -203,7 +205,7 @@ class EditForm extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
                     decoration: const InputDecoration(labelText: '出席番号'),
-                    initialValue: item.student.number.toString(),
+                    initialValue: item?.student?.number.toString() ?? '',
                     onChanged: s.handleChangeNum,
                     style: const TextStyle(
                       fontSize: 24,
