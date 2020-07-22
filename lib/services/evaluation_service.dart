@@ -1,6 +1,7 @@
+import 'package:lecture_performance_app/db/models/evaluation.dart';
 import 'package:lecture_performance_app/repositories/evaluation_repository.dart';
 import 'package:lecture_performance_app/repositories/evaluation_type_repository.dart';
-import '../db/models/Evaluation.dart';
+
 import '../utility/time.dart';
 
 class EvaluationService {

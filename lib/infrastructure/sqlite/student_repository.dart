@@ -1,7 +1,7 @@
+import 'package:lecture_performance_app/db/connect_db.dart';
+import 'package:lecture_performance_app/db/models/student.dart';
 import 'package:lecture_performance_app/repositories/student_repository.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:lecture_performance_app/db/models/Student.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 
 IStudentRepository newStudentRepository() {
   return StudentRepository();
@@ -32,7 +32,7 @@ class StudentRepository extends IStudentRepository {
       'student',
       where: 'homeroom_id = ?',
       whereArgs: args,
-      orderBy: 'number DESC',
+      orderBy: 'number ASC',
     );
     return res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
   }

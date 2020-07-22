@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:lecture_performance_app/db/models/Evaluation.dart';
+
+import 'package:lecture_performance_app/db/models/evaluation.dart';
 
 abstract class IEvaluationRepository {
   Future<int> insertEvaluation(Evaluation evaluation);
@@ -11,4 +12,3 @@ abstract class IEvaluationRepository {
   Future<void> deleteEvaluation(int id);
   Future<void> updateEvaluation(Evaluation evaluation);
 }
-

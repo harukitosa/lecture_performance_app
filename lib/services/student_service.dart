@@ -1,5 +1,6 @@
+import 'package:lecture_performance_app/db/models/student.dart';
 import 'package:lecture_performance_app/repositories/student_repository.dart';
-import '../db/models/Student.dart';
+
 import '../utility/time.dart';
 
 class StudentService {
@@ -14,7 +15,11 @@ class StudentService {
     return studentRepository.getOneStudent(id);
   }
 
-  Future<int> createstudent(
+  Future<List<Student>> getAllStudent() async {
+    return studentRepository.getAllStudents();
+  }
+
+  Future<int> createStudent(
     int homeRoomID,
     String firstName,
     String lastName,
@@ -61,7 +66,7 @@ class StudentService {
     return studentRepository.updateStudent(student);
   }
 
-  Future<void> deletestudent(int id) {
+  Future<void> deleteStudent(int id) {
     return studentRepository.deleteStudent(id);
   }
 

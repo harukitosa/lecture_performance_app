@@ -1,19 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/admin/classroom/seatArrange.dart';
-import 'package:lecture_performance_app/components/admin/classroom/studentDetail.dart';
-import 'package:lecture_performance_app/components/admin/edit/editSeat.dart';
-import 'package:lecture_performance_app/components/admin/edit/editStudent.dart';
-import 'package:lecture_performance_app/components/admin/regist/registStudent.dart';
-import 'package:lecture_performance_app/components/admin/regist/registStudents.dart';
-import 'package:lecture_performance_app/components/home/index/index.dart';
-import 'package:lecture_performance_app/components/classRoom/index/index.dart';
-import 'package:lecture_performance_app/components/home/regist/index.dart';
-import 'package:lecture_performance_app/components/home/regist/registConfirm.dart';
-import 'package:lecture_performance_app/components/home/regist/registSeat.dart';
-import 'package:lecture_performance_app/components/admin/classroom/index.dart';
-import 'package:lecture_performance_app/components/admin/edit/deleteClassroom.dart';
+import 'package:lecture_performance_app/components/homeroom/create/create_confirm.dart';
+import 'package:lecture_performance_app/components/homeroom/create/create_seat.dart';
+import 'package:lecture_performance_app/components/homeroom/create/index.dart';
+import 'package:lecture_performance_app/components/homeroom/delete/index.dart';
+import 'package:lecture_performance_app/components/homeroom/index/index.dart';
+import 'package:lecture_performance_app/components/homeroom/show/index.dart';
+import 'package:lecture_performance_app/components/seat/update/update_position.dart';
+import 'package:lecture_performance_app/components/seat/update/update_used.dart';
+import 'package:lecture_performance_app/components/student/create/create_many_student.dart';
+import 'package:lecture_performance_app/components/student/create/index.dart';
+import 'package:lecture_performance_app/components/student/index/index.dart';
+import 'package:lecture_performance_app/components/student/show/index.dart';
+import 'package:lecture_performance_app/components/student/update/index.dart';
+import 'package:lecture_performance_app/providers/evaluation_provider.dart';
+import 'package:lecture_performance_app/providers/homeroom_provider.dart';
+import 'package:lecture_performance_app/providers/student_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
+import 'package:provider/provider.dart';
 
+// Providerの導入
 class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final homeroom = initHomeRoomAPI();
+    final seat = initSeatAPI();
+    final student = initStudentAPI();
+    final evaluation = initEvaluationAPI();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: HomeRoomProvider(homeroom: homeroom, seat: seat),
+        ),
+        ChangeNotifierProvider.value(
+          value: StudentProvider(
+            evaluation: evaluation,
+            student: student,
+          ),
+        ),
+        ChangeNotifierProvider.value(
+          value: EvaluationProvider(evaluation: evaluation),
+        ),
+      ],
+      child: const _Routing(),
+    );
+  }
+}
+
+class _Routing extends StatelessWidget {
+  const _Routing({
+    Key key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,19 +61,19 @@ class App extends StatelessWidget {
       ),
       initialRoute: '/home',
       routes: {
-        '/home': (context) => Home(),
-        '/home/regist': (context) => HomeStore(),
+        '/home': (context) => HomeroomIndex(),
+        '/home/regist': (context) => HomeroomCreate(),
         DeleteClassRoom.routeName: (_) => DeleteClassRoom(),
         HomeStoreSeat.routeName: (_) => HomeStoreSeat(),
         HomeStoreConfirm.routeName: (_) => HomeStoreConfirm(),
-        AdminClassRoom.routeName: (_) => AdminClassRoom(),
-        AdminStudentDetail.routeName: (_) => AdminStudentDetail(),
-        SeatArrange.routeName: (_) => SeatArrange(),
-        RegistStudent.routeName: (_) => RegistStudent(),
-        StoreStudents.routeName: (_) => StoreStudents(),
-        EditStudent.routeName: (_) => EditStudent(),
-        EditSeat.routeName: (_) => const EditSeat(),
-        ClassRoom.routeName: (_) => ClassRoom(),
+        StudentIndex.routeName: (_) => StudentIndex(),
+        StudentShow.routeName: (_) => StudentShow(),
+        SeatUpdatePosition.routeName: (_) => SeatUpdatePosition(),
+        StudentCreate.routeName: (_) => StudentCreate(),
+        StudentsCreate.routeName: (_) => StudentsCreate(),
+        StudentUpdate.routeName: (_) => StudentUpdate(),
+        SeatUpdateUsed.routeName: (_) => const SeatUpdateUsed(),
+        HomeroomShow.routeName: (_) => HomeroomShow(),
       },
     );
   }
