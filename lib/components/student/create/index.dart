@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
-import 'package:lecture_performance_app/components/student/create/create_many_student.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/classroom_provider.dart';
@@ -43,7 +42,7 @@ class StudentCreate extends StatelessWidget {
           Navigator.pushNamed(
             context,
             StudentCreate.routeName,
-            arguments: StudentsCreateArgument(
+            arguments: StudentCreateArgument(
               args.homeRoom,
             ),
           );
@@ -109,7 +108,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
   Widget build(BuildContext context) {
     final classRoomProvider = Provider.of<ClassRoomProvider>(context);
     final args =
-        ModalRoute.of(context).settings.arguments as StudentsCreateArgument;
+        ModalRoute.of(context).settings.arguments as StudentCreateArgument;
     return Container(
       child: Container(
         child: Center(

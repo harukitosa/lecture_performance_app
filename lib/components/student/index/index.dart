@@ -7,7 +7,6 @@ import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/student_provider.dart';
-import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -19,8 +18,6 @@ class StudentIndexArgument {
 class StudentIndex extends StatelessWidget {
   static const routeName = '/admin/homeroom';
   final AppStyle config = AppStyle();
-  final _student = initStudentAPI();
-  final _evaluation = initEvaluationAPI();
 
   @override
   Widget build(BuildContext context) {

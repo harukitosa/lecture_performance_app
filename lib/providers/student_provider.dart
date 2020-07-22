@@ -30,7 +30,10 @@ class StudentProvider with ChangeNotifier {
       return [];
     } else {
       return List.unmodifiable(
-        _list.where((item) => item.student.homeRoomID == homeroomId).toList(),
+        _list
+          ..where((item) => item.student.homeRoomID == homeroomId)
+          ..sort((a, b) => a.student.number.compareTo(b.student.number))
+          ..toList(),
       );
     }
   }
