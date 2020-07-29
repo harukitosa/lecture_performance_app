@@ -92,7 +92,7 @@ class _ListCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.edit,
               color: Colors.blue,
               size: 40,

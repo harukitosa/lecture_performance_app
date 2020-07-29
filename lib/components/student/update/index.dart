@@ -23,7 +23,7 @@ class StudentUpdate extends StatelessWidget {
         title: const Text('生徒情報編集画面'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.delete,
               size: 32,
             ),

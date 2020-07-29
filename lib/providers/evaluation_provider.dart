@@ -13,11 +13,15 @@ class EvaluationProvider with ChangeNotifier {
   List<Evaluation> _list;
   List<Evaluation> get list => _list == null ? [] : List.unmodifiable(_list);
 
-  List<Evaluation> studentLatestScore(int studentID) {
-    _list
-      ..where((item) => item.studentID == studentID)
-      ..sort((a, b) => b.createTime.compareTo(a.createTime));
-    return _list.toList() != null ? _list.sublist(0, 10) : [];
+  void studentLatestScore(int studentID) {
+//    _list
+//      ..where((item) => item.studentID == studentID)
+//      ..sort((a, b) => b.createTime.compareTo(a.createTime));
+//    エラー箇所
+    _evaluation.getLatestStudent(studentID).then((value) {
+      _list = value;
+      notifyListeners();
+    });
   }
 
   void _updateList() {

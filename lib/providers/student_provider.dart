@@ -26,6 +26,7 @@ class StudentProvider with ChangeNotifier {
 //  List<StudentDto> get list => _list == null ? [] : List.unmodifiable(_list);
 
   List<StudentDto> getList(int homeroomId) {
+    print(homeroomId);
     if (_list == null) {
       return [];
     } else {

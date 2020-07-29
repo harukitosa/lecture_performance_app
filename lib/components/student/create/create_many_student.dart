@@ -96,7 +96,7 @@ class _InputFormState extends State<_InputForm> {
       // ファイルの取得
       file = await FilePicker.getFile(
         type: FileType.custom,
-        fileExtension: 'csv',
+//        fileExtension: 'csv',
       );
       // ファイルの中身を取得
       if (file != null) {
