@@ -75,14 +75,13 @@ class StudentCreate extends StatelessWidget {
   }
 }
 
-//class StoreStudentForm extends StatefulWidget {
-//  const StoreStudentForm({Key key}) : super(key: key);
-//
-//  @override
-//  _StoreStudentFormState createState() => _StoreStudentFormState();
-//}
+class StoreStudentForm extends StatefulWidget {
+  @override
+  _StoreStudentFormState createState() => _StoreStudentFormState();
+}
 
-class StoreStudentForm extends StatelessWidget {
+class _StoreStudentFormState extends State<StoreStudentForm> {
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final editor = Provider.of<StudentEditProvider>(context);
@@ -90,20 +89,21 @@ class StoreStudentForm extends StatelessWidget {
     final args =
         ModalRoute.of(context).settings.arguments as StudentCreateArgument;
     return Container(
-      child: Container(
-        child: Center(
-          child: Container(
-            width: 500,
-            height: 600,
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.all(60),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
-                color: const Color(0xFFFFaFaFaF),
-              ),
-              borderRadius: BorderRadius.circular(30),
+      child: Center(
+        child: Container(
+          width: 500,
+          height: 900,
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(60),
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
+              color: const Color(0xFFFFaFaFaF),
             ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Form(
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 Container(
@@ -122,6 +122,12 @@ class StoreStudentForm extends StatelessWidget {
                       fontSize: 24,
                     ),
                     onChanged: editor.handleChangeLastName,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '名前を記入してください。';
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 Container(
@@ -132,6 +138,12 @@ class StoreStudentForm extends StatelessWidget {
                       fontSize: 24,
                     ),
                     onChanged: editor.handleChangeFirstName,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '名前を記入してください。';
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 Container(
@@ -142,19 +154,27 @@ class StoreStudentForm extends StatelessWidget {
                       fontSize: 24,
                     ),
                     onChanged: editor.handleChangeNum,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '番号を記入してください。';
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(16),
                   child: RaisedButton(
                     onPressed: () async {
-                      student.createStudent(
-                        args.homeRoom.id,
-                        editor.firstName,
-                        editor.lastName,
-                        int.parse(editor.number),
-                      );
-                      await confirmPopUp(context);
+                      if (_formKey.currentState.validate()) {
+                        student.createStudent(
+                          args.homeRoom.id,
+                          editor.firstName,
+                          editor.lastName,
+                          int.parse(editor.number),
+                        );
+                        await confirmPopUp(context);
+                      }
                     },
                     color: Colors.redAccent,
                     padding: const EdgeInsets.all(10),
