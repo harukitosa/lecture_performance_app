@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
-import 'package:lecture_performance_app/components/student/index/index.dart';
+import 'package:lecture_performance_app/components/homeroom/delete/index.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/classroom_provider.dart';
+import 'package:lecture_performance_app/providers/student_create_provider.dart';
+import 'package:lecture_performance_app/providers/student_edit_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -12,11 +13,13 @@ class StudentCreateArgument {
 }
 
 class StudentCreate extends StatelessWidget {
-  static const routeName = '/admin/regist/student';
+  static const routeName = '/admin/create/student';
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentCreateArgument;
+    final student = initStudentAPI();
+    final evaluation = initEvaluationAPI();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -26,12 +29,21 @@ class StudentCreate extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
-            value: ClassRoomProvider(args.homeRoom.id),
+            value: StudentCreateProvider(
+              student: student,
+            ),
+          ),
+          ChangeNotifierProvider.value(
+            value: StudentEditProvider(
+              firstName: '',
+              lastName: '',
+              number: '',
+            ),
           ),
         ],
-        child: Consumer<ClassRoomProvider>(
+        child: Consumer<StudentCreateProvider>(
           builder: (context, counter, _) {
-            return const Center(
+            return Center(
               child: StoreStudentForm(),
             );
           },
@@ -63,50 +75,18 @@ class StudentCreate extends StatelessWidget {
   }
 }
 
-class StoreStudentForm extends StatefulWidget {
-  const StoreStudentForm({Key key}) : super(key: key);
+//class StoreStudentForm extends StatefulWidget {
+//  const StoreStudentForm({Key key}) : super(key: key);
+//
+//  @override
+//  _StoreStudentFormState createState() => _StoreStudentFormState();
+//}
 
-  @override
-  _StoreStudentFormState createState() => _StoreStudentFormState();
-}
-
-class _StoreStudentFormState extends State<StoreStudentForm> {
-  String _firstName = '';
-  String _lastName = '';
-  String _number = '';
-  int id;
-  bool _validation = false;
-
-  void _handleFirstName(String e) {
-    setState(() {
-      _firstName = e;
-      if (_firstName != '' && _number != '') {
-        _validation = false;
-      }
-    });
-  }
-
-  void _handleLastName(String e) {
-    setState(() {
-      _lastName = e;
-      if (_lastName != '' && _number != '' && _firstName != '') {
-        _validation = false;
-      }
-    });
-  }
-
-  void _handleNumber(String e) {
-    setState(() {
-      _number = e;
-      if (_firstName != '' && _number != '' && _lastName != '') {
-        _validation = false;
-      }
-    });
-  }
-
+class StoreStudentForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+    final editor = Provider.of<StudentEditProvider>(context);
+    final student = Provider.of<StudentCreateProvider>(context);
     final args =
         ModalRoute.of(context).settings.arguments as StudentCreateArgument;
     return Container(
@@ -127,7 +107,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
             child: Column(
               children: <Widget>[
                 Container(
-                  child: Icon(
+                  child: const Icon(
                     Icons.person,
                     color: Colors.black,
                     size: 90,
@@ -141,7 +121,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
                     style: const TextStyle(
                       fontSize: 24,
                     ),
-                    onChanged: _handleLastName,
+                    onChanged: editor.handleChangeLastName,
                   ),
                 ),
                 Container(
@@ -151,7 +131,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
                     style: const TextStyle(
                       fontSize: 24,
                     ),
-                    onChanged: _handleFirstName,
+                    onChanged: editor.handleChangeFirstName,
                   ),
                 ),
                 Container(
@@ -161,36 +141,20 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
                     style: const TextStyle(
                       fontSize: 24,
                     ),
-                    onChanged: _handleNumber,
+                    onChanged: editor.handleChangeNum,
                   ),
                 ),
-                _validation == true
-                    ? Text(
-                        '値を入力してください。',
-                        style: TextStyle(
-                          color: Colors.redAccent,
-                        ),
-                      )
-                    : const Text(''),
                 Container(
                   padding: const EdgeInsets.all(16),
                   child: RaisedButton(
                     onPressed: () async {
-                      if (_firstName == '' ||
-                          _number == '' ||
-                          _lastName == '') {
-                        setState(() {
-                          _validation = true;
-                        });
-                      } else {
-                        await classRoomProvider.registStudentData(
-                          args.homeRoom.id,
-                          int.parse(_number),
-                          _firstName,
-                          _lastName,
-                        );
-                        await confirmPopUp(context, StudentIndex.routeName);
-                      }
+                      student.createStudent(
+                        args.homeRoom.id,
+                        editor.firstName,
+                        editor.lastName,
+                        int.parse(editor.number),
+                      );
+                      await confirmPopUp(context);
                     },
                     color: Colors.redAccent,
                     padding: const EdgeInsets.all(10),

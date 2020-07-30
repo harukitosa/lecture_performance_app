@@ -7,7 +7,6 @@ import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/student_index_provider.dart';
-import 'package:lecture_performance_app/providers/student_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
@@ -80,11 +79,7 @@ class StudentIndexBody extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<StudentProvider>(
-        builder: (context, counter, _) {
-          return AdminStudentListView();
-        },
-      ),
+      body: AdminStudentListView(),
       floatingActionButton: BtnColumn(config: config, args: args),
     );
   }

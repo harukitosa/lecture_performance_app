@@ -14,7 +14,6 @@ import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/components/student/update/index.dart';
 import 'package:lecture_performance_app/providers/evaluation_provider.dart';
 import 'package:lecture_performance_app/providers/homeroom_provider.dart';
-import 'package:lecture_performance_app/providers/student_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
@@ -30,12 +29,6 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: HomeRoomProvider(homeroom: homeroom, seat: seat),
-        ),
-        ChangeNotifierProvider.value(
-          value: StudentProvider(
-            evaluation: evaluation,
-            student: student,
-          ),
         ),
         ChangeNotifierProvider.value(
           value: EvaluationProvider(evaluation: evaluation),

@@ -25,6 +25,36 @@ class StudentShowProvider with ChangeNotifier {
   List<Evaluation> get latestEvaluation =>
       _latestEvaluation == null ? [] : List.unmodifiable(_latestEvaluation);
 
+  void deleteStudent(int id) {
+    _studentService.deleteStudent(id).then((res) {
+      update();
+    });
+  }
+
+  void updateStudent(
+    int studentId,
+    String lastName,
+    String firstName,
+    int number,
+  ) {
+    final data = _student;
+    _studentService
+        .editstudent(
+      studentId,
+      data.homeRoomID,
+      data.positionNum,
+      firstName,
+      lastName,
+      number,
+      data.createTime,
+    )
+        .then(
+      (res) {
+        update();
+      },
+    );
+  }
+
   void update() {
     _studentService.getStudent(_id).then((value) {
       _student = value;

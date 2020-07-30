@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
+import 'package:lecture_performance_app/db/models/student.dart';
 import 'package:lecture_performance_app/providers/student_edit_provider.dart';
-import 'package:lecture_performance_app/providers/student_provider.dart';
+import 'package:lecture_performance_app/providers/student_show_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
 class StudentUpdateArgument {
@@ -17,7 +19,38 @@ class StudentUpdate extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentUpdateArgument;
+    final student = initStudentAPI();
+    final evaluation = initEvaluationAPI();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: StudentShowProvider(
+            student: student,
+            evaluation: evaluation,
+            studentID: args.studentID,
+          ),
+        ),
+      ],
+      child: Consumer<StudentShowProvider>(
+        builder: (context, counter, _) {
+          return StudentUpdateBody(args: args);
+        },
+      ),
+    );
+//    return StudentUpdateBody(args: args);
+  }
+}
 
+class StudentUpdateBody extends StatelessWidget {
+  const StudentUpdateBody({
+    Key key,
+    @required this.args,
+  }) : super(key: key);
+
+  final StudentUpdateArgument args;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('生徒情報編集画面'),
@@ -33,19 +66,16 @@ class StudentUpdate extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<StudentProvider>(
-        builder: (context, counter, _) {
-          return Center(
-            child: EditStudentView(),
-          );
-        },
+      body: Center(
+        child: EditStudentView(),
       ),
     );
   }
 }
 
+/* 生徒削除　*/
 Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
-  final studentProvider = Provider.of<StudentProvider>(context);
+  final studentProvider = Provider.of<StudentShowProvider>(context);
   return showDialog(
     context: context,
     builder: (_) {
@@ -114,15 +144,15 @@ class EditStudentView extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentUpdateArgument;
-    final studentProvider = Provider.of<StudentProvider>(context);
-    final item = studentProvider.getStudent(args.studentID);
+    final studentProvider = Provider.of<StudentShowProvider>(context);
+    final item = studentProvider.value;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
           value: StudentEditProvider(
-            firstName: item?.student?.firstName ?? '',
-            lastName: item?.student?.lastName ?? '',
-            number: item?.student?.number.toString() ?? '',
+            firstName: item?.firstName ?? '',
+            lastName: item?.lastName ?? '',
+            number: item?.number.toString() ?? '',
           ),
         ),
       ],
@@ -149,8 +179,8 @@ class EditForm extends StatelessWidget {
     @required this.studentProvider,
   }) : super(key: key);
 
-  final StudentDto item;
-  final StudentProvider studentProvider;
+  final Student item;
+  final StudentShowProvider studentProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -168,11 +198,11 @@ class EditForm extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(30),
       ),
-      child: item.student != null
+      child: item != null
           ? Column(
               children: <Widget>[
                 Container(
-                  child: Icon(
+                  child: const Icon(
                     Icons.person,
                     color: Colors.black,
                     size: 90,
@@ -183,7 +213,7 @@ class EditForm extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
                     decoration: const InputDecoration(labelText: '姓'),
-                    initialValue: item?.student?.lastName ?? '',
+                    initialValue: item?.lastName ?? '',
                     onChanged: s.handleChangeLastName,
                     style: const TextStyle(
                       fontSize: 24,
@@ -194,7 +224,7 @@ class EditForm extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
                     decoration: const InputDecoration(labelText: '名前'),
-                    initialValue: item?.student?.firstName ?? '',
+                    initialValue: item?.firstName ?? '',
                     onChanged: s.handleChangeFirstName,
                     style: const TextStyle(
                       fontSize: 24,
@@ -205,7 +235,7 @@ class EditForm extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
                     decoration: const InputDecoration(labelText: '出席番号'),
-                    initialValue: item?.student?.number.toString() ?? '',
+                    initialValue: item?.number.toString() ?? '',
                     onChanged: s.handleChangeNum,
                     style: const TextStyle(
                       fontSize: 24,
@@ -218,7 +248,7 @@ class EditForm extends StatelessWidget {
                     onPressed: () {
                       // todo: int.parseのエラーハンドリングをStudentEditProviderに移す
                       studentProvider.updateStudent(
-                        item.student.id,
+                        item.id,
                         s.lastName,
                         s.firstName,
                         int.parse(s.number),
