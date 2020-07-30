@@ -6,7 +6,9 @@ import 'package:lecture_performance_app/components/student/create/index.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/providers/student_index_provider.dart';
 import 'package:lecture_performance_app/providers/student_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -23,6 +25,39 @@ class StudentIndex extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentIndexArgument;
+    final student = initStudentAPI();
+    final evaluation = initEvaluationAPI();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: StudentIndexProvider(
+            student: student,
+            evaluation: evaluation,
+            homeroomID: args.homeRoom.id,
+          ),
+        ),
+      ],
+      child: Consumer<StudentIndexProvider>(
+        builder: (context, counter, _) {
+          return StudentIndexBody(args: args, config: config);
+        },
+      ),
+    );
+  }
+}
+
+class StudentIndexBody extends StatelessWidget {
+  const StudentIndexBody({
+    Key key,
+    @required this.args,
+    @required this.config,
+  }) : super(key: key);
+
+  final StudentIndexArgument args;
+  final AppStyle config;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -34,7 +69,7 @@ class StudentIndex extends StatelessWidget {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.pushNamed(
                 context,
@@ -121,6 +156,7 @@ class _FloatBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final student = Provider.of<StudentIndexProvider>(context);
     return Container(
       padding: const EdgeInsets.all(4),
       width: 200,
@@ -143,7 +179,9 @@ class _FloatBtn extends StatelessWidget {
             context,
             routeName,
             arguments: argument,
-          );
+          ).then((value) {
+            student.updateList();
+          });
         },
       ),
     );
@@ -173,8 +211,7 @@ class StudentTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentIndexArgument;
-    final list =
-        Provider.of<StudentProvider>(context).getList(args.homeRoom.id);
+    final student = Provider.of<StudentIndexProvider>(context);
     return ListView(
       children: <Widget>[
         DataTable(
@@ -199,7 +236,7 @@ class StudentTable extends StatelessWidget {
               ),
             ),
           ],
-          rows: list
+          rows: student.list
               .map(
                 (item) => DataRow(
                   cells: [
