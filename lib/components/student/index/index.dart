@@ -57,6 +57,7 @@ class StudentIndexBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final student = Provider.of<StudentIndexProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -74,7 +75,9 @@ class StudentIndexBody extends StatelessWidget {
                 context,
                 DeleteClassRoom.routeName,
                 arguments: DeleteClassRoomArguments(args.homeRoom),
-              );
+              ).then((value) {
+                student.updateList();
+              });
             },
           ),
         ],
@@ -256,7 +259,9 @@ class StudentTable extends StatelessWidget {
                             args.homeRoom,
                             item.student.id,
                           ),
-                        );
+                        ).then((value) {
+                          student.updateList();
+                        });
                       },
                     ),
                     DataCell(

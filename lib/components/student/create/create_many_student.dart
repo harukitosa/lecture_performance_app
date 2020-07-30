@@ -6,7 +6,8 @@ import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/classroom_provider.dart';
+import 'package:lecture_performance_app/providers/student_create_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +18,12 @@ class StudentsCreateArgument {
 }
 
 class StudentsCreate extends StatelessWidget {
-  static const routeName = '/admin/regist/students';
+  static const routeName = '/csv/create/students';
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as StudentsCreateArgument;
+    final student = initStudentAPI();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -31,10 +33,10 @@ class StudentsCreate extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
-            value: ClassRoomProvider(args.homeRoom.id),
+            value: StudentCreateProvider(student: student),
           ),
         ],
-        child: Consumer<ClassRoomProvider>(
+        child: Consumer<StudentCreateProvider>(
           builder: (context, counter, _) {
             return Center(
               child: _InputForm(),
@@ -60,27 +62,23 @@ class _InputFormState extends State<_InputForm> {
 
   @override
   Widget build(BuildContext context) {
-    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+    final student = Provider.of<StudentCreateProvider>(context);
     final args =
         ModalRoute.of(context).settings.arguments as StudentsCreateArgument;
 
     /// csvファイルでデータの登録を行っている
     /// [num][lastName][firstName]の順番に登録していく。
-    _storeButton() async {
+    Future<void> _storeButton() async {
       List<String> data;
       data = fileText.replaceAll('\n', ',').split(',');
-      print(data);
       for (var i = 0; i < data.length; i += 3) {
-        print('num ${data[i]}');
-        print('lastName ${data[i + 1]}');
-        print('firstName ${data[i + 2]}');
         try {
           final num = int.parse(data[i]);
-          await classRoomProvider.registStudentData(
+          student.createStudent(
             args.homeRoom.id,
-            num,
+            num.toString(),
             data[i + 2],
-            data[i + 1],
+            int.parse(data[i + 1]),
           );
         } on Exception catch (exception) {
           print(exception);
@@ -92,11 +90,11 @@ class _InputFormState extends State<_InputForm> {
       });
     }
 
-    _uploadFile() async {
+    Future<void> _uploadFile() async {
       // ファイルの取得
       file = await FilePicker.getFile(
         type: FileType.custom,
-//        fileExtension: 'csv',
+        allowedExtensions: ['csv'],
       );
       // ファイルの中身を取得
       if (file != null) {
@@ -111,6 +109,8 @@ class _InputFormState extends State<_InputForm> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
+          height: 300,
+          width: 400,
           child: Column(
             children: <Widget>[
               Text(
@@ -125,17 +125,28 @@ class _InputFormState extends State<_InputForm> {
           ),
         ),
         FlatButton(
-          color: config.sd,
+          minWidth: 300,
+          height: 50,
+          color: Colors.blueAccent,
           textColor: Colors.white,
-          child: const Text('ファイル選択・取り込み'),
+          child: Text(
+            'ファイル選択・取り込み',
+            style: TextStyle(fontSize: config.size4),
+          ),
           shape: const StadiumBorder(),
           onPressed: _uploadFile,
         ),
         Text(display),
         FlatButton(
-          color: Colors.blue,
+          minWidth: 300,
+          height: 50,
+          color: Colors.redAccent,
           textColor: Colors.white,
-          child: const Text('保存'),
+          shape: const StadiumBorder(),
+          child: Text(
+            '保存',
+            style: TextStyle(fontSize: config.size4),
+          ),
           onPressed: _storeButton,
         ),
       ],

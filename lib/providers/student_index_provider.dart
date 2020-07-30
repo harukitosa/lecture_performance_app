@@ -30,6 +30,7 @@ class StudentIndexProvider with ChangeNotifier {
 
   //:todo Dtoを調べてservice層に移す
   void updateList() {
+    print('updateList');
     _student.getRoomStudents(_homeroomID).then((value) {
       final list = value;
       _list = [];

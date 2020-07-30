@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/homeroom/delete/index.dart';
+import 'package:lecture_performance_app/components/student/create/create_many_student.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
 import 'package:lecture_performance_app/providers/student_create_provider.dart';
 import 'package:lecture_performance_app/providers/student_edit_provider.dart';
@@ -53,8 +54,8 @@ class StudentCreate extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(
             context,
-            StudentCreate.routeName,
-            arguments: StudentCreateArgument(
+            StudentsCreate.routeName,
+            arguments: StudentsCreateArgument(
               args.homeRoom,
             ),
           );
