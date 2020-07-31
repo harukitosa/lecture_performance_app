@@ -140,7 +140,9 @@ class SaveSeatMap extends StatelessWidget {
                         arguments: StudentIndexArgument(
                           args.homeRoom,
                         ),
-                      );
+                      ).then((value) {
+                        provider.update();
+                      });
                     },
                     child: Text(
                       '管理画面',
@@ -191,7 +193,6 @@ class SeatMap extends StatelessWidget {
   final int homeRoomID;
   @override
   Widget build(BuildContext context) {
-    // crp: classRoomProvider
     final provider = Provider.of<HomeRoomShowProvider>(context);
 
     var _name = '';

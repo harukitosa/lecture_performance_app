@@ -11,7 +11,8 @@ class StudentWithEvaluationService {
   final IEvaluationRepository evaluationRepository;
 
   Future<List<Student>> getRoomStudents(int homeroomID) async {
-    final students = await studentRepository.getThisRoomStudent(homeroomID);
+    final students =
+        await studentRepository.getThisRoomStudentByPos(homeroomID);
     for (var i = 0; i < students.length; i++) {
       final id = students[i].id;
       final list = await evaluationRepository.getStudentSemester(id);
