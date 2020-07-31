@@ -34,20 +34,20 @@ class HomeRoomShowProvider with ChangeNotifier {
   List<Student> get students =>
       _students == null ? [] : List.unmodifiable(_students);
 
-  //  初期値は仮に7とおいている
+  ///  初期値は仮に7とおいている
   int _width = 7;
   int get width => _width;
 
-//  バッジの表示用のデータ
+  ///  バッジの表示用のデータ
   final List<DisplayBadge> _seatBadge = [];
   List<DisplayBadge> get seatBadge => _seatBadge;
 
-//  スワイプ移動距離の測定用
+  ///  スワイプ移動距離の測定用
   int currentTypeID = 1;
   double x = 0;
   double y = 0;
 
-//  使用コマンド一覧
+  ///  使用コマンド一覧
   Stack.Stack<Command> sta = Stack.Stack();
 
   void position(double dx, double dy) {
