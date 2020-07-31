@@ -2,13 +2,13 @@ import 'dart:core';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/common/snackBar/common_snack_bar.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/classroom_provider.dart';
-import 'package:lecture_performance_app/providers/valuation_provider.dart';
+import 'package:lecture_performance_app/providers/homeroom_show_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
-import 'package:lecture_performance_app/common/snackBar/common_snack_bar.dart';
 
 //routerで渡される値
 class HomeroomShowArgument {
@@ -24,18 +24,22 @@ class HomeroomShow extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as HomeroomShowArgument;
+    final student = initStudentWithEvaluationServiceAPI();
+    final seat = initSeatAPI();
+    final evaluation = initEvaluationAPI();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: ClassRoomProvider(args.homeRoom.id),
-        ),
-        ChangeNotifierProvider.value(
-          value: EvaluationProvider(),
+          value: HomeRoomShowProvider(
+            student: student,
+            seat: seat,
+            evaluation: evaluation,
+            homeroomID: args.homeRoom.id,
+          ),
         ),
       ],
-      child: Consumer<ClassRoomProvider>(
+      child: Consumer<HomeRoomShowProvider>(
         builder: (context, counter, _) {
-          final classRoomProvider = Provider.of<ClassRoomProvider>(context);
           return Scaffold(
             appBar: AppBar(
               title: Text(
@@ -53,9 +57,10 @@ class HomeroomShow extends StatelessWidget {
             ),
             floatingActionButton: Builder(
               builder: (BuildContext context) {
+                final provider = Provider.of<HomeRoomShowProvider>(context);
                 return FloatingActionButton.extended(
                   onPressed: () {
-                    classRoomProvider.undo(context);
+                    provider.undo(context);
                   },
                   tooltip: 'Increment',
                   label: Padding(
@@ -88,16 +93,14 @@ class SaveSeatMap extends StatelessWidget {
   final AppStyle config = AppStyle();
   @override
   Widget build(BuildContext context) {
-    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
+    final provider = Provider.of<HomeRoomShowProvider>(context);
 
     final args =
         ModalRoute.of(context).settings.arguments as HomeroomShowArgument;
-    final lastName = classRoomProvider.sta.isNotEmpty
-        ? classRoomProvider.sta.top().student.lastName
-        : '';
-    final point = classRoomProvider.sta.isNotEmpty
-        ? classRoomProvider.sta.top().point.toString()
-        : '';
+    final lastName =
+        provider.sta.isNotEmpty ? provider.sta.top().student.lastName : '';
+    final point =
+        provider.sta.isNotEmpty ? provider.sta.top().point.toString() : '';
     return Column(
       children: <Widget>[
         Row(
@@ -111,9 +114,7 @@ class SaveSeatMap extends StatelessWidget {
                 height: 50,
                 child: Center(
                   child: Text(
-                    classRoomProvider.sta.isNotEmpty
-                        ? '$lastName:$point'
-                        : 'NOACTION',
+                    provider.sta.isNotEmpty ? '$lastName:$point' : 'NOTION',
                     style: TextStyle(
                       fontSize: config.size4,
                       color: config.st,
@@ -155,13 +156,11 @@ class SaveSeatMap extends StatelessWidget {
         ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: 800,
-            maxWidth: classRoomProvider.viewWidth == null
-                ? 700.0
-                : (classRoomProvider.viewWidth * 170).toDouble(),
+            maxWidth: (provider.width * 170).toDouble(),
           ),
           child: Container(
             child: SeatMap(
-              homeRoomID: homeRoomID != null ? homeRoomID : 0,
+              homeRoomID: args.homeRoom.id,
             ),
           ),
         ),
@@ -171,7 +170,7 @@ class SaveSeatMap extends StatelessWidget {
             width: 200,
             height: 50,
             color: Colors.brown,
-            child: Center(
+            child: const Center(
               child: Text(
                 '教卓',
                 style: TextStyle(
@@ -193,7 +192,7 @@ class SeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // crp: classRoomProvider
-    final crp = Provider.of<ClassRoomProvider>(context);
+    final provider = Provider.of<HomeRoomShowProvider>(context);
 
     var _name = '';
     var _studentID = 0;
@@ -206,23 +205,24 @@ class SeatMap extends StatelessWidget {
       padding: const EdgeInsets.only(top: 40),
       child: GridView.builder(
         shrinkWrap: true,
-        itemCount: crp.viewSeat == null ? 0 : crp.viewSeat.length,
+        itemCount: provider.list.length,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crp.viewWidth == null ? 7 : crp.viewWidth,
+          crossAxisCount: provider.width,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           childAspectRatio: 2,
         ),
         itemBuilder: (context, index) {
-          if (crp.viewSeat[index].used == 'true' &&
-              crp.studentList.length > index - _indexCount) {
-            _name = crp.studentList[index - _indexCount].lastName;
-            _studentID = crp.studentList[index - _indexCount].id;
-            _positionNum = crp.studentList[index - _indexCount].positionNum;
-            _seatColor = crp.studentList[index - _indexCount].seatColor();
-            _viewSeat = crp.viewSeat[index].used;
+          if (provider.list[index].used == 'true' &&
+              provider.list.length > index - _indexCount &&
+              provider.students.length > index - _indexCount) {
+            _name = provider.students[index - _indexCount].lastName;
+            _studentID = provider.students[index - _indexCount].id;
+            _positionNum = provider.students[index - _indexCount].positionNum;
+            _seatColor = provider.students[index - _indexCount].seatColor();
+            _viewSeat = provider.list[index].used;
           } else {
             _indexCount++;
             _name = '';
@@ -270,34 +270,29 @@ class ClassRoomSeatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final valuationProvider = Provider.of<EvaluationProvider>(context);
-    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    final typeID = valuationProvider.currentTypeID != null
-        ? valuationProvider.currentTypeID + 1
-        : 1;
-
+    final provider = Provider.of<HomeRoomShowProvider>(context);
     return GestureDetector(
       onDoubleTap: () {
-        classRoomProvider.evaluation(studentID, typeID, 0, stuIndex);
+        provider.evaluation(studentID, 1, 0, stuIndex);
         final text = '$nameさんの回答にチェックを付けました';
-        classRoomProvider.badgeChange(index, Colors.yellowAccent, '0pt');
+        provider.badgeChange(index, Colors.yellowAccent, '0pt');
         Scaffold.of(context)
             .showSnackBar(commonSnackBar(text, Colors.yellowAccent, 28));
       },
       onPanUpdate: (details) {
-        valuationProvider
+        provider
           ..x = details.delta.dx
           ..y = details.delta.dy;
       },
       onPanEnd: (details) {
         if (flag == 'true' && studentID != -1) {
-          final x = valuationProvider.x;
-          final y = valuationProvider.y;
+          final x = provider.x;
+          final y = provider.y;
 
           //下にスワイプ
           if (y > x.abs()) {
-            classRoomProvider
-              ..evaluation(studentID, typeID, -1, stuIndex)
+            provider
+              ..evaluation(studentID, 1, -1, stuIndex)
               ..badgeChange(index, Colors.redAccent, '-1pt');
             Scaffold.of(context).showSnackBar(
                 commonSnackBar('$nameさんの回答ポイントを減らしました', Colors.redAccent, 28));
@@ -305,32 +300,18 @@ class ClassRoomSeatView extends StatelessWidget {
 
           //上にスワイプ
           if (y < -x.abs()) {
-            classRoomProvider.evaluation(studentID, typeID, 2, stuIndex);
+            provider.evaluation(studentID, 1, 3, stuIndex);
             final text = '$nameさんに回答ポイントを付与しました';
-            classRoomProvider.badgeChange(index, Colors.greenAccent, '+2pt');
+            provider.badgeChange(index, Colors.greenAccent, '+3pt');
             Scaffold.of(context)
                 .showSnackBar(commonSnackBar(text, Colors.greenAccent, 28));
           }
 
           //左にスワイプ
           if (x < -y.abs()) {
-            classRoomProvider
-              ..evaluation(studentID, typeID + 1, 1, stuIndex)
-              ..badgeChange(index, Colors.greenAccent, '+1pt');
-            Scaffold.of(context).showSnackBar(
-              commonSnackBar(
-                '$nameさんに積極的ポイントを付与しました',
-                Colors.greenAccent,
-                28,
-              ),
-            );
-          }
-
-          //右にスワイプ
-          if (x > y.abs()) {
-            classRoomProvider
-              ..evaluation(studentID, typeID, 1, stuIndex)
-              ..badgeChange(index, Colors.greenAccent, '+1pt');
+            provider
+              ..evaluation(studentID, 1, 0, stuIndex)
+              ..badgeChange(index, Colors.greenAccent, '0pt');
             Scaffold.of(context).showSnackBar(
               commonSnackBar(
                 '$nameさんに回答ポイントを付与しました',
@@ -339,7 +320,21 @@ class ClassRoomSeatView extends StatelessWidget {
               ),
             );
           }
-          valuationProvider
+
+          //右にスワイプ
+          if (x > y.abs()) {
+            provider
+              ..evaluation(studentID, 1, 1, stuIndex)
+              ..badgeChange(index, Colors.greenAccent, '+1pt');
+            Scaffold.of(context).showSnackBar(
+              commonSnackBar(
+                '$nameさんに回答ポイント1ptを付与しました',
+                Colors.greenAccent,
+                28,
+              ),
+            );
+          }
+          provider
             ..x = 0.0
             ..y = 0.0;
         }
@@ -358,19 +353,19 @@ class ClassRoomSeatView extends StatelessWidget {
             ),
           ),
         ),
-        classRoomProvider.seatBadge != null
+        provider.seatBadge != null
             ? Badge(
                 badgeContent: Text(
-                  classRoomProvider.seatBadge[index].text,
+                  provider.seatBadge[index].text,
                   style: const TextStyle(fontSize: 18),
                 ),
-                badgeColor: classRoomProvider.seatBadge[index].color,
+                badgeColor: provider.seatBadge[index].color,
                 shape: BadgeShape.square,
                 borderRadius: 20,
                 toAnimate: true,
                 animationType: BadgeAnimationType.fade,
                 animationDuration: const Duration(milliseconds: 1),
-                showBadge: classRoomProvider.seatBadge[index].isShow,
+                showBadge: provider.seatBadge[index].isShow,
               )
             : const Text('')
       ]),

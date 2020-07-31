@@ -4,7 +4,9 @@ import 'package:lecture_performance_app/repositories/student_repository.dart';
 
 class StudentWithEvaluationService {
   StudentWithEvaluationService(
-      this.studentRepository, this.evaluationRepository);
+    this.studentRepository,
+    this.evaluationRepository,
+  );
   final IStudentRepository studentRepository;
   final IEvaluationRepository evaluationRepository;
 

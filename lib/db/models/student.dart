@@ -51,20 +51,20 @@ class Student {
     final _n = getNowTime();
     final _now = DateTime.parse(_n);
     if (lastTime != null) {
-      final _twohoursBefore = _now.subtract(const Duration(hours: 2));
-      final _oneweekBefore = _now.subtract(const Duration(days: 7));
+      final _twoHoursBefore = _now.subtract(const Duration(hours: 2));
+      final _oneWeekBefore = _now.subtract(const Duration(days: 7));
       final _last = DateTime.parse(lastTime);
-      if (_twohoursBefore.compareTo(_last) < 0) {
+      if (_twoHoursBefore.compareTo(_last) < 0) {
         return Colors.blueAccent;
       } else {
-        if (_oneweekBefore.compareTo(_last) < 0) {
-          return Colors.greenAccent;
+        if (_oneWeekBefore.compareTo(_last) < 0) {
+          return Colors.yellowAccent;
         } else {
-          return Colors.orangeAccent;
+          return Colors.red;
         }
       }
     }
-    return Colors.orangeAccent;
+    return Colors.redAccent;
   }
 
   String get name => lastName + firstName;
