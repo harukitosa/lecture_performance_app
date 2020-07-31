@@ -1,7 +1,7 @@
-import 'package:lecture_performance_app/db/models/Seat.dart';
+import 'package:lecture_performance_app/db/connect_db.dart';
+import 'package:lecture_performance_app/db/models/seat.dart';
 import 'package:lecture_performance_app/repositories/seat_repository.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 
 ISeatRepository newSeatRepository() {
   return SeatRepository();

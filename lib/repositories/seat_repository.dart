@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:lecture_performance_app/db/models/Seat.dart';
+
+import 'package:lecture_performance_app/db/models/seat.dart';
 
 abstract class ISeatRepository {
   Future<Seat> getseat(int id);
@@ -8,4 +9,3 @@ abstract class ISeatRepository {
   Future<List<Seat>> getThisRoomSeats(int homeRoomID);
   Future<void> updateseat(Seat seat);
 }
-

@@ -1,5 +1,5 @@
-import 'package:lecture_performance_app/db/models/Seat.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
+import 'package:lecture_performance_app/db/models/seat.dart';
 
 class FormatResultSeat {
   List<Seat> seat;

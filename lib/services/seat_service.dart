@@ -1,6 +1,6 @@
+import 'package:lecture_performance_app/db/models/seat.dart';
 import 'package:lecture_performance_app/repositories/seat_repository.dart';
 import 'package:lecture_performance_app/utility/time.dart';
-import 'package:lecture_performance_app/db/models/Seat.dart';
 
 class SeatService {
   SeatService(this.seatRepository);

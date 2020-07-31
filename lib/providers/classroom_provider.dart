@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/snackBar/common_snack_bar.dart';
-import 'package:lecture_performance_app/db/models/Seat.dart';
+import 'package:lecture_performance_app/db/models/seat.dart';
 import 'package:lecture_performance_app/db/models/student.dart';
 import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';

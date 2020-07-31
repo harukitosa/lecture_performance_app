@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/homeroom_before_provider.dart';
+import 'package:lecture_performance_app/db/models/seat.dart';
+import 'package:lecture_performance_app/providers/seat_edit_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
 class SeatUpdateUsedArgument {
@@ -17,7 +19,7 @@ class SeatUpdateUsed extends StatelessWidget {
   Widget build(BuildContext context) {
     final arg =
         ModalRoute.of(context).settings.arguments as SeatUpdateUsedArgument;
-
+    final seat = initSeatAPI();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -25,9 +27,11 @@ class SeatUpdateUsed extends StatelessWidget {
       ),
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider.value(value: HomeRoomBeforeProvider()),
+          ChangeNotifierProvider.value(
+            value: SeatEditProvider(seat: seat, homeroomID: arg.homeroom.id),
+          ),
         ],
-        child: Consumer<HomeRoomBeforeProvider>(
+        child: Consumer<SeatEditProvider>(
           builder: (context, counter, _) {
             return const Center(
               child: EditSeatMap(),
@@ -63,14 +67,12 @@ class SeatMap extends StatelessWidget {
   final AppDataConfig config = AppDataConfig();
   @override
   Widget build(BuildContext context) {
-    final homeRoomProvider = Provider.of<HomeRoomBeforeProvider>(context);
+    final seat = Provider.of<SeatEditProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(0),
       child: GridView.builder(
         shrinkWrap: true,
-        itemCount: homeRoomProvider.currentSeat != null
-            ? homeRoomProvider.currentSeat.length
-            : 0,
+        itemCount: seat.list.length,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -80,13 +82,7 @@ class SeatMap extends StatelessWidget {
           childAspectRatio: 2.2,
         ),
         itemBuilder: (context, index) {
-          return EditSeatView(
-            homeRoomProvider.currentSeat != null
-                ? homeRoomProvider.currentSeat[index].used
-                : 'false',
-            index,
-            changeState: true,
-          );
+          return EditSeatView(seat.list[index]);
         },
       ),
     );
@@ -94,23 +90,26 @@ class SeatMap extends StatelessWidget {
 }
 
 class EditSeatView extends StatelessWidget {
-  const EditSeatView(this.flag, this.index, {this.changeState});
-
-  final String flag;
-  final int index;
-  final bool changeState;
+  const EditSeatView(this.seat);
+  final Seat seat;
   @override
   Widget build(BuildContext context) {
-    final homeRoomProvider = Provider.of<HomeRoomBeforeProvider>(context);
+    final seatProvider = Provider.of<SeatEditProvider>(context);
     return InkWell(
       onTap: () {
-        if (changeState) {
-          homeRoomProvider.editSeatState(index);
+        var flag = 'true';
+        if (seat.used == 'true') {
+          flag = 'false';
         }
+        seatProvider.seatUpdate(
+          seat.id,
+          flag,
+          seat.createTime,
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(4),
-        color: flag == 'true' ? Colors.blue : Colors.grey,
+        color: seat.used == 'true' ? Colors.blue : Colors.grey,
         child: const Text(''),
       ),
     );
