@@ -11,6 +11,10 @@ class StudentService {
     return studentRepository.getThisRoomStudent(homeroomID);
   }
 
+  Future<List<Student>> getRoomStudentsByPos(int homeroomID) async {
+    return studentRepository.getThisRoomStudentByPos(homeroomID);
+  }
+
   Future<Student> getStudent(int id) async {
     return studentRepository.getOneStudent(id);
   }

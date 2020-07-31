@@ -38,6 +38,21 @@ class StudentRepository extends IStudentRepository {
   }
 
   @override
+  Future<List<Student>> getThisRoomStudentByPos(int homeroomID) async {
+    Database db;
+    db = await DBManager.instance.initDB();
+    List<Map<String, dynamic>> res;
+    final args = [homeroomID];
+    res = await db.query(
+      'student',
+      where: 'homeroom_id = ?',
+      whereArgs: args,
+      orderBy: 'position_num ASC',
+    );
+    return res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
+  }
+
+  @override
   Future<Student> getOneStudent(int id) async {
     Database db;
     db = await DBManager.instance.initDB();

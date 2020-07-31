@@ -2,12 +2,12 @@ import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/seat.dart';
 
 class FormatResultSeat {
-  List<Seat> seat;
-  int width;
   FormatResultSeat(
     this.seat,
     this.width,
   );
+  List<Seat> seat;
+  int width;
 }
 
 // 列、行、共に空白の欄を取り除いて出力

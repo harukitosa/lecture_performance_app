@@ -2,8 +2,8 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/providers/classroom_provider.dart';
-import 'package:lecture_performance_app/providers/valuation_provider.dart';
+import 'package:lecture_performance_app/providers/seat_edit_pos_provider.dart';
+import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
 
 //routerで渡される値
@@ -18,6 +18,8 @@ class SeatUpdatePosition extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as SeatUpdatePositionArgument;
+    final seat = initSeatAPI();
+    final student = initStudentAPI();
     return Scaffold(
       appBar: AppBar(
         title: Text('${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組'),
@@ -25,16 +27,17 @@ class SeatUpdatePosition extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
-            value: ClassRoomProvider(args.homeRoom.id),
-          ),
-          ChangeNotifierProvider.value(
-            value: EvaluationProvider(),
+            value: SeatEditPosProvider(
+              seat: seat,
+              student: student,
+              homeroomID: args.homeRoom.id,
+            ),
           ),
         ],
-        child: Consumer<ClassRoomProvider>(
+        child: Consumer<SeatEditPosProvider>(
           builder: (context, counter, _) {
             return Center(
-              child: RegistSeatMap(
+              child: EditPosSeatMap(
                 homeRoomID: args.homeRoom != null ? args.homeRoom.id : -1,
               ),
             );
@@ -45,8 +48,8 @@ class SeatUpdatePosition extends StatelessWidget {
   }
 }
 
-class RegistSeatMap extends StatelessWidget {
-  const RegistSeatMap({this.grade, this.lectureClass, this.homeRoomID});
+class EditPosSeatMap extends StatelessWidget {
+  const EditPosSeatMap({this.grade, this.lectureClass, this.homeRoomID});
 
   final String grade;
   final String lectureClass;
@@ -90,7 +93,7 @@ class RegistSeatMap extends StatelessWidget {
               width: 200,
               height: 50,
               color: Colors.brown,
-              child: Center(
+              child: const Center(
                 child: Text(
                   '教卓',
                   style: TextStyle(
@@ -116,8 +119,7 @@ class SeatMap extends StatelessWidget {
   final int homeRoomID;
   @override
   Widget build(BuildContext context) {
-    final classRoomProvider = Provider.of<ClassRoomProvider>(context);
-    // classRoomProvider.getStudentData(homeRoomID);
+    final seat = Provider.of<SeatEditPosProvider>(context);
     var _name = '';
     var _studentID = 0;
     var _indexCount = 0;
@@ -126,31 +128,26 @@ class SeatMap extends StatelessWidget {
       padding: const EdgeInsets.only(top: 40),
       child: GridView.builder(
         shrinkWrap: true,
-        itemCount: classRoomProvider.viewSeat == null
-            ? 0
-            : classRoomProvider.viewSeat.length,
+        itemCount: seat.list.length,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 50),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: classRoomProvider.viewWidth == null
-              ? 7
-              : classRoomProvider.viewWidth,
+          crossAxisCount: seat.width ?? 7,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           childAspectRatio: 2.4,
         ),
         itemBuilder: (context, index) {
-          final studentList = classRoomProvider.studentList;
-          if (classRoomProvider.viewSeat[index].used == 'true' &&
-              studentList != null) {
-            _name = studentList.length > index - _indexCount
-                ? studentList[index - _indexCount].lastName
+          final students = seat.students;
+          if (seat.list[index].used == 'true') {
+            _name = students.length > index - _indexCount
+                ? students[index - _indexCount].lastName
                 : '';
-            _studentID = studentList.length > index - _indexCount
-                ? studentList[index - _indexCount].id
+            _studentID = students.length > index - _indexCount
+                ? students[index - _indexCount].id
                 : -1;
-            _positionNum = studentList.length > index - _indexCount
-                ? studentList[index - _indexCount].positionNum
+            _positionNum = students.length > index - _indexCount
+                ? students[index - _indexCount].positionNum
                 : -1;
           } else {
             _indexCount++;
@@ -159,10 +156,9 @@ class SeatMap extends StatelessWidget {
             _studentID = -1;
           }
           return SeatArrangeView(
-            flag: classRoomProvider.viewSeat[index].used,
+            flag: seat.list[index].used,
             name: _name,
             studentID: _studentID,
-            index: index - _indexCount,
             changeState: true,
             positionNum: _positionNum,
           );
@@ -177,7 +173,6 @@ class SeatArrangeView extends StatelessWidget {
     this.flag,
     this.name,
     this.studentID,
-    this.index,
     this.changeState,
     this.positionNum,
   });
@@ -185,22 +180,21 @@ class SeatArrangeView extends StatelessWidget {
   final String flag;
   final String name;
   final int studentID;
-  final int index;
   final bool changeState;
   final int positionNum;
 
   @override
   Widget build(BuildContext context) {
-    final classRoompro = Provider.of<ClassRoomProvider>(context);
+    final seat = Provider.of<SeatEditPosProvider>(context);
     return positionNum != -1
         ? DragTarget<void>(
             onAccept: (data) {
-              classRoompro.seatArrangePointer(index);
+              seat.targetSeat(studentID);
             },
             builder: (context, candidateData, rejectedData) {
               return Draggable<void>(
                 onDragStarted: () {
-                  classRoompro.seatArrangePointer(index);
+                  seat.targetSeat(studentID);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(4),

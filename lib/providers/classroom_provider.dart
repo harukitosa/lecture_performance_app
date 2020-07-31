@@ -9,7 +9,7 @@ import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
 import 'package:lecture_performance_app/services/student_evaluation_service.dart';
 import 'package:lecture_performance_app/services/student_service.dart';
-import 'package:lecture_performance_app/utility/seatFunc.dart';
+import 'package:lecture_performance_app/utility/seat_view_func.dart';
 import 'package:lecture_performance_app/utility/time.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:stack/stack.dart' as Col;
