@@ -106,21 +106,39 @@ class SaveSeatMap extends StatelessWidget {
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: config.pl,
-                ),
-                width: 200,
-                height: 50,
-                child: Center(
-                  child: Text(
-                    provider.sta.isNotEmpty ? '$lastName:$point' : 'NOTION',
-                    style: TextStyle(
-                      fontSize: config.size4,
-                      color: config.st,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: config.pl,
+                    ),
+                    width: 200,
+                    height: 50,
+                    child: Center(
+                      child: Text(
+                        provider.sta.isNotEmpty
+                            ? '$lastName:$point'
+                            : 'no data',
+                        style: TextStyle(
+                          fontSize: config.size4,
+                          color: config.st,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  const _TimeBadge(
+                    color: Colors.cyan,
+                    text: '指名済',
+                  ),
+                  _TimeBadge(
+                    color: Colors.yellow[200],
+                    text: '2hour',
+                  ),
+                  _TimeBadge(
+                    color: Colors.pink[400],
+                    text: 'week',
+                  )
+                ],
               ),
               Container(
                 decoration: BoxDecoration(
@@ -184,6 +202,39 @@ class SaveSeatMap extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _TimeBadge extends StatelessWidget {
+  const _TimeBadge({
+    Key key,
+    @required this.color,
+    @required this.text,
+  }) : super(key: key);
+
+  final Color color;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(20),
+        ),
+      ),
+      width: 100,
+      height: 50,
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 26,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -340,36 +391,36 @@ class ClassRoomSeatView extends StatelessWidget {
             ..y = 0.0;
         }
       },
-      child: Stack(children: <Widget>[
-        Container(
-          margin: const EdgeInsets.all(4),
-          color: flag == 'true' ? seatColor : Colors.grey,
-          child: Center(
-            child: Text(
-              // 五文字以上なら先頭五文字のみ出力
-              name.length > 7 ? name.substring(0, 7) : name,
-              style: const TextStyle(
-                fontSize: 22,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.all(4),
+            color: flag == 'true' ? seatColor : Colors.grey,
+            child: Center(
+              child: Text(
+                // 五文字以上なら先頭五文字のみ出力
+                name.length > 7 ? name.substring(0, 7) : name,
+                style: const TextStyle(
+                  fontSize: 22,
+                ),
               ),
             ),
           ),
-        ),
-        provider.seatBadge != null
-            ? Badge(
-                badgeContent: Text(
-                  provider.seatBadge[index].text,
-                  style: const TextStyle(fontSize: 18),
-                ),
-                badgeColor: provider.seatBadge[index].color,
-                shape: BadgeShape.square,
-                borderRadius: 20,
-                toAnimate: true,
-                animationType: BadgeAnimationType.fade,
-                animationDuration: const Duration(milliseconds: 1),
-                showBadge: provider.seatBadge[index].isShow,
-              )
-            : const Text('')
-      ]),
+          Badge(
+            badgeContent: Text(
+              provider.seatBadge[index].text,
+              style: const TextStyle(fontSize: 18),
+            ),
+            badgeColor: provider.seatBadge[index].color,
+            shape: BadgeShape.square,
+            borderRadius: 20,
+            toAnimate: true,
+            animationType: BadgeAnimationType.fade,
+            animationDuration: const Duration(milliseconds: 1),
+            showBadge: provider.seatBadge[index].isShow,
+          )
+        ],
+      ),
     );
   }
 }
