@@ -125,7 +125,6 @@ class _InputFormState extends State<_InputForm> {
           ),
         ),
         FlatButton(
-          height: 50,
           color: Colors.blueAccent,
           textColor: Colors.white,
           child: Text(
@@ -137,7 +136,6 @@ class _InputFormState extends State<_InputForm> {
         ),
         Text(display),
         FlatButton(
-          height: 50,
           color: Colors.redAccent,
           textColor: Colors.white,
           shape: const StadiumBorder(),
