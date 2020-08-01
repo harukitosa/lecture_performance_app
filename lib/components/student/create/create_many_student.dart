@@ -125,7 +125,6 @@ class _InputFormState extends State<_InputForm> {
           ),
         ),
         FlatButton(
-          minWidth: 300,
           height: 50,
           color: Colors.blueAccent,
           textColor: Colors.white,
@@ -138,7 +137,6 @@ class _InputFormState extends State<_InputForm> {
         ),
         Text(display),
         FlatButton(
-          minWidth: 300,
           height: 50,
           color: Colors.redAccent,
           textColor: Colors.white,
