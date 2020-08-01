@@ -40,43 +40,72 @@ class HomeroomShow extends StatelessWidget {
       ],
       child: Consumer<HomeRoomShowProvider>(
         builder: (context, counter, _) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                '${args.homeRoom.grade} 年 ${args.homeRoom.lectureClass} 組',
-              ),
+          return HomeRoomShowBody(args: args, config: config);
+        },
+      ),
+    );
+  }
+}
+
+class HomeRoomShowBody extends StatelessWidget {
+  const HomeRoomShowBody({
+    Key key,
+    @required this.args,
+    @required this.config,
+  }) : super(key: key);
+
+  final HomeroomShowArgument args;
+  final AppStyle config;
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<HomeRoomShowProvider>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          '${args.homeRoom.grade} 年 ${args.homeRoom.lectureClass} 組',
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.settings,
+              size: 32,
             ),
-            body: Column(
-              children: <Widget>[
-                SaveSeatMap(
-                  grade: args.homeRoom.grade,
-                  lectureClass: args.homeRoom.lectureClass,
-                  homeRoomID: args.homeRoom != null ? args.homeRoom.id : -1,
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                StudentIndex.routeName,
+                arguments: StudentIndexArgument(
+                  args.homeRoom,
                 ),
-              ],
+              ).then((value) {
+                provider.update();
+              });
+            },
+          )
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          SaveSeatMap(
+            grade: args.homeRoom.grade,
+            lectureClass: args.homeRoom.lectureClass,
+            homeRoomID: args.homeRoom != null ? args.homeRoom.id : -1,
+          ),
+        ],
+      ),
+      floatingActionButton: Builder(
+        builder: (BuildContext context) {
+          return FloatingActionButton.extended(
+            onPressed: () {
+              provider.undo(context);
+            },
+            tooltip: 'Increment',
+            label: const Padding(
+              padding: EdgeInsets.all(32),
+              child: Icon(Icons.replay, size: 42),
             ),
-            floatingActionButton: Builder(
-              builder: (BuildContext context) {
-                final provider = Provider.of<HomeRoomShowProvider>(context);
-                return FloatingActionButton.extended(
-                  onPressed: () {
-                    provider.undo(context);
-                  },
-                  tooltip: 'Increment',
-                  label: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      'Undo',
-                      style: TextStyle(
-                        fontSize: config.size4,
-                        color: config.st,
-                      ),
-                    ),
-                  ),
-                  backgroundColor: config.pd,
-                );
-              },
-            ),
+            backgroundColor: config.pd,
           );
         },
       ),
@@ -128,49 +157,21 @@ class SaveSeatMap extends StatelessWidget {
                   ),
                   const _TimeBadge(
                     color: Colors.cyan,
-                    text: '指名済',
+                    text: '過去2H',
                   ),
                   _TimeBadge(
                     color: Colors.yellow[200],
-                    text: '2hour',
+                    text: '過去3W',
                   ),
                   _TimeBadge(
                     color: Colors.pink[400],
-                    text: 'week',
+                    text: '3w以上',
+                  ),
+                  const _TimeBadge(
+                    color: Colors.purpleAccent,
+                    text: '未指名',
                   )
                 ],
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(100),
-                  ),
-                  color: config.s,
-                ),
-                width: 200,
-                height: 50,
-                child: Center(
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        StudentIndex.routeName,
-                        arguments: StudentIndexArgument(
-                          args.homeRoom,
-                        ),
-                      ).then((value) {
-                        provider.update();
-                      });
-                    },
-                    child: Text(
-                      '管理画面',
-                      style: TextStyle(
-                        fontSize: config.size4,
-                        color: config.st,
-                      ),
-                    ),
-                  ),
-                ),
               ),
             ]),
         ConstrainedBox(
