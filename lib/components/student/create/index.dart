@@ -20,7 +20,6 @@ class StudentCreate extends StatelessWidget {
     final args =
         ModalRoute.of(context).settings.arguments as StudentCreateArgument;
     final student = initStudentAPI();
-    final evaluation = initEvaluationAPI();
     return Scaffold(
       appBar: AppBar(
         title: Text(
