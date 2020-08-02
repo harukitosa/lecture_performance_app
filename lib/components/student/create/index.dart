@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/homeroom/delete/index.dart';
 import 'package:lecture_performance_app/components/student/create/create_many_student.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/providers/student_create_provider.dart';
 import 'package:lecture_performance_app/providers/student_edit_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
@@ -173,7 +172,7 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
                           editor.lastName,
                           int.parse(editor.number),
                         );
-                        await confirmPopUp(context);
+                        await _confirmPopUp(context);
                       }
                     },
                     color: Colors.redAccent,
@@ -193,4 +192,39 @@ class _StoreStudentFormState extends State<StoreStudentForm> {
       ),
     );
   }
+}
+
+Future<void> _confirmPopUp(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text(
+          '削除しました',
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              Text(
+                'ホーム画面に戻ります。',
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('確認'),
+            onPressed: () {
+              Navigator.popUntil(
+                context,
+                // homeではない方がいいかも
+                ModalRoute.withName('/home'),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

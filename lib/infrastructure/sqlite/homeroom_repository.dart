@@ -1,7 +1,7 @@
+import 'package:lecture_performance_app/db/connect_db.dart';
+import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/repositories/homeroom_repository.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
-import 'package:lecture_performance_app/db/connect_db.dart';
 
 IHomeRoomRepository newHomeRoomRepository() {
   return HomeRoomRepository();

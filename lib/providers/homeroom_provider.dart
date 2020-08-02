@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/services/homeroom_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
 

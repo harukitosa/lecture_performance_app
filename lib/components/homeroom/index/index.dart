@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/homeroom/show/index.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/providers/homeroom_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -67,7 +67,7 @@ class HomeRoomList extends StatelessWidget {
           ),
         );
       },
-      itemCount: homeRoomProvider == null ? 0 : homeRoomProvider.list.length,
+      itemCount: homeRoomProvider.list.length,
     );
   }
 }
@@ -92,11 +92,15 @@ class _ListCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: ListTile(
-            leading: const Icon(
-              Icons.edit,
-              color: Colors.blue,
-              size: 40,
-              semanticLabel: 'Text to announce in accessibility modes',
+            leading: IconButton(
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.blue,
+                size: 40,
+              ),
+              onPressed: () {
+                editPopup(context, homeroom.id);
+              },
             ),
             title: Text(
               '${homeroom.grade}年${homeroom.lectureClass}組',
@@ -109,4 +113,157 @@ class _ListCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> editPopup(
+  BuildContext context,
+  int id,
+) async {
+  return showDialog(
+    context: context,
+    builder: (_) {
+      return AlertDialog(
+        content: Container(
+          height: 400,
+          child: Column(
+            children: [
+              InkWell(
+                child: const MenuItem(
+                  text: '削除する',
+                  icon: Icons.delete,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  deleteAlertPopUp(context, id);
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+class MenuItem extends StatelessWidget {
+  const MenuItem({
+    Key key,
+    @required this.text,
+    @required this.icon,
+  }) : super(key: key);
+
+  final IconData icon;
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: ListTile(
+          leading: IconButton(
+            icon: Icon(
+              icon,
+              color: Colors.redAccent,
+              size: 40,
+            ),
+          ),
+          title: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 24,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Future<void> deleteAlertPopUp(
+  BuildContext context,
+  int id,
+) async {
+  final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+  return showDialog(
+    context: context,
+    builder: (_) {
+      return AlertDialog(
+        title: const Text(
+          'このクラスを削除',
+          style: TextStyle(fontSize: 32),
+        ),
+        content: const Text(
+          'この動作は一度行うと取り消すことができません。それでも削除しますか？',
+          style: TextStyle(fontSize: 28),
+        ),
+        actions: <Widget>[
+          // ボタン領域
+          FlatButton(
+            child: const Text(
+              'キャンセル',
+              style: TextStyle(
+                fontSize: 22,
+              ),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          FlatButton(
+            child: Container(
+              color: Colors.red,
+              padding: const EdgeInsets.all(10),
+              child: const Text(
+                '削除する',
+                style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            onPressed: () {
+              homeRoomProvider.deleteHomeRoom(id);
+              Navigator.pop(context);
+              _confirmPopUp(context);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _confirmPopUp(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text(
+          '削除しました',
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              Text(
+                'ホーム画面に戻ります。',
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('確認'),
+            onPressed: () {
+              Navigator.popUntil(
+                context,
+                // homeではない方がいいかも
+                ModalRoute.withName('/home'),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

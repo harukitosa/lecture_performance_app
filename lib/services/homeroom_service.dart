@@ -1,5 +1,6 @@
 import 'package:lecture_performance_app/repositories/homeroom_repository.dart';
-import '../db/models/HomeRoom.dart';
+
+import '../db/models/homeroom.dart';
 import '../utility/time.dart';
 
 class HomeRoomService {

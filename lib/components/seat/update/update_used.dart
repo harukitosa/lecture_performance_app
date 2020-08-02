@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/db/models/seat.dart';
 import 'package:lecture_performance_app/providers/seat_edit_provider.dart';
 import 'package:lecture_performance_app/wire.dart';

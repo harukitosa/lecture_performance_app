@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/common/popup/confirm_popup.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/providers/student_create_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:path/path.dart';

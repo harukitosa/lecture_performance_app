@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+
+import 'package:lecture_performance_app/db/models/homeroom.dart';
 
 abstract class IHomeRoomRepository {
   Future<int> insertHomeRoom(HomeRoom homeRoom);
@@ -7,5 +8,3 @@ abstract class IHomeRoomRepository {
   Future<void> deleteHomeRoom(int id);
   Future<void> updateHomeRoom(HomeRoom homeRoom);
 }
-
-

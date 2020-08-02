@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lecture_performance_app/components/homeroom/delete/index.dart';
 import 'package:lecture_performance_app/components/seat/update/update_position.dart';
 import 'package:lecture_performance_app/components/seat/update/update_used.dart';
 import 'package:lecture_performance_app/components/student/create/index.dart';
+import 'package:lecture_performance_app/components/student/index/setting.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
-import 'package:lecture_performance_app/db/models/HomeRoom.dart';
+import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/providers/student_index_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
@@ -73,8 +73,8 @@ class StudentIndexBody extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(
                 context,
-                DeleteClassRoom.routeName,
-                arguments: DeleteClassRoomArguments(args.homeRoom),
+                StudentSetting.routeName,
+                arguments: StudentSettingArgument(args.homeRoom),
               ).then((value) {
                 student.updateList();
               });
