@@ -45,6 +45,11 @@ class EvaluationService {
     return sum;
   }
 
+  Future<int> getStudentCount(int studentID) async {
+    final res = await evaluationRepository.getStudentSemester(studentID);
+    return res.length;
+  }
+
   Future<int> createEvaluation(int studentID, int typeID, int point) {
     final evaluation = Evaluation(
       studentID: studentID,
@@ -53,6 +58,10 @@ class EvaluationService {
     );
     final id = evaluationRepository.insertEvaluation(evaluation);
     return id;
+  }
+
+  Future<Evaluation> getEvaluation(int id) {
+    return evaluationRepository.getEvaluation(id);
   }
 
   Future<void> editEvaluation(

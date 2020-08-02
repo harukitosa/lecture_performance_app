@@ -137,24 +137,6 @@ class SaveSeatMap extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: config.pl,
-                    ),
-                    width: 200,
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        provider.sta.isNotEmpty
-                            ? '$lastName:$point'
-                            : 'no data',
-                        style: TextStyle(
-                          fontSize: config.size4,
-                          color: config.st,
-                        ),
-                      ),
-                    ),
-                  ),
                   const _TimeBadge(
                     color: Colors.cyan,
                     text: '過去2H',
@@ -172,6 +154,22 @@ class SaveSeatMap extends StatelessWidget {
                     text: '未指名',
                   )
                 ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: config.pl,
+                ),
+                width: 200,
+                height: 50,
+                child: Center(
+                  child: Text(
+                    provider.sta.isNotEmpty ? '$lastName:$point' : 'no data',
+                    style: TextStyle(
+                      fontSize: config.size4,
+                      color: config.st,
+                    ),
+                  ),
+                ),
               ),
             ]),
         ConstrainedBox(
@@ -403,6 +401,20 @@ class ClassRoomSeatView extends StatelessWidget {
                 name.length > 7 ? name.substring(0, 7) : name,
                 style: const TextStyle(
                   fontSize: 22,
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+              color: Colors.white,
+              width: 40,
+              height: 25,
+              child: Center(
+                child: Text(
+                  '${provider.studentScoreSum[studentID]}',
+                  style: const TextStyle(fontSize: 18),
                 ),
               ),
             ),

@@ -34,6 +34,9 @@ class HomeRoomShowProvider with ChangeNotifier {
   List<Student> get students =>
       _students == null ? [] : List.unmodifiable(_students);
 
+  /// 成績をつけた回数
+  Map<int, int> studentScoreSum = <int, int>{};
+
   ///  初期値は仮に7とおいている
   int _width = 7;
   int get width => _width;
@@ -79,13 +82,29 @@ class HomeRoomShowProvider with ChangeNotifier {
       ..indexNum = index
       ..time = _students[index].lastTime
       ..student = _students[index];
-    _evaluation.createEvaluation(studentID, typeID, point).then((value) {
-      update();
-      print(value);
-      c.evaID = value;
-      sta.push(c);
-      notifyListeners();
-    });
+
+    /// 一つ前の成績をつけた生徒と同一であれば前回のをまとめる
+    if (sta.isNotEmpty && sta.top().student.id == studentID) {
+      _evaluation.getEvaluation(sta.top().evaID).then((value) {
+        _evaluation
+            .editEvaluation(
+          value.id,
+          value.studentID,
+          value.typeID,
+          value.point + point,
+          value.createTime,
+        )
+            .then((value) {
+          update();
+        });
+      });
+    } else {
+      _evaluation.createEvaluation(studentID, typeID, point).then((value) {
+        c.evaID = value;
+        sta.push(c);
+        update();
+      });
+    }
   }
 
   void undo(BuildContext context) {
@@ -95,7 +114,6 @@ class HomeRoomShowProvider with ChangeNotifier {
       sta.pop();
       _students[c.indexNum].lastTime = c.time;
       _evaluation.deleteEvaluation(c.evaID).then((value) {
-        notifyListeners();
         Scaffold.of(context).showSnackBar(
           commonSnackBar(
             '取り消しました',
@@ -103,6 +121,7 @@ class HomeRoomShowProvider with ChangeNotifier {
             28,
           ),
         );
+        update();
       });
     }
   }
@@ -121,7 +140,12 @@ class HomeRoomShowProvider with ChangeNotifier {
             _seatBadge.add(s);
           }
         }
-        notifyListeners();
+        for (final item in _students) {
+          _evaluation.getStudentCount(item.id).then((value) {
+            studentScoreSum[item.id] = value;
+            notifyListeners();
+          });
+        }
       });
     });
   }
