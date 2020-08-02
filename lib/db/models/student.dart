@@ -64,7 +64,7 @@ class Student {
         }
       }
     }
-    return Colors.pink[400];
+    return Colors.purpleAccent;
   }
 
   String get name => lastName + firstName;

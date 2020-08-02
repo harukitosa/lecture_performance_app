@@ -40,7 +40,8 @@ class HomeRoomShowProvider with ChangeNotifier {
 
   ///  バッジの表示用のデータ
   final List<DisplayBadge> _seatBadge = [];
-  List<DisplayBadge> get seatBadge => _seatBadge;
+  List<DisplayBadge> get seatBadge =>
+      _seatBadge == null ? [] : List.unmodifiable(_seatBadge);
 
   ///  スワイプ移動距離の測定用
   int currentTypeID = 1;
