@@ -25,6 +25,38 @@ class HomeRoomProvider with ChangeNotifier {
   List<String> get newHomeRoomSeat =>
       _newHomeRoomSeat == null ? [] : List.unmodifiable(_newHomeRoomSeat);
 
+  //  一時的に編集用の変数を格納しておく
+  // ここから
+  String _grade = '';
+  String _lectureClass = '';
+
+  void handleChangeGrade(String e) {
+    _grade = e;
+    notifyListeners();
+  }
+
+  void handleChangeLectureClass(String e) {
+    _lectureClass = e;
+    notifyListeners();
+  }
+
+  void editHomeRoom(int id) {
+    final b = getHomeRoom(id);
+    _homeRoom.editHomeRoom(b.id, _grade, _lectureClass, b.createTime);
+    _grade = '';
+    _lectureClass = '';
+    _updateList();
+  }
+  // ここまでリファクタリング対象
+
+  HomeRoom getHomeRoom(int id) {
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id == id) {
+        return list[i];
+      }
+    }
+  }
+
   Future<void> saveHomeRoom(
     String grade,
     String lectureClass,
