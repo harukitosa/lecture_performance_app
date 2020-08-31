@@ -47,7 +47,7 @@ class StudentRepository extends IStudentRepository {
       'student',
       where: 'homeroom_id = ?',
       whereArgs: args,
-      orderBy: 'position_num ASC',
+      orderBy: 'position_num DESC',
     );
     return res.isNotEmpty ? res.map((c) => Student.fromMap(c)).toList() : [];
   }
