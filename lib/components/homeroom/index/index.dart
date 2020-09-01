@@ -129,6 +129,16 @@ Future<void> editPopup(
             children: [
               InkWell(
                 child: const MenuItem(
+                  text: '編集する',
+                  icon: Icons.edit,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  editAlertPopUp(context, id);
+                },
+              ),
+              InkWell(
+                child: const MenuItem(
                   text: '削除する',
                   icon: Icons.delete,
                 ),
@@ -231,6 +241,64 @@ Future<void> deleteAlertPopUp(
       );
     },
   );
+}
+
+Future<void> editAlertPopUp(
+  BuildContext context,
+  int id,
+) async {
+  final homeRoomProvider = Provider.of<HomeRoomProvider>(context);
+  final homeroom = homeRoomProvider.getHomeRoom(id);
+  return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20)), //this right here
+          child: Container(
+            height: 400,
+            child: Padding(
+              padding: const EdgeInsets.all(40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: '学年'),
+                    initialValue: homeroom.grade,
+                    onChanged: homeRoomProvider.handleChangeGrade,
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: '組'),
+                    initialValue: homeroom.lectureClass,
+                    onChanged: homeRoomProvider.handleChangeLectureClass,
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 320,
+                    child: RaisedButton(
+                      onPressed: () {
+                        homeRoomProvider.editHomeRoom(id);
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      color: Colors.blue,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      });
 }
 
 Future<void> _confirmPopUp(BuildContext context) async {
