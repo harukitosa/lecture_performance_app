@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/seat/update/update_position.dart';
 import 'package:lecture_performance_app/components/seat/update/update_used.dart';
 import 'package:lecture_performance_app/components/student/create/index.dart';
-import 'package:lecture_performance_app/components/student/index/setting.dart';
 import 'package:lecture_performance_app/components/student/show/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:lecture_performance_app/db/models/homeroom.dart';
@@ -70,15 +69,7 @@ class StudentIndexBody extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                StudentSetting.routeName,
-                arguments: StudentSettingArgument(args.homeRoom),
-              ).then((value) {
-                student.updateList();
-              });
-            },
+            onPressed: () {},
           ),
         ],
       ),
