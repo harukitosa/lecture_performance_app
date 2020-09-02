@@ -269,7 +269,8 @@ class SeatMap extends StatelessWidget {
           if (provider.list[index].used == 'true' &&
               provider.list.length > index - _indexCount &&
               provider.students.length > index - _indexCount) {
-            _name = provider.students[index - _indexCount].lastName;
+            _name = '${provider.students[index - _indexCount].lastName} '
+                '${provider.students[index - _indexCount].firstName}';
             _studentID = provider.students[index - _indexCount].id;
             _positionNum = provider.students[index - _indexCount].positionNum;
             _seatColor = provider.students[index - _indexCount].seatColor();
