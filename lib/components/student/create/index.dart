@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/student/create/create_many_student.dart';
+import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/providers/student_create_provider.dart';
 import 'package:lecture_performance_app/providers/student_edit_provider.dart';
@@ -207,7 +208,7 @@ Future<void> _confirmPopUp(BuildContext context) async {
           child: ListBody(
             children: const <Widget>[
               Text(
-                'ホーム画面に戻ります。',
+                '管理画面に戻ります。',
               ),
             ],
           ),
@@ -219,7 +220,7 @@ Future<void> _confirmPopUp(BuildContext context) async {
               Navigator.popUntil(
                 context,
                 // homeではない方がいいかも
-                ModalRoute.withName('/home'),
+                ModalRoute.withName(StudentIndex.routeName),
               );
             },
           ),
