@@ -7,13 +7,13 @@ class StudentCreateProvider with ChangeNotifier {
   }) : _studentService = student;
   final StudentService _studentService;
 
-  void createStudent(
+  Future<void> createStudent(
     int homeRoomID,
     String firstName,
     String lastName,
     int number,
-  ) {
-    _studentService
+  ) async {
+    await _studentService
         .createStudent(homeRoomID, firstName, lastName, number)
         .then((value) {});
   }

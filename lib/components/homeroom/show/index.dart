@@ -413,10 +413,7 @@ class ClassRoomSeatView extends StatelessWidget {
               width: 40,
               height: 25,
               child: Center(
-                child: Text(
-                  '${provider.studentScoreSum[studentID]}',
-                  style: const TextStyle(fontSize: 18),
-                ),
+                child: _scoreText(provider.studentScoreSum[studentID]),
               ),
             ),
           ),
@@ -437,4 +434,14 @@ class ClassRoomSeatView extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _scoreText(int value) {
+  if (value == null) {
+    return const Text('');
+  }
+  return Text(
+    '$value',
+    style: const TextStyle(fontSize: 18),
+  );
 }

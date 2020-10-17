@@ -59,6 +59,7 @@ class _InputFormState extends State<_InputForm> {
   File file;
   int id;
   AppStyle config = AppStyle();
+  List<String> data;
 
   @override
   Widget build(BuildContext context) {
@@ -69,16 +70,14 @@ class _InputFormState extends State<_InputForm> {
     /// csvファイルでデータの登録を行っている
     /// [num][lastName][firstName]の順番に登録していく。
     Future<void> _storeButton() async {
-      List<String> data;
-      data = fileText.replaceAll('\n', ',').split(',');
       for (var i = 0; i < data.length; i += 3) {
         try {
           final num = int.parse(data[i]);
-          student.createStudent(
+          await student.createStudent(
             args.homeRoom.id,
-            num.toString(),
+            data[i + 1],
             data[i + 2],
-            int.parse(data[i + 1]),
+            num,
           );
         } on Exception catch (exception) {
           print(exception);
@@ -96,56 +95,114 @@ class _InputFormState extends State<_InputForm> {
         type: FileType.custom,
         allowedExtensions: ['csv'],
       );
+      setState(() {
+        display = '';
+        data = [];
+      });
       // ファイルの中身を取得
       if (file != null) {
-        fileText = await file.readAsString();
-        setState(() {
-          display = basename(file.path);
-        });
+        try {
+          fileText = await file.readAsString();
+          setState(() {
+            display = '選択中のファイル名:${basename(file.path)}';
+            data = fileText.replaceAll('\n', ',').split(',');
+          });
+        } on Exception catch (exception) {
+          print(exception);
+          setState(() {
+            display = 'ファイルがよみこめませんでした、ファイルの形式が正しいか確認してください。';
+          });
+        }
       }
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          height: 300,
-          width: 400,
-          child: Column(
-            children: <Widget>[
-              Text(
-                '.csv形式のファイルを選択してください。',
-                style: TextStyle(fontSize: config.size3),
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 300,
+              width: 400,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    '.csv形式のファイルを選択してください。',
+                    style: TextStyle(fontSize: config.size3),
+                  ),
+                  Text(
+                    '一行目に出席番号、二行目に姓、三行目に名前を書き込んでください。',
+                    style: TextStyle(fontSize: config.size4),
+                  ),
+                ],
               ),
-              Text(
-                '一行目に出席番号、二行目に姓、三行目に名前を書き込んでください。',
+            ),
+            FlatButton(
+              color: Colors.blueAccent,
+              textColor: Colors.white,
+              child: Text(
+                'ファイル選択・取り込み',
                 style: TextStyle(fontSize: config.size4),
               ),
-            ],
-          ),
+              shape: const StadiumBorder(),
+              onPressed: _uploadFile,
+            ),
+            Text(display),
+            _showCSV(context, data),
+            FlatButton(
+              color: Colors.redAccent,
+              textColor: Colors.white,
+              shape: const StadiumBorder(),
+              child: Text(
+                '保存する',
+                style: TextStyle(fontSize: config.size4),
+              ),
+              onPressed: _storeButton,
+            ),
+          ],
         ),
-        FlatButton(
-          color: Colors.blueAccent,
-          textColor: Colors.white,
-          child: Text(
-            'ファイル選択・取り込み',
-            style: TextStyle(fontSize: config.size4),
-          ),
-          shape: const StadiumBorder(),
-          onPressed: _uploadFile,
-        ),
-        Text(display),
-        FlatButton(
-          color: Colors.redAccent,
-          textColor: Colors.white,
-          shape: const StadiumBorder(),
-          child: Text(
-            '保存',
-            style: TextStyle(fontSize: config.size4),
-          ),
-          onPressed: _storeButton,
-        ),
-      ],
+      ),
     );
   }
+}
+
+Widget _showCSV(BuildContext context, List<String> csvData) {
+  if (csvData == null || csvData.isEmpty) {
+    return const Text('');
+  }
+  return Table(
+    border: TableBorder.all(),
+    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+    children: _rowWidget(context, csvData),
+  );
+}
+
+List<TableRow> _rowWidget(BuildContext context, List<String> csvData) {
+  final list = <TableRow>[]..add(
+      TableRow(
+        children: [
+          Column(children: [_centerText('出席番号')]),
+          Column(children: [_centerText('姓')]),
+          Column(children: [_centerText('名前')]),
+        ],
+      ),
+    );
+  for (var i = 0; i < csvData.length; i += 3) {
+    list.add(
+      TableRow(
+        children: [
+          _centerText(csvData[i]),
+          _centerText(csvData[i + 1]),
+          _centerText(csvData[i + 2])
+        ],
+      ),
+    );
+  }
+  return list;
+}
+
+Widget _centerText(String text) {
+  return Center(
+    child: Text(text),
+  );
 }
