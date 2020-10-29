@@ -57,7 +57,7 @@ class _Routing extends StatelessWidget {
         StudentCreate.routeName: (_) => StudentCreate(),
         StudentsCreate.routeName: (_) => StudentsCreate(),
         StudentUpdate.routeName: (_) => StudentUpdate(),
-        SeatUpdateUsed.routeName: (_) => const SeatUpdateUsed(),
+        SeatUpdateUsed.routeName: (_) => SeatUpdateUsed(),
         HomeroomShow.routeName: (_) => HomeroomShow(),
       },
     );

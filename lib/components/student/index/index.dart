@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/common/Header.dart';
 import 'package:lecture_performance_app/components/seat/update/update_position.dart';
 import 'package:lecture_performance_app/components/seat/update/update_used.dart';
 import 'package:lecture_performance_app/components/student/create/index.dart';
@@ -8,6 +9,7 @@ import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/providers/student_index_provider.dart';
 import 'package:lecture_performance_app/wire.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 //routerで渡される値
 class StudentIndexArgument {
@@ -56,22 +58,10 @@ class StudentIndexBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final student = Provider.of<StudentIndexProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          '${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組 管理画面',
-          style: TextStyle(
-            fontSize: config.size4,
-            color: config.st,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {},
-          ),
-        ],
+      appBar: Header(
+        title: '${args.homeRoom.grade}年 ${args.homeRoom.lectureClass}組 管理画面',
+        actionIcon: Icon(Icons.settings),
       ),
       body: AdminStudentListView(),
       floatingActionButton: BtnColumn(config: config, args: args),
@@ -180,8 +170,34 @@ class _FloatBtn extends StatelessWidget {
 class AdminStudentListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const <Widget>[
+    final student = Provider.of<StudentIndexProvider>(context);
+    _copy() async {
+      String text = '';
+      student.list.forEach((element) {
+        text += element.student.firstName +
+            element.student.lastName +
+            ' ' +
+            element.score.toString() +
+            '\n';
+      });
+      final data = ClipboardData(text: text);
+      await Clipboard.setData(data);
+    }
+
+    return Column(
+      children: [
+        Row(
+          children: [
+            Container(
+              height: 60,
+              child: IconButton(
+                icon: Icon(Icons.note),
+                onPressed: _copy,
+              ),
+            ),
+            Text('copy'),
+          ],
+        ),
         Expanded(
           flex: 2,
           child: Center(
