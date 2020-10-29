@@ -201,15 +201,17 @@ class _UndoList extends StatelessWidget {
     list.forEach((element) {
       _widgetList.add(_StackView(element));
     });
+    _widgetList.add(_StackView('←UNDO'));
+
     return _widgetList;
   }
 
   Widget _StackView(String text) {
     return Container(
       height: 40,
-      width: 80,
+      width: 120,
       color: Colors.blue[100],
-      margin: const EdgeInsets.only(right: 2),
+      margin: const EdgeInsets.only(right: 2, left: 2),
       child: Center(
         child: Text(
           text,

@@ -61,7 +61,7 @@ class StudentUpdateBody extends StatelessWidget {
               size: 32,
             ),
             onPressed: () {
-              _deleteStudentAlertPopUp(context, args.studentID);
+              // _deleteStudentAlertPopUp(context, args.studentID);
             },
           ),
         ],
@@ -74,35 +74,36 @@ class StudentUpdateBody extends StatelessWidget {
 }
 
 /* 生徒削除　*/
-Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
-  final studentProvider = Provider.of<StudentShowProvider>(context);
-  return showDialog(
-    context: context,
-    builder: (_) {
-      return AlertDialog(
-        title: const Text('この生徒を削除'),
-        content: const Text('この動作は一度行うと取り消すことができません。それでも削除しますか？'),
-        actions: <Widget>[
-          // ボタン領域
-          FlatButton(
-            child: const Text('キャンセル'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          FlatButton(
-            child: const Text('削除する'),
-            onPressed: () {
-              studentProvider.deleteStudent(id);
-              Navigator.pop(context);
-              _confirmPopUp(context);
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+// Future<void> _deleteStudentAlertPopUp(BuildContext context, int id) async {
+//   final studentProvider = Provider.of<StudentShowProvider>(context);
+//   return showDialog(
+//     context: context,
+//     builder: (_) {
+//       return AlertDialog(
+//         title: const Text('この生徒を削除'),
+//         content: const Text('この動作は一度行うと取り消すことができません。それでも削除しますか？'),
+//         actions: <Widget>[
+//           // ボタン領域
+//           FlatButton(
+//             child: const Text('キャンセル'),
+//             onPressed: () {
+//               Navigator.pop(context);
+//             },
+//           ),
+//           FlatButton(
+//             child: const Text('削除する'),
+//             onPressed: () {
+//               studentProvider.deleteStudent(id);
+//               Navigator.pop(context);
+//               Navigator.pop(context);
+//               _confirmPopUp(context);
+//             },
+//           ),
+//         ],
+//       );
+//     },
+//   );
+// }
 
 Future<void> _confirmPopUp(BuildContext context) async {
   return showDialog<void>(
