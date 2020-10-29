@@ -1,7 +1,28 @@
 import 'dart:async';
+
+import 'package:lecture_performance_app/config/DataConfig.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:lecture_performance_app/config/DataConfig.dart';
+
+const scripts = {
+  '2': [
+    '''
+CREATE TABLE sample(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  password TEXT,
+  email TEXT,
+  created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
+  updated_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
+)
+'''
+  ],
+  '3': [
+    '''
+  drop table sample;
+  '''
+  ],
+};
 
 class DBManager {
   DBManager._internal();
@@ -14,12 +35,16 @@ class DBManager {
     if (_database != null) {
       return _database;
     }
-    final database = openDatabase(
-      join(await getDatabasesPath(), 'database.db'),
-      version: 1,
-      onConfigure: _onConfigure,
-      onCreate: _onCreate,
-    );
+    final database = openDatabase(join(await getDatabasesPath(), 'database.db'),
+        version: 1, onConfigure: _onConfigure, onCreate: _onCreate,
+        onUpgrade: (Database db, int oldVersion, int newVersion) async {
+      for (var i = oldVersion + 1; i <= newVersion; i++) {
+        final queries = scripts[i.toString()];
+        for (final query in queries) {
+          await db.execute(query);
+        }
+      }
+    });
 
     return _database = await database;
   }

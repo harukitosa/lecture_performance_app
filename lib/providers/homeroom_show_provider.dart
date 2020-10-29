@@ -7,7 +7,8 @@ import 'package:lecture_performance_app/services/evaluation_service.dart';
 import 'package:lecture_performance_app/services/seat_service.dart';
 import 'package:lecture_performance_app/services/student_evaluation_service.dart';
 import 'package:lecture_performance_app/utility/seat_view_func.dart';
-import 'package:stack/stack.dart' as Stack;
+// import 'package:stack/stack.dart' as Stack;
+import 'dart:collection';
 
 class HomeRoomShowProvider with ChangeNotifier {
   HomeRoomShowProvider({
@@ -52,7 +53,24 @@ class HomeRoomShowProvider with ChangeNotifier {
   double y = 0;
 
   ///  使用コマンド一覧
-  Stack.Stack<Command> sta = Stack.Stack();
+  ListQueue<Command> sta = ListQueue.from([]);
+
+  List<String> get undoStudent {
+    if (sta == null) {
+      return [];
+    }
+    final _list = sta.toList();
+    final _value = <String>[];
+    _list.forEach((item) {});
+    for (var i = _list.length - 3; i < _list.length; i++) {
+      if (i >= 0) {
+        _value.add(
+          _list[i].student.firstName + ' ' + _list[i].student.lastName,
+        );
+      }
+    }
+    return _value;
+  }
 
   void position(double dx, double dy) {
     x = dx;
@@ -84,8 +102,8 @@ class HomeRoomShowProvider with ChangeNotifier {
       ..student = _students[index];
 
     /// 一つ前の成績をつけた生徒と同一であれば前回のをまとめる
-    if (sta.isNotEmpty && sta.top().student.id == studentID) {
-      _evaluation.getEvaluation(sta.top().evaID).then((value) {
+    if (sta.isNotEmpty && sta.last.student.id == studentID) {
+      _evaluation.getEvaluation(sta.last.evaID).then((value) {
         _evaluation
             .editEvaluation(
           value.id,
@@ -101,7 +119,8 @@ class HomeRoomShowProvider with ChangeNotifier {
     } else {
       _evaluation.createEvaluation(studentID, typeID, point).then((value) {
         c.evaID = value;
-        sta.push(c);
+        // sta.add(c);
+        sta.add(c);
         update();
       });
     }
@@ -110,8 +129,8 @@ class HomeRoomShowProvider with ChangeNotifier {
   void undo(BuildContext context) {
     if (sta.isNotEmpty) {
       Command c;
-      c = sta.top();
-      sta.pop();
+      c = sta.last;
+      sta.removeLast();
       _students[c.indexNum].lastTime = c.time;
       _evaluation.deleteEvaluation(c.evaID).then((value) {
         Scaffold.of(context).showSnackBar(

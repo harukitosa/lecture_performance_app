@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/homeroom/show/index.dart';
+import 'package:lecture_performance_app/common/Header.dart';
 import 'package:lecture_performance_app/db/models/homeroom.dart';
 import 'package:lecture_performance_app/providers/homeroom_provider.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +9,7 @@ class HomeroomIndex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('クラス一覧'),
-      ),
+      appBar: Header(title: 'クラス一覧'),
       body: Consumer<HomeRoomProvider>(
         builder: (context, counter, _) {
           return Center(
@@ -176,6 +175,7 @@ class MenuItem extends StatelessWidget {
               color: Colors.redAccent,
               size: 40,
             ),
+            onPressed: () {},
           ),
           title: Text(
             text,

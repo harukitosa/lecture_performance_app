@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:lecture_performance_app/common/Header.dart';
 import 'package:lecture_performance_app/common/snackBar/common_snack_bar.dart';
 import 'package:lecture_performance_app/components/student/index/index.dart';
 import 'package:lecture_performance_app/config/DataConfig.dart';
@@ -16,6 +17,8 @@ class HomeroomShowArgument {
   final HomeRoom homeRoom;
 }
 
+///  HomeroomShow
+///  このページで使用するProviderの登録
 @immutable
 class HomeroomShow extends StatelessWidget {
   static const routeName = '/class';
@@ -47,6 +50,8 @@ class HomeroomShow extends StatelessWidget {
   }
 }
 
+/// HomeRoomShowBody
+/// 表示を担当する
 class HomeRoomShowBody extends StatelessWidget {
   const HomeRoomShowBody({
     Key key,
@@ -60,30 +65,26 @@ class HomeRoomShowBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HomeRoomShowProvider>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          '${args.homeRoom.grade} 年 ${args.homeRoom.lectureClass} 組',
+
+    void _onTap() {
+      Navigator.pushNamed(
+        context,
+        StudentIndex.routeName,
+        arguments: StudentIndexArgument(
+          args.homeRoom,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.settings,
-              size: 32,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                StudentIndex.routeName,
-                arguments: StudentIndexArgument(
-                  args.homeRoom,
-                ),
-              ).then((value) {
-                provider.update();
-              });
-            },
-          )
-        ],
+      ).then((value) {
+        provider.update();
+      });
+    }
+
+    return Scaffold(
+      appBar: Header(
+        title: '${args.homeRoom.grade} 年 ${args.homeRoom.lectureClass} 組',
+        onTap: _onTap,
+        actionIcon: const Icon(
+          Icons.settings,
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -113,6 +114,119 @@ class HomeRoomShowBody extends StatelessWidget {
   }
 }
 
+/// _SubHeader
+/// 情報を表示するHeader
+@immutable
+class _SubHeader extends StatelessWidget {
+  _SubHeader({Key key, this.list}) : super(key: key);
+  final List<String> list;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _FrequencyBar(),
+        _UndoList(list: list),
+      ],
+    );
+  }
+}
+
+///  _FrequencyBar
+///  指名頻度を表示するBar
+class _FrequencyBar extends StatelessWidget {
+  const _FrequencyBar({Key key}) : super(key: key);
+  final double _height = 40;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          height: _height,
+          width: 80,
+          child: Center(
+            child: Text(
+              '指名頻度',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        Container(
+          height: _height,
+          width: 20,
+          child: Center(
+            child: Text('多'),
+          ),
+        ),
+        Container(
+          height: _height,
+          width: 20,
+          color: Colors.cyan,
+        ),
+        SizedBox(width: 4),
+        Container(
+          height: _height,
+          width: 20,
+          color: Colors.yellow[200],
+        ),
+        SizedBox(width: 4),
+        Container(
+          height: _height,
+          width: 20,
+          color: Colors.pink[400],
+        ),
+        SizedBox(width: 4),
+        Container(
+          height: _height,
+          width: 20,
+          color: Colors.purpleAccent,
+        ),
+        Container(
+          height: _height,
+          width: 20,
+          child: Center(
+            child: Text('少'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UndoList extends StatelessWidget {
+  const _UndoList({Key key, this.list}) : super(key: key);
+  final List<String> list;
+  List<Widget> _list() {
+    final List<Widget> _widgetList = [];
+    list.forEach((element) {
+      _widgetList.add(_StackView(element));
+    });
+    return _widgetList;
+  }
+
+  Widget _StackView(String text) {
+    return Container(
+      height: 40,
+      width: 80,
+      color: Colors.blue[100],
+      margin: const EdgeInsets.only(right: 2),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 22),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: _list(),
+    );
+  }
+}
+
 @immutable
 class SaveSeatMap extends StatelessWidget {
   SaveSeatMap({this.grade, this.lectureClass, this.homeRoomID});
@@ -123,55 +237,18 @@ class SaveSeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HomeRoomShowProvider>(context);
-
+    final allStack = provider.sta;
+    print(allStack);
     final args =
         ModalRoute.of(context).settings.arguments as HomeroomShowArgument;
-    final lastName =
-        provider.sta.isNotEmpty ? provider.sta.top().student.lastName : '';
-    final point =
-        provider.sta.isNotEmpty ? provider.sta.top().point.toString() : '';
+    // final lastName =
+    //     provider.sta.isNotEmpty ? provider.sta.top().student.lastName : '';
+    // final point =
+    //     provider.sta.isNotEmpty ? provider.sta.top().point.toString() : '';
+    // print(provider.sta.length);
     return Column(
       children: <Widget>[
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: [
-                  const _TimeBadge(
-                    color: Colors.cyan,
-                    text: '過去2H',
-                  ),
-                  _TimeBadge(
-                    color: Colors.yellow[200],
-                    text: '過去3W',
-                  ),
-                  _TimeBadge(
-                    color: Colors.pink[400],
-                    text: '3w以上',
-                  ),
-                  const _TimeBadge(
-                    color: Colors.purpleAccent,
-                    text: '未指名',
-                  )
-                ],
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: config.pl,
-                ),
-                width: 200,
-                height: 50,
-                child: Center(
-                  child: Text(
-                    provider.sta.isNotEmpty ? '$lastName:$point' : 'no data',
-                    style: TextStyle(
-                      fontSize: config.size4,
-                      color: config.st,
-                    ),
-                  ),
-                ),
-              ),
-            ]),
+        _SubHeader(list: provider.undoStudent),
         ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: 800,
@@ -201,39 +278,6 @@ class SaveSeatMap extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _TimeBadge extends StatelessWidget {
-  const _TimeBadge({
-    Key key,
-    @required this.color,
-    @required this.text,
-  }) : super(key: key);
-
-  final Color color;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(20),
-        ),
-      ),
-      width: 100,
-      height: 50,
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 26,
-          ),
-        ),
-      ),
     );
   }
 }

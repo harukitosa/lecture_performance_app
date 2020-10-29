@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_performance_app/components/homeroom/create/create_seat.dart';
+import 'package:lecture_performance_app/common/Header.dart';
 
 class HomeroomCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('新規クラス登録'),
-      ),
+      appBar: Header(title: '新規クラス作成'),
       body: HomeStoreView(),
     );
   }
